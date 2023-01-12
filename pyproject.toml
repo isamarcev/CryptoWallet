@@ -8,6 +8,16 @@ packages = [{include = "crypto_wallet"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = "^0.89.1"
+greenlet = "^2.0.1"
+sqlalchemy= "^1.4.46"
+python-dotenv = "^0.21.0"
+yarl = "^1.8.2"
+sqlalchemy-utils = "^0.39.0"
+alembic = "^1.9.1"
+psycopg2-binary = "^2.9.5"
+uvicorn = "^0.20.0"
+asyncpg = "^0.27.0"
 
 
 [build-system]
