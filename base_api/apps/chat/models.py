@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy_utils import EmailType, URLType
 from sqlalchemy.sql import func
+from sqlalchemy import MetaData
 import uuid as uuid_id
 from sqlalchemy.ext.declarative import declarative_base
 from ..users.models import User

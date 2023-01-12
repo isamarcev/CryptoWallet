@@ -8,17 +8,15 @@ from sqlalchemy.orm import relationship
 
 from sqlalchemy.ext.declarative import declarative_base
 
+
 Base = declarative_base()
-
-
-def get_new_uuid():
-    return str(uuid_id.uuid4())
 
 
 class Permission(Base):
     __tablename__ = 'permissions'
     id: int = Column(Integer, primary_key=True)
     has_chat_access = Column(Boolean)
+
 
 perm = Permission.__table__
 
