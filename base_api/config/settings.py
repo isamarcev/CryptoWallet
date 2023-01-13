@@ -9,11 +9,11 @@ BASE_DIR = Path(__file__).parent.parent
 
 class Settings(BaseSettings):
     #postgres_db
-    postgres_pass: str = 'admin'
+    postgres_pass: str
     postgres_host: str = 'localhost'
     postgres_port: str = '5432'
-    postgres_user: str = 'nikitin'
-    postgres_name: str = 'crypto_wallet_base'
+    postgres_user: str
+    postgres_name: str
 
     @property
     def postgres_url(self) -> URL:
@@ -32,8 +32,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = BASE_DIR / ".env"
-
-    loc = Config().env_file
 
 
 settings = Settings()
