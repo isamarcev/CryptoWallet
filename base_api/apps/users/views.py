@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
 
-from dependencies import get_db
-from models import User
+from .dependencies import get_db
+from .models import User
 from fastapi import APIRouter, Depends
-import database
+from . import database
 
 user_router = APIRouter()
 
 
-@user_router.post('/register/{name}')
+@user_router.get('/register/{name}')
 async def register(
         name: str,
         db: Session = Depends(get_db)

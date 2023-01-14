@@ -9,7 +9,7 @@ from ..apps.users.schemas import UserRegister
 # import apps.users.views as views
 # from ...apps.users import views
 # from ..appsapps.users.views import user_router
-# from base_api.apps.users.views import user_router
+from base_api.apps.users.views import user_router
 
 
 router = APIRouter(
@@ -18,15 +18,17 @@ router = APIRouter(
     )
 
 
-@router.get('/register/{name}')
-async def register(
-        name: str,
-        db: Session = Depends(get_db)
-):
-    print(name, "NAME")
-    user_schema = UserRegister(username=name)
-    user = await UserDatabase.create_user(username=name, db=db)
-    print(user, "USER")
-    return {"user": user}
+router.include_router(router=user_router)
+
+# @router.get('/register/{name}')
+# async def register(
+#         name: str,
+#         db: Session = Depends(get_db)
+# ):
+#     print(name, "NAME")
+#     user_schema = UserRegister(username=name)
+#     user = await UserDatabase.create_user(username=name, db=db)
+#     print(user, "USER")
+#     return {"user": user}
 
 # router.include_router(user_router, prefix='/user', tags=['User'])
