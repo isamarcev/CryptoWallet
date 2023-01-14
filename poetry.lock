@@ -31,6 +31,14 @@ test = ["coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "pytest (>=7.0)", "pytes
 trio = ["trio (>=0.16,<0.22)"]
 
 [[package]]
+name = "async-lru"
+version = "1.0.3"
+description = "Simple lru_cache for asyncio"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "asyncpg"
 version = "0.27.0"
 description = "An asyncio PostgreSQL driver"
@@ -313,11 +321,12 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ea399e6c72fd335eb232bad7381b05b6379b0a5ffa81607315e37f0caf63f2c3"
+content-hash = "82160657b36ea5d0a2cdf3676142a1796ee71e5683ce72670e670c78e6970816"
 
 [metadata.files]
 alembic = []
 anyio = []
+async-lru = []
 asyncpg = []
 click = []
 colorama = []

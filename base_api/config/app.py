@@ -15,11 +15,3 @@ app.include_router(router=router)
 async def on_startup():
     await init_db()
 
-
-@app.post("/log")
-async def add_song(user: UserRegister, session: AsyncSession = Depends(get_session)):
-    user_instance = User(**user.dict())
-    session.add(user_instance)
-    await session.commit()
-    await session.refresh(user_instance)
-    return {'user': user.username}

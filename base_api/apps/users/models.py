@@ -30,7 +30,7 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     photo = Column(URLType)
-    email = Column(EmailType)
+    email = Column(String)
     password = Column(String)
 
     permission = relationship(Permission, backref="users", uselist=False)
