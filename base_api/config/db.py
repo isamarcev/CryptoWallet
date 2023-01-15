@@ -14,7 +14,8 @@ DATABASE_URL = str("postgresql+asyncpg://nikitin:admin@localhost/crypto_wallet_b
 
 
 #ASYNC
-engine = create_async_engine(DATABASE_URL, echo=True, future=True)
+engine = create_async_engine(DATABASE_URL, future=True)
+# engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
 metadata = MetaData()
 

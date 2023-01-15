@@ -1,8 +1,10 @@
 from base_api.apps.users.database import UserDatabase
+from base_api.apps.users.jwt_backend import JWTBackend
 from base_api.apps.users.manager import UserManager
 from base_api.apps.users.models import User, Permission
 from base_api.config.db import SessionLocal
 from async_lru import alru_cache
+
 
 
 def get_db():
@@ -16,6 +18,11 @@ def get_db():
 @alru_cache()
 async def get_user_db() -> UserDatabase:
     return UserDatabase(User, Permission)
+
+
+async def get_jwt_backend() -> JWTBackend:
+
+
 
 @alru_cache()
 async def get_user_manager() -> UserManager:
