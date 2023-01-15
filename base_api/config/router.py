@@ -1,11 +1,12 @@
 from fastapi import APIRouter
 
 from base_api.apps.chat.views import chat_router
+from base_api.apps.users.views import user_router
 
 router = APIRouter(
-    prefix='/api',
-    tags=['apps']
+    prefix='/api'
     )
 
 
 router.include_router(chat_router, prefix='/chat', tags=['Chat'])
+router.include_router(user_router, prefix='/user', tags=['User'])

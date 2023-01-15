@@ -16,6 +16,7 @@ class Permission(Base):
     __tablename__ = 'permissions'
     id: int = Column(Integer, primary_key=True)
     has_chat_access = Column(Boolean)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
 
 
 perm = Permission.__table__
@@ -29,10 +30,11 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     photo = Column(URLType)
-    email = Column(EmailType)
+    email = Column(String)
     password = Column(String)
-    permission = relationship("Permission", backref="users", uselist=False)
-    message = relationship("..chat.models.Message", backref="users")
+
+    permission = relationship(Permission, backref="users", uselist=False)
+    #message = relationship("..chat.models.Message", backref="users")
 
 
 user = User.__table__

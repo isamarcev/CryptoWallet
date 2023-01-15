@@ -41,6 +41,14 @@ test = ["contextlib2", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=
 trio = ["trio (>=0.16,<0.22)"]
 
 [[package]]
+name = "async-lru"
+version = "1.0.3"
+description = "Simple lru_cache for asyncio"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "asyncpg"
 version = "0.27.0"
 description = "An asyncio PostgreSQL driver"
@@ -876,4 +884,6 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "8251abe7de2087f828c9c9b1fafbb7efbc9a083b4561ba00e855a2d8494dc416"
+content-hash = "82160657b36ea5d0a2cdf3676142a1796ee71e5683ce72670e670c78e6970816"
+
+async-lru = []
