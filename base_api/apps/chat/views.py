@@ -16,4 +16,4 @@ async def create_message(
         db: AsyncSession = Depends(get_session),
         message_manager: ChatManager = Depends(get_chat_manager)):
     response = await message_manager.create_message(message, db)
-    return {'message': 'ok'}
+    return response

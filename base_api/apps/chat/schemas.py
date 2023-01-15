@@ -6,7 +6,7 @@ from typing import Union
 
 
 class MessageCreate(BaseModel):
-    id: UUID
+    # id: UUID
     text: str
     # image: Union[UploadFile, None]
 
