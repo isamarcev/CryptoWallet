@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/jwt_backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/jwt_backend.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/schemas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,7 +117,7 @@
       <workItem from="1673639747375" duration="5154000" />
       <workItem from="1673671623429" duration="3247000" />
       <workItem from="1673695966519" duration="23543000" />
-      <workItem from="1673788807872" duration="17527000" />
+      <workItem from="1673788807872" duration="18323000" />
     </task>
     <servers />
   </component>

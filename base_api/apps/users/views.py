@@ -6,7 +6,7 @@ from .manager import UserManager
 from .models import User
 from fastapi import APIRouter, Depends, Response
 from . import database
-from .schemas import UserRegister
+from .schemas import UserRegister, UserLogin
 from ...config.db import get_session
 
 
@@ -32,4 +32,17 @@ async def register(
     return result
 
 
-
+@user_router.post("/login/",
+                  status_code=status.HTTP_200_OK)
+async def login(
+        user: UserLogin,
+        response: Response,
+        session: AsyncSession = Depends(get_session),
+        user_manager: UserManager = Depends(get_user_manager),
+):
+    result = await user_manager.login(user, session)
+    response.set_cookie(
+        key="Authorization",
+        value=f"Bearer {result.get('access_token')}",
+    )
+    return result

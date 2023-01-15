@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
 
 from base_api.apps.users.database import UserDatabase
-from base_api.apps.users.schemas import UserRegister
+from base_api.apps.users.schemas import UserRegister, UserLogin
 from .jwt_backend import JWTBackend
 from .models import User
 from .utils.password_hasher import get_password_hash, verify_password
@@ -38,4 +38,8 @@ class UserManager:
         result[0]["access_token"] = result[-1]
 
         return result[0]
+
+
+    async def login(self, user: UserLogin, session: AsyncSession) -> Dict:
+        return {"Wait couple of days": 2}
 
