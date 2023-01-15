@@ -27,6 +27,7 @@ async def init_db():
         await conn.run_sync(metadata.create_all)
 
 
+# я думаю что лучше просто инициировать скесси а получать ее из dependencies а не все в одно месте
 async def get_session() -> AsyncSession:
     async_session = sessionmaker(
         engine, class_=AsyncSession, expire_on_commit=False
@@ -34,6 +35,10 @@ async def get_session() -> AsyncSession:
     async with async_session() as session:
         yield session
 
+
+async_session = sessionmaker(
+        engine, class_=AsyncSession, expire_on_commit=False
+    )
 
 # SQLAlchemy
 # engine = create_engine(DATABASE_URL)
