@@ -41,8 +41,9 @@ async def login(
         user_manager: UserManager = Depends(get_user_manager),
 ):
     result = await user_manager.login(user, session)
-    response.set_cookie(
-        key="Authorization",
-        value=f"Bearer {result.get('access_token')}",
-    )
+    # response.set_cookie(
+    #     key="Authorization",
+    #     value=f"Bearer {result.get('access_token')}",
+    # )
+    print(result)
     return result

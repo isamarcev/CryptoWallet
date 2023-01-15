@@ -41,5 +41,8 @@ class UserManager:
 
 
     async def login(self, user: UserLogin, session: AsyncSession) -> Dict:
-        return {"Wait couple of days": 2}
+        token = user.email
+        x = await self.jwt_backend.decode_token(token)
+        print(x, "DECODED")
+        return {"Wait couple of days": x}
 
