@@ -6,13 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/jwt_backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/jwt_backend.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/users/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +120,7 @@
       <workItem from="1673639747375" duration="5154000" />
       <workItem from="1673671623429" duration="3247000" />
       <workItem from="1673695966519" duration="23543000" />
-      <workItem from="1673788807872" duration="12995000" />
+      <workItem from="1673788807872" duration="17527000" />
     </task>
     <servers />
   </component>
