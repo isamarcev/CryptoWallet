@@ -23,12 +23,15 @@ async def register(
         response: Response,
         session: AsyncSession = Depends(get_session),
         user_manager: UserManager = Depends(get_user_manager),
+
 ):
+    print(user)
     result = await user_manager.create_user(user=user, session=session)
     response.set_cookie(
         key="Authorization",
         value=f"Bearer {result.get('access_token')}",
     )
+
     return result
 
 
@@ -41,9 +44,8 @@ async def login(
         user_manager: UserManager = Depends(get_user_manager),
 ):
     result = await user_manager.login(user, session)
-    # response.set_cookie(
-    #     key="Authorization",
-    #     value=f"Bearer {result.get('access_token')}",
-    # )
-    print(result)
+    response.set_cookie(
+        key="Authorization",
+        value=f"Bearer {result.get('access_token')}",
+    )
     return result

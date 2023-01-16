@@ -39,10 +39,17 @@ class UserManager:
 
         return result[0]
 
-
     async def login(self, user: UserLogin, session: AsyncSession) -> Dict:
-        token = user.email
-        x = await self.jwt_backend.decode_token(token)
-        print(x, "DECODED")
-        return {"Wait couple of days": x}
+        validated_email = await validate_email_(user.email)
+        if not validated_email.get("valid"):
+            raise HTTPException(status_code=400, detail=validated_email.get("invalid"))
+        user.email = validated_email.get("valid")
+        user_instance = await self.database.get_user_by_email(user.email, session)
+        if user_instance and verify_password(user.password, user_instance.password):
+            payload = await self.get_payload(user_instance)
+            result = await self.jwt_backend.create_access_token(payload)
+            result[0]["access_token"] = result[-1]
+            return result[0]
+        else:
+            raise HTTPException(status_code=404, detail="User with this email does not exist or password with mistakes")
 
