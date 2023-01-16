@@ -14,9 +14,19 @@ class Settings(BaseSettings):
     postgres_port: str = '5432'
     postgres_user: str
     postgres_name: str
+
+    #jwt settings
     jwt_secret_key: str = "09d25e094faa6ca25563f7099f6f0f4caa6cf63b88e8d3e7"
     jwt_algorithm: str = "HS256"
     jwt_expire: int = 30
+
+
+    #rabbitmq
+    rabbit_host: str = "rabbitmq"
+    rabbit_port: int = 15672
+    rabbit_user: str = "guest"
+    rabbit_pass: str = "guest"
+    rabbit_vhost: str = "/"
 
     @property
     def postgres_url(self) -> URL:
@@ -31,6 +41,21 @@ class Settings(BaseSettings):
             user=self.postgres_user,
             password=self.postgres_pass,
             path=f"/{self.postgres_name}",
+        )
+
+    @property
+    def rabbit_url(self) -> URL:
+        """
+        Assemble RabbitMQ URL from settings.
+        :return: rabbit URL.
+        """
+        return URL.build(
+            scheme="amqp",
+            host=self.rabbit_host,
+            port=self.rabbit_port,
+            user=self.rabbit_user,
+            password=self.rabbit_pass,
+            path=self.rabbit_vhost,
         )
 
     class Config:

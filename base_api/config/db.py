@@ -28,7 +28,7 @@ async def init_db():
         await conn.run_sync(metadata.create_all)
 
 
-# я думаю что лучше просто инициировать скесси а получать ее из dependencies а не все в одно месте
+# я думаю что лучше просто инициировать сессию а получать ее из dependencies а не все в одно месте!!!
 async def get_session() -> AsyncSession:
     async_session = sessionmaker(
         engine, class_=AsyncSession, expire_on_commit=False
