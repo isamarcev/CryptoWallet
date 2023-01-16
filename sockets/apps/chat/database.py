@@ -1,8 +1,7 @@
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from base_api.apps.chat.models import Message
-from base_api.apps.chat.schemas import MessageCreate
+from sockets.apps.chat.models import Message
+from sockets.apps.chat.schemas import MessageCreate
 from base_api.apps.users.models import User
 from base_api.apps.users.models import user as user_table
 

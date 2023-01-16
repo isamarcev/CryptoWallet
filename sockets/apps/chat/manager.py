@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from base_api.apps.chat.database import ChatDatabase
-from base_api.apps.chat.schemas import MessageCreate
+from sockets.apps.chat.database import ChatDatabase
+from sockets.apps.chat.schemas import MessageCreate
 
 
 class ChatManager:

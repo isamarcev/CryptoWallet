@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
 
-from base_api.apps.chat.dependencies import get_session, get_chat_manager
-from base_api.apps.chat.manager import ChatManager
-from base_api.apps.chat.schemas import MessageCreate
+from sockets.apps.chat.dependencies import get_session, get_chat_manager
+from sockets.apps.chat.manager import ChatManager
+from sockets.apps.chat.schemas import MessageCreate
 
 
 chat_router = APIRouter()
