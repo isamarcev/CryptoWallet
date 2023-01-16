@@ -32,6 +32,7 @@ class User(Base):
     photo = Column(URLType)
     email = Column(String)
     password = Column(String)
+    is_active = Column(Boolean, default=True)
 
     permission = relationship(Permission, backref="users", uselist=False)
     #message = relationship("..chat.models.Message", backref="users")

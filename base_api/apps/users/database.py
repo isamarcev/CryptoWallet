@@ -36,14 +36,30 @@ class UserDatabase:
     #     return user
 
     async def create_user(self, user: UserRegister, session: AsyncSession) -> User:
-        user_instance = User(**user.dict())
+        user_instance = User(email=user.email, username=user.username, password=user.password)
         session.add(user_instance)
         await session.commit()
         await session.refresh(user_instance)
         result_1 = await session.execute(
             user_table.select().where(user_table.c.username == user_instance.username)
         )
-        user_instance = User(**result_1.first()._asdict())
+        user_instance = self.user_model(**result_1.first()._asdict())
         return user_instance
+
+    async def get_user_by_email(self, user_email: str, session: AsyncSession):
+        result = await session.execute(
+            user_table.select().where(user_table.c.email == user_email)
+        )
+        result_data = result.first()
+        print(result_data, "result data")
+        return None if not result_data else self.user_model(**result_data._asdict())
+
+    async def get_user_by_username(self, username: str, session: AsyncSession):
+        result = await session.execute(
+            user_table.select().where(user_table.c.username == username)
+        )
+        result_data = result.first()
+        print(result_data, "result data username")
+        return None if not result_data else self.user_model(**result_data._asdict())
 
 
