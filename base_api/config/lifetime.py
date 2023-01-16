@@ -24,7 +24,7 @@ def register_startup_event(
     async def _startup() -> None:  # noqa: WPS430
         await init_db()
         # await init_redis(app)
-        # await init_rabbit(app)
+        await init_rabbit(app)
 
     return _startup
 
@@ -44,6 +44,6 @@ def register_shutdown_event(
     async def _shutdown() -> None:  # noqa: WPS430
         pass
         # await shutdown_redis(app)
-        # await shutdown_rabbit(app)
+        await shutdown_rabbit(app)
 
     return _shutdown

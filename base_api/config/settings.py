@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     rabbit_pass: str = "guest"
     rabbit_vhost: str = "/"
 
+    rabbit_pool_size: int = 2
+    rabbit_channel_pool_size: int = 10
+
     @property
     def postgres_url(self) -> URL:
         """
