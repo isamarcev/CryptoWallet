@@ -15,11 +15,6 @@ class Settings(BaseSettings):
     postgres_user: str
     postgres_name: str
 
-    #jwt settings
-    jwt_secret_key: str = "09d25e094faa6ca25563f7099f6f0f4caa6cf63b88e8d3e7"
-    jwt_algorithm: str = "HS256"
-    jwt_expire: int = 30
-
 
     #rabbitmq
     rabbit_host: str = "rabbitmq"
