@@ -11,7 +11,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from starlette.staticfiles import StaticFiles
 from base_api.apps.frontend.auth import auth_router
-from base_api.apps.frontend.basic_test import basic_router
+from base_api.apps.frontend.chat import chat_router
 
 from base_api.apps.users.models import User
 from base_api.config.db import init_db, get_session
@@ -59,7 +59,7 @@ def get_application() -> FastAPI:
     app_.mount("/static", StaticFiles(directory="static"), name="static")
     app_.include_router(router)
     app_.include_router(auth_router)
-    app_.include_router(basic_router)
+    app_.include_router(chat_router)
     return app_
 
 

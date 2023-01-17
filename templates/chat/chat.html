@@ -2,7 +2,6 @@
 
 {% block page_css %}
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/app-assets/css/pages/app-chat.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/app-assets/css/pages/app-chat-list.css')}}">
 
@@ -11,7 +10,10 @@
 
 {% block content %}
 
-<div class="content-area-wrapper container-xxl p-0">
+<div class="app-content content chat-application">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-area-wrapper container-xxl p-0">
             <div class="sidebar-left">
                 <div class="sidebar">
                     <!-- Admin user profile area -->
@@ -124,7 +126,7 @@
                             <div class="d-flex align-items-center w-100">
                                 <div class="sidebar-profile-toggle">
                                     <div class="avatar avatar-border">
-                                        <img src="#" alt="user_avatar" height="42" width="42">
+                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="user_avatar" height="42" width="42">
                                         <span class="avatar-status-online"></span>
                                     </div>
                                 </div>
@@ -138,10 +140,10 @@
 
                         <!-- Sidebar Users start -->
                         <div id="users-list" class="chat-user-list-wrapper list-group ps ps--active-y">
-                            <h4 class="chat-list-title">Chats</h4>
+                            <h4 class="chat-list-title">Users</h4>
                             <ul class="chat-users-list chat-list media-list">
                                 <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
+                                    <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-3.jpg" height="42" width="42" alt="Generic placeholder image">
                                         <span class="avatar-status-offline"></span>
                                     </span>
                                     <div class="chat-info flex-grow-1">
@@ -156,7 +158,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
+                                    <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42" alt="Generic placeholder image">
                                         <span class="avatar-status-busy"></span>
                                     </span>
                                     <div class="chat-info flex-grow-1">
@@ -170,7 +172,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
+                                    <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-8.jpg" height="42" width="42" alt="Generic placeholder image">
                                         <span class="avatar-status-away"></span>
                                     </span>
                                     <div class="chat-info flex-grow-1">
@@ -187,103 +189,7 @@
                                     <h6 class="mb-0">No Chats Found</h6>
                                 </li>
                             </ul>
-                            <h4 class="chat-list-title">Contacts</h4>
-                            <ul class="chat-users-list contact-list media-list">
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Jenny Perich</h5>
-                                        <p class="card-text text-truncate">
-                                            Tart dragée carrot cake chocolate bar. Chocolate cake jelly beans caramels tootsie roll candy canes.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Sarah Montgomery</h5>
-                                        <p class="card-text text-truncate">
-                                            Tootsie roll sesame snaps biscuit icing jelly-o biscuit chupa chups powder.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Heather Howell</h5>
-                                        <p class="card-text text-truncate">
-                                            Tart cookie dragée sesame snaps halvah. Fruitcake sugar plum gummies cheesecake toffee.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Kelly Reyes</h5>
-                                        <p class="card-text text-truncate">
-                                            Wafer toffee tart jelly cake croissant chocolate bar cupcake donut. Fruitcake gingerbread tiramisu sweet
-                                            jelly-o.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Kristopher Candy</h5>
-                                        <p class="card-text text-truncate">
-                                            Marzipan bonbon chocolate bar biscuit lemon drops muffin jelly-o sweet jujubes.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Vincent Nelson</h5>
-                                        <p class="card-text text-truncate">
-                                            Toffee gummi bears sugar plum gummi bears chocolate bar donut. Pudding cookie lemon drops icing
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Jimmy Parker</h5>
-                                        <p class="card-text text-truncate">
-                                            Powder halvah jelly beans topping caramels muffin dragée lollipop oat cake.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Elizabeth Elliott</h5>
-                                        <p class="card-text text-truncate">
-                                            Candy canes ice cream jelly beans carrot cake chocolate bar pastry candy jelly-o.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="avatar"><img src="#" height="42" width="42" alt="Generic placeholder image">
-                                    </span>
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">Nelson D'souza</h5>
-                                        <p class="card-text text-truncate">
-                                            Macaroon candy canes apple pie soufflé lemon drops chocolate cake chocolate sweet roll.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="no-results">
-                                    <h6 class="mb-0">No Contacts Found</h6>
-                                </li>
-                            </ul>
+
                         <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 645px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 464px;"></div></div></div>
                         <!-- Sidebar Users end -->
                     </div>
@@ -299,17 +205,8 @@
                         <div class="body-content-overlay"></div>
                         <!-- Main chat area -->
                         <section class="chat-app-window">
-                            <!-- To load Conversation -->
-                            <div class="start-chat-area">
-                                <div class="mb-1 start-chat-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                                </div>
-                                <h4 class="sidebar-toggle start-chat-text">Start Conversation</h4>
-                            </div>
-                            <!--/ To load Conversation -->
-
                             <!-- Active Chat -->
-                            <div class="active-chat d-none">
+                            <div class="active-chat">
                                 <!-- Chat Header -->
                                 <div class="chat-navbar">
                                     <header class="chat-header">
@@ -318,27 +215,9 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu font-medium-5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                                             </div>
                                             <div class="avatar avatar-border user-profile-toggle m-0 me-1">
-                                                <img src="#" alt="avatar" height="36" width="36">
-                                                <span class="avatar-status-busy"></span>
+                                                <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="avatar" height="36" width="36">
                                             </div>
-                                            <h6 class="mb-0">Kristopher Candy</h6>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone-call cursor-pointer d-sm-block d-none font-medium-2 me-1"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video cursor-pointer d-sm-block d-none font-medium-2 me-1"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search cursor-pointer d-sm-block d-none font-medium-2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                            <div class="dropdown">
-                                                <button class="btn-icon btn btn-transparent hide-arrow btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2" id="chat-header-actions"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                                                    <a class="dropdown-item" href="#">View Contact</a>
-                                                    <a class="dropdown-item" href="#">Mute Notifications</a>
-                                                    <a class="dropdown-item" href="#">Block Contact</a>
-                                                    <a class="dropdown-item" href="#">Clear Chat</a>
-                                                    <a class="dropdown-item" href="#">Report</a>
-                                                </div>
-                                            </div>
+                                            <h6 class="mb-0">Crypto Wallet Chat</h6>
                                         </div>
                                     </header>
                                 </div>
@@ -350,7 +229,7 @@
                                         <div class="chat">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -362,7 +241,7 @@
                                         <div class="chat chat-left">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -381,7 +260,7 @@
                                         <div class="chat">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -396,7 +275,7 @@
                                         <div class="chat chat-left">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -414,7 +293,7 @@
                                         <div class="chat">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -426,7 +305,7 @@
                                         <div class="chat chat-left">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -441,7 +320,7 @@
                                         <div class="chat">
                                             <div class="chat-avatar">
                                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                                    <img src="#" alt="avatar" height="36" width="36">
+                                                    <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
                                                 </span>
                                             </div>
                                             <div class="chat-body">
@@ -458,16 +337,15 @@
                                 <!-- User Chat messages -->
 
                                 <!-- Submit Chat form -->
-                                <form class="chat-app-form" action="javascript:void(0);" onsubmit="enterChat();">
+                                <form class="chat-app-form" action="javascript:void(0);" onsubmit="new_message();">
                                     <div class="input-group input-group-merge me-1 form-send-message">
-                                        <span class="speech-to-text input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mic cursor-pointer"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></span>
                                         <input type="text" class="form-control message" placeholder="Type your message or use speech to text">
                                         <span class="input-group-text">
                                             <label for="attach-doc" class="attachment-icon form-label mb-0">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image cursor-pointer text-secondary"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                 <input type="file" id="attach-doc" hidden=""> </label></span>
                                     </div>
-                                    <button type="button" class="btn btn-primary send waves-effect waves-float waves-light" onclick="enterChat();">
+                                    <button type="button" class="btn btn-primary send waves-effect waves-float waves-light" onclick="new_message();">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send d-lg-none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                                         <span class="d-none d-lg-block">Send</span>
                                     </button>
@@ -555,6 +433,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
 {% endblock %}
 
@@ -564,15 +443,8 @@
 <script src="{{ url_for('static', path='/app-assets/js/core/app-menu.js')}}"></script>
 <script src="{{ url_for('static', path='/app-assets/js/core/app.js')}}"></script>
 <script src="{{ url_for('static', path='/app-assets/js/scripts/pages/app-chat.js')}}"></script>
-<script>
-        $(window).on('load', function() {
-            if (feather) {
-                feather.replace({
-                    width: 14,
-                    height: 14
-                });
-            }
-        })
-    </script>
+
+<!--Custom css -->
+<script src="{{ url_for('static', path='/custom/js/chat.js')}}"></script>
 
 {% endblock %}

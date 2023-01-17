@@ -6,10 +6,10 @@ from fastapi import APIRouter, Response
 templates = Jinja2Templates(directory="templates")
 
 
-basic_router = APIRouter()
+chat_router = APIRouter()
 
 
-@basic_router.get("/base", include_in_schema=False)
+@chat_router.get("/chat", include_in_schema=False)
 async def register(
         request: Request,
 ):
