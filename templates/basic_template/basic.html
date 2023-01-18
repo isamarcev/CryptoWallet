@@ -151,6 +151,27 @@
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
 
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+        integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+        crossorigin="anonymous"></script>
+
+    <script>
+        let ws_url = "ws://127.0.0.1:8001"
+        const sio = io(ws_url,
+            {
+                path: '/ws/socket.io'
+            });
+
+
+        sio.on("connect", () => {
+            console.log('connect_basic')
+        });
+
+        sio.on("disconnect", () => {
+            console.log('disconnect')
+        });
+    </script>
+
 
     {% block script %}
 

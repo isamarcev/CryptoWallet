@@ -16,3 +16,12 @@ async def register(
     print(request, "REQUEST")
     return templates.TemplateResponse("chat/chat.html", context={"request": request})
 
+
+
+@chat_router.get("/base", include_in_schema=False)
+async def register(
+        request: Request,
+):
+    print(request, "REQUEST")
+    return templates.TemplateResponse("basic_template/basic.html", context={"request": request})
+

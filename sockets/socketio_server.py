@@ -5,12 +5,18 @@ sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
 
 
 @sio.event
-def connect(sid, environ, auth):
+async def connect(sid, environ, auth):
     print('connect ', sid)
     print('auth', auth)
     print('dima connected')
     sio.save_session(sid, {'sid': sid})
-    sio.emit('new_message', sid)
+    print('session = ', sio.get_session(sid))
+    await sio.emit('new_message', sid, to=sid)
+
+
+@sio.event
+async def disconnect(sid):
+    print('disconnect')
 
 
 @sio.event
