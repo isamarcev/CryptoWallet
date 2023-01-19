@@ -4,7 +4,6 @@ from fastapi import FastAPI
 
 from sockets.config.db import init_db
 from services.rabbit.lifetime import init_rabbit, shutdown_rabbit
-from sockets.config.mongo_db import init_mongo
 
 
 def register_startup_event(
@@ -23,8 +22,9 @@ def register_startup_event(
 
     @app.on_event("startup")
     async def _startup() -> None:  # noqa: WPS430
-        await init_db()
-        await init_mongo()
+        pass
+        # await init_db()
+        # await init_mongo()
 
     return _startup
 

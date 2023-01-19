@@ -1,10 +1,12 @@
 from async_lru import alru_cache
+from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 
-from sockets.apps.chat.database import ChatDatabase
-from sockets.apps.chat.manager import ChatManager
-from sockets.apps.chat.models import Message
+from base_api.apps.chat.database import ChatDatabase
+from base_api.apps.chat.manager import ChatManager
+from base_api.apps.chat.models import Message
 from base_api.config.db import async_session
 
 
@@ -24,12 +26,13 @@ async def get_chat_manager() -> ChatManager:
     return ChatManager(chat_db)
 
 
-#test get current_user
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth")
-
-#take user by token
-
-
+# #test get current_user
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+#
+# #take user by token
+#
+#
+#
 # async def get_current_user(token: str = Depends(oauth2_scheme)):
 #     user = await users_utils.get_user_by_token(token)
 #     if not user:

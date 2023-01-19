@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
-from base_api.apps.frontend.auth import auth_router
-from sockets.apps.chat.views import chat_router
+from base_api.apps.chat.views import chat_router
 from base_api.apps.users.views import user_router
 
 router = APIRouter(

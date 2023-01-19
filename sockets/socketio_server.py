@@ -6,12 +6,14 @@ sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
 
 @sio.event
 async def connect(sid, environ, auth):
+    print('base namespace!!!')
     print('connect ', sid)
     print('auth', auth)
     print('dima connected')
-    sio.save_session(sid, {'sid': sid})
+    # sio.save_session(sid, {'sid': sid})
     print('session = ', sio.get_session(sid))
-    await sio.emit('new_message', sid, to=sid)
+    # await sio.emit('new_message', sid, to=sid)
+    await sio.emit('new_message', sid)
 
 
 @sio.event

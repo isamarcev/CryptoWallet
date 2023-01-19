@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from sockets.apps.chat.models import Message
-from sockets.apps.chat.schemas import MessageCreate
+from base_api.apps.chat.models import Message
+from base_api.apps.chat.schemas import MessageCreate
 from base_api.apps.users.models import User
 from base_api.apps.users.models import user as user_table
 
@@ -20,7 +22,7 @@ class ChatDatabase:
         user = User(**users_data.first())
         print('type = ', user)
 
-        message_instance = Message(**message.dict(), user=user.id)
+        message_instance = Message(**message.dict(), user=user.id, datetime=datetime.now())
         db.add(message_instance)
         await db.commit()
         return message_instance
