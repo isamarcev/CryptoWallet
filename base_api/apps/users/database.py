@@ -62,4 +62,12 @@ class UserDatabase:
         print(result_data, "result data username")
         return None if not result_data else self.user_model(**result_data._asdict())
 
+    async def get_user_by_id(self, use_id: str, db: AsyncSession):
+        result = await db.execute(
+            user_table.select().whete(user_table.c.user_id == use_id)
+        )
+        result_data = result.first()
+        return None if not result_data else self.user_model(**result_data._asdict())
+
+
 

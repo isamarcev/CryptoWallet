@@ -27,8 +27,17 @@ async def get_jwt_backend() -> JWTBackend:
                              settings.jwt_expire)
     return jwt_backend
 
+
 @alru_cache()
 async def get_user_manager() -> UserManager:
     jwt_backend = await get_jwt_backend()
     user_db = await get_user_db()
     return UserManager(user_db, jwt_backend)
+
+
+async def get_current_user() -> User:
+    pass
+
+
+
+
