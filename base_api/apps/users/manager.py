@@ -55,6 +55,4 @@ class UserManager:
 
     async def get_user(self, user_id: str, db: AsyncSession) -> User:
         print('user_id == ', user_id)
-        user = await self.database.get_user_by_id(user_id, db)
-        print('user = ', user)
         return await self.database.get_user_by_id(user_id, db)

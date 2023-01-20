@@ -31,6 +31,7 @@ beanie = "^1.16.8"
 bcrypt = "^4.0.1"
 pyhumps = "^3.8.0"
 python-multipart = "^0.0.5"
+pydantic = {extras = ["email"], version = "^1.10.4"}
 
 
 

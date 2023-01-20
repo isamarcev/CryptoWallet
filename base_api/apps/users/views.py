@@ -29,7 +29,6 @@ async def register(
     result = await user_manager.create_user(user=user, session=session)
     response.set_cookie(
         key="Authorization",
-
         value=f"Bearer {result.get('access_token')}",
     )
 
@@ -48,5 +47,6 @@ async def login(
     response.set_cookie(
         key="Authorization",
         value=f"Bearer {result.get('access_token')}",
+        expires=result.get("expiration")
     )
     return result

@@ -18,7 +18,8 @@ class JWTBackend:
         access_token = jwt.encode(payload,
                                   self.jwt_secret_key,
                                   self.jwt_algorithm)
-        return {"username": payload.get("username")}, access_token
+        return {"username": payload.get("username"),
+                'expiration': payload.get("exp")}, access_token
 
     @staticmethod
     async def decode_token(token: str) -> Optional[Dict]:
