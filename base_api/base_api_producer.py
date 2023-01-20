@@ -8,7 +8,7 @@ from aio_pika import DeliveryMode, ExchangeType, Message
 from base_api.config.settings import settings
 
 
-class ApiServiceProducer:
+class BaseApiProducer:
     async def publish_message(
         self,
         exchange_name: str,
@@ -23,6 +23,7 @@ class ApiServiceProducer:
             channel = await connection.channel()
             exchange = await self.create_exchange(channel, exchange_name, exchange_type)
             message = await self.create_message(message, delivery_mode)
+            print(routing_key)
             await exchange.publish(message, routing_key=routing_key)
 
     @staticmethod

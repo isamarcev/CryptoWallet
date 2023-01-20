@@ -1,24 +1,14 @@
 import pathlib
 from typing import List
-
-from fastapi import FastAPI, APIRouter, Depends, Request
-from sqlalchemy.ext.asyncio import AsyncSession
-
+from fastapi import FastAPI
 import toml
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
-
-
 from starlette.staticfiles import StaticFiles
 from base_api.apps.frontend.auth import auth_router
 from base_api.apps.frontend.chat import chat_router
-
-from base_api.apps.users.models import User
-from base_api.config.db import init_db, get_session
 from base_api.config.lifetime import register_startup_event, register_shutdown_event
 from base_api.config.router import router
-from base_api.apps.users.schemas import UserRegister
-
 
 
 def get_project_data() -> dict:
@@ -67,25 +57,3 @@ app = get_application()
 
 
 
-#
-# @app.on_event("startup")
-# async def on_startup():
-#     await init_db()
-
-#
-# def create_app() -> FastAPI:
-#     app = FastAPI()
-#     app.include_router(router=router)
-#     app.include_router(auth_router)
-#     app.mount("/static", StaticFiles(directory="static"), name="static")
-#
-#     return app
-#
-#
-# app = create_app()
-
-
-
-# @app.on_event("startup")
-# async def on_startup():
-#     await init_db()

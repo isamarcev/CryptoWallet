@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from threading import Thread
 
 import aio_pika
 from aio_pika import ExchangeType, connect
@@ -10,7 +11,7 @@ from sockets.config.settings import settings
 
 async def on_message(message: AbstractIncomingMessage) -> None:
     async with message.process():
-        print(f"[x] {message.body!r}")
+        print(message.body)
 
 
 async def main() -> None:
@@ -20,20 +21,30 @@ async def main() -> None:
     async with connection:
         # Creating a channel
         channel = await connection.channel()
-        await channel.set_qos(prefetch_count=1)
+        # await channel.set_qos(prefetch_count=1)
 
-        logs_exchange = await channel.declare_exchange(
-            "logs", ExchangeType.FANOUT,
+
+
+        new_message_exchange = await channel.declare_exchange(
+            "new_message", ExchangeType.FANOUT,
         )
 
         # Declaring queue
-        queue = await channel.declare_queue(exclusive=True)
+        new_message_queue = await channel.declare_queue(exclusive=True)
 
         # Binding the queue to the exchange
-        await queue.bind(logs_exchange)
+        await new_message_queue.bind(new_message_exchange)
 
         # Start listening the queue
-        await queue.consume(on_message)
+        await new_message_queue.consume(on_message)
+
+
+
+
+
 
         print(" [*] Waiting for logs. To exit press CTRL+C")
         await asyncio.Future()
+
+
+socket_consumer_thread = Thread(target=asyncio.run, args=(main(),))

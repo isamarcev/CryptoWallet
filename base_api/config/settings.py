@@ -38,7 +38,7 @@ class Settings(BaseSettings):
         :return: database URL.
         """
         return URL.build(
-            scheme="postgresql",
+            scheme="postgresql+asyncpg",
             host=self.postgres_host,
             port=self.postgres_port,
             user=self.postgres_user,

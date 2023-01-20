@@ -8,7 +8,7 @@ from base_api.apps.chat.manager import ChatManager
 from base_api.apps.chat.schemas import MessageCreate
 from base_api.apps.users.dependencies import get_current_user
 from base_api.apps.users.models import User
-from base_api.base_api_producer import ApiServiceProducer
+from base_api.base_api_producer import BaseApiProducer
 
 chat_router = APIRouter()
 
@@ -20,6 +20,4 @@ async def create_message(
         db: AsyncSession = Depends(get_session),
         message_manager: ChatManager = Depends(get_chat_manager)):
     response = await message_manager.create_message(message, db, user)
-    # rab = ApiServiceProducer()
-    # await rab.publish_message('logs', 'dima rabbit)))')
     return response

@@ -7,6 +7,7 @@ from starlette import status
 from base_api.apps.chat.database import ChatDatabase
 from base_api.apps.chat.manager import ChatManager
 from base_api.apps.chat.models import Message
+from base_api.base_api_producer import BaseApiProducer
 from base_api.config.db import async_session
 
 
@@ -23,26 +24,9 @@ async def get_chat_db() -> ChatDatabase:
 @alru_cache()
 async def get_chat_manager() -> ChatManager:
     chat_db = await get_chat_db()
-    return ChatManager(chat_db)
+    producer = await get_producer()
+    return ChatManager(chat_db, producer)
 
 
-# #test get current_user
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
-#
-# #take user by token
-#
-#
-#
-# async def get_current_user(token: str = Depends(oauth2_scheme)):
-#     user = await users_utils.get_user_by_token(token)
-#     if not user:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="Invalid authentication credentials",
-#             headers={"WWW-Authenticate": "Bearer"},
-#         )
-#     if not user["is_active"]:
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
-#         )
-#     return user
+async def get_producer() -> BaseApiProducer:
+    return BaseApiProducer()
