@@ -16,12 +16,7 @@ class ChatDatabase:
     def __init__(self, message_model: Message):
         self.message_model = message_model
 
-    async def create_message(self, message: MessageCreate, db: AsyncSession):
-        #must take current user
-        users_data = await db.execute(user_table.select())
-        user = User(**users_data.first())
-        print('type = ', user)
-
+    async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
         message_instance = Message(**message.dict(), user=user.id, datetime=datetime.now())
         db.add(message_instance)
         await db.commit()
