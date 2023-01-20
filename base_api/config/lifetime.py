@@ -1,8 +1,12 @@
-
+import asyncio
 from typing import Awaitable, Callable
+
+import aio_pika
+from aio_pika import connect_robust
 from fastapi import FastAPI
 
 from base_api.config.db import init_db
+from base_api.config.settings import settings
 from services.rabbit.lifetime import init_rabbit, shutdown_rabbit
 
 
@@ -25,6 +29,11 @@ def register_startup_event(
         await init_db()
         # await init_redis(app)
         await init_rabbit(app)
+        try:
+            connection = await aio_pika.connect_robust(settings.rabbit_url)
+            await connection.close()
+        except Exception:
+            await asyncio.sleep(10)
 
     return _startup
 
