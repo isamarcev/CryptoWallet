@@ -13,8 +13,10 @@ from base_api.apps.users.schemas import UserRegister
 async def validate_email_(email: str) -> Dict:
     result = {}
     try:
-        loop = asyncio.get_event_loop()
-        validation = await loop.run_in_executor(validate_email(email, check_deliverability=True))
+        #закомитил до починки)
+        # loop = asyncio.get_event_loop()
+        # validation = await loop.run_in_executor(validate_email(email, check_deliverability=True))
+        validation = validate_email(email, check_deliverability=True)
         email = validation.email
         result["valid"] = email
     except EmailNotValidError as e:

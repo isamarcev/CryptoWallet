@@ -9,6 +9,7 @@ async def connect(sid, environ, auth):
     print('base namespace!!!')
     print('connect ', sid)
     print('auth', auth)
+    # print('enver ', environ)
     print('dima connected')
     # sio.save_session(sid, {'sid': sid})
     print('session = ', sio.get_session(sid))
@@ -21,9 +22,7 @@ async def disconnect(sid):
     print('disconnect')
 
 
-@sio.event
-def connect_to_chat(sid):
-    print('connect ', sid)
+
 
 
 @sio.event
