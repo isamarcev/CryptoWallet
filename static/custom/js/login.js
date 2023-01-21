@@ -1,6 +1,6 @@
 
 
-const register_url = window.location.origin + "/api/users/login/"
+const register_url = window.location.origin + "/api/user/login/"
 
 $( "#login_button" ).click(function() {
   var email = $("#email").val()

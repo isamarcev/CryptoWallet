@@ -10,10 +10,7 @@ from .schemas import UserRegister, UserLogin
 from ...config.db import get_session
 
 
-user_router = APIRouter(
-    prefix='/users',
-    tags=['apps']
-)
+user_router = APIRouter()
 
 
 @user_router.post('/register/',
