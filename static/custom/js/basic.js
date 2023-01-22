@@ -23,9 +23,10 @@ sio.on("disconnect", () => {
 
 
 const current_user_url = window.location.origin + "/api/user/"
+const current_url = window.location.pathname
 
 $(window).on('load', function() {
-    console.log(current_user_url)
+    let user_data = {}
     if (feather) {
         feather.replace({
             width: 14,
@@ -37,16 +38,18 @@ $(window).on('load', function() {
         type: 'GET',
         success: function (data) {
             console.log('data = ', data)
-            let user_data = {}
             user_data['user_id'] = data.id
             user_data['user_photo'] = data.photo
             user_data['first_name'] = data.first_name
             user_data['last_name'] = data.last_name
             user_data['username'] = data.username
+            user_data['url'] = current_url
             document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
         },
         error: (error) => {
             console.log('error');
         }
     })
+    sio.auth = user_data;
+    sio.connect();
 })

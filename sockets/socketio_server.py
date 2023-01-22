@@ -1,18 +1,22 @@
 import socketio
 
 # create a Socket.IO server
+from sockets.apps.chat.dependencies import get_user_db
+
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
 
 
 @sio.event
 async def connect(sid, environ, auth):
-    print('base namespace!!!')
-    print('connect ', sid)
-    print('auth', auth)
-    # print('enver ', environ)
-    print('dima connected')
-    # sio.save_session(sid, {'sid': sid})
-    print('session = ', sio.get_session(sid))
+    await sio.save_session(sid, {"auth": auth, "sid": sid})
+    if auth.get('url') == '/chat':
+        print('chat!!!')
+        sio.enter_room(sid, 'chat')
+        db = await get_user_db()
+        session = await sio.get_session(sid)
+        await db.connect_user(session)
+        users = await db.get_users()
+
     # await sio.emit('new_message', sid, to=sid)
     await sio.emit('new_message', sid)
 
