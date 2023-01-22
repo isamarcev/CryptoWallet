@@ -10,10 +10,7 @@ from .schemas import UserRegister, UserLogin
 from ...config.db import get_session
 
 
-user_router = APIRouter(
-    prefix='/users',
-    tags=['apps']
-)
+user_router = APIRouter()
 
 
 @user_router.post('/register/',
@@ -25,7 +22,6 @@ async def register(
         user_manager: UserManager = Depends(get_user_manager),
 
 ):
-    print(user)
     result = await user_manager.create_user(user=user, session=session)
     response.set_cookie(
         key="Authorization",

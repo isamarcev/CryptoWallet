@@ -1,4 +1,6 @@
 import asyncio
+import concurrent
+import functools
 import re
 from typing import Dict
 
@@ -14,7 +16,9 @@ async def validate_email_(email: str) -> Dict:
     result = {}
     try:
         loop = asyncio.get_event_loop()
-        validation = await loop.run_in_executor(validate_email(email, check_deliverability=True))
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            validation = await loop.run_in_executor(
+                pool, functools.partial(validate_email, email=email, check_deliverability=True))
         email = validation.email
         result["valid"] = email
     except EmailNotValidError as e:
