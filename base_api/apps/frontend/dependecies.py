@@ -44,6 +44,6 @@ async def check_user_token(
 
         if not user:
             return None
-        return payload
+        return user
     except Exception:
         return None
