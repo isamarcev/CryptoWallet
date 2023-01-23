@@ -45,7 +45,30 @@ sio.on("get_history", (data) => {
 
 sio.on('get_online_users', (data) => {
     console.log('get_users')
+    let user_list_block = $('.chat-users-list')
+    $('.online_user').remove()
+    console.log(user_list_block)
+    let user_list = []
     for (let prop in data) {
-        console.log(data[prop])
+        console.log(data[prop].auth)
+        auth = data[prop].auth
+
+        let avatar = '<span class="avatar"><img src="' + auth.user_photo + '" height="42" width="42" alt="Generic placeholder image">' +
+            '<span class="avatar-status-online"></span>' + '</span>'
+        let info = '<div class="chat-info flex-grow-1"><h5 class="mb-0">' + auth.first_name + ' ' + auth.last_name +
+        '</h5></div>'
+        let li = '<li class="online_user">' + avatar + info + '</li>'
+        if (!user_list.includes(auth.user_id)){
+            user_list_block.append(li)
+        }
+        user_list.push(auth.user_id)
     }
+
+
+
+
 })
+
+
+
+

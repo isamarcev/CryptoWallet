@@ -19,7 +19,12 @@ class ChatUsers:
             pass
         print('2')
         if users:
+            if session in users:
+                print('if')
+            else:
+                print('else')
             users.append(session)
+            users = list(users)
             users = json.dumps(users)
             await self.redis.set('chat_users', users)
         else:
