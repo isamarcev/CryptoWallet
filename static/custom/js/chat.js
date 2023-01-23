@@ -28,3 +28,24 @@ function create_message_post(message_text) {
                 }
             })
         }
+
+
+
+sio.on("get_history", (data) => {
+    console.log('get_history')
+    // $(data).each(function(index, value) {
+    //     console.log(value.text)
+    // }
+    for (let prop in data) {
+        console.log(data[prop])
+    }
+
+});
+
+
+sio.on('get_online_users', (data) => {
+    console.log('get_users')
+    for (let prop in data) {
+        console.log(data[prop])
+    }
+})

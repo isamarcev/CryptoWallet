@@ -26,6 +26,9 @@ const current_user_url = window.location.origin + "/api/user/"
 const current_url = window.location.pathname
 
 $(window).on('load', function() {
+    const current_user_url = window.location.origin + "/api/user/"
+    const current_url = window.location.pathname
+
     let user_data = {}
     if (feather) {
         feather.replace({
@@ -43,6 +46,7 @@ $(window).on('load', function() {
             user_data['first_name'] = data.first_name
             user_data['last_name'] = data.last_name
             user_data['username'] = data.username
+            console.log('url = ', current_url)
             user_data['url'] = current_url
             document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
         },
