@@ -1,3 +1,4 @@
+from aioredis import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.chat.database import ChatDatabase

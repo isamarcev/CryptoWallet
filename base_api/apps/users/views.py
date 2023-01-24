@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from .dependencies import get_db, get_user_manager
+from .dependencies import get_db, get_user_manager, get_current_user
 from .manager import UserManager
 from .models import User
 from fastapi import APIRouter, Depends, Response
@@ -46,3 +46,12 @@ async def login(
         expires=result.get("expiration")
     )
     return result
+
+
+@user_router.get("/",
+                  status_code=status.HTTP_200_OK)
+async def get_current_user(
+    user: User = Depends(get_current_user)
+):
+    return user
+
