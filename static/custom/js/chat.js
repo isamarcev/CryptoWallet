@@ -5,7 +5,7 @@ function new_message(source){
     var message = $('.message').val();
     if (/\S/.test(message)) {
         create_message_post(message)
-        console.log(message)
+        console.log('message')
 
     }
     enterChat();
@@ -33,11 +33,32 @@ function create_message_post(message_text) {
 
 sio.on("get_history", (data) => {
     console.log('get_history')
-    // $(data).each(function(index, value) {
-    //     console.log(value.text)
-    // }
+    console.log(user_data)
+    let chat_list = $('.chats')
+    let prev_user_message = ''
     for (let prop in data) {
+        message = data[prop]
         console.log(data[prop])
+
+        if (prev_user_message !== message.user_id) {
+            if (user_data.user_id == message.user_id) {
+                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                    '" alt="avatar" height="36" width="36"></span></div>'
+                let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
+                chat_list.append(chat)
+            } else {
+                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                    '" alt="avatar" height="36" width="36"></span></div>'
+                let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
+                chat_list.append(chat)
+            }
+        }
+        else {
+
+        }
+        prev_user_message = message.user_id
     }
 
 });

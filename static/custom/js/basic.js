@@ -24,12 +24,13 @@ sio.on("disconnect", () => {
 
 const current_user_url = window.location.origin + "/api/user/"
 const current_url = window.location.pathname
+let user_data = {}
 
 $(window).on('load', function() {
     const current_user_url = window.location.origin + "/api/user/"
     const current_url = window.location.pathname
 
-    let user_data = {}
+
     if (feather) {
         feather.replace({
             width: 14,
