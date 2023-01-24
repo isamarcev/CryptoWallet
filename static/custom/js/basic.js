@@ -49,7 +49,7 @@ $(window).on('load', function() {
             user_data['username'] = data.username
             console.log('url = ', current_url)
             user_data['url'] = current_url
-            document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
+            // document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
         },
         error: (error) => {
             console.log('error');

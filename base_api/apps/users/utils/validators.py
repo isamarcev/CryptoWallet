@@ -9,7 +9,8 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.users.database import UserDatabase
-from base_api.apps.users.schemas import UserRegister
+from base_api.apps.users.models import User
+from base_api.apps.users.schemas import UserRegister, UserProfileUpdate
 
 
 async def validate_email_(email: str) -> Dict:
@@ -37,7 +38,7 @@ async def validate_username(username: str) -> bool:
     return False
 
 
-async def validate_register(user: UserRegister, session: AsyncSession, user_db: UserDatabase ):
+async def validate_register(user: UserRegister, session: AsyncSession, user_db: UserDatabase) -> Dict:
     errors = {"errors": {}}
     validated_email = await validate_email_(user.email)
     if validated_email.get("valid"):
@@ -57,6 +58,29 @@ async def validate_register(user: UserRegister, session: AsyncSession, user_db: 
         errors["errors"]["username"] = "Invalid username"
     if await user_db.get_user_by_username(user.username, session):
         errors["errors"]["username"] = "Username is already registered"
+    if errors.get("errors"):
+        return errors
+    return {"success_validation": True}
+
+
+async def validate_update_profile(user: UserProfileUpdate,
+                                  current_user: User,
+                                  session: AsyncSession,
+                                  user_db: UserDatabase):
+    errors = {"errors": {}}
+    if user.password and user.password2:
+        validated_password = await validate_password(user.password)
+        if not validated_password:
+            errors["errors"]["password"] = ("Password must contain at least: one digit, "
+                                            "one uppercase letter, one lowercase letter,"
+                                            " one special character[$@#], 8 to 20 characters")
+        if user.password != user.password2:
+            errors["errors"]["mismatch_password"] = "Password missmatch"
+    if not await validate_username(user.username):
+        errors["errors"]["username"] = "Invalid username"
+    if not current_user.username == user.username:
+        if await user_db.get_user_by_username(user.username, session):
+            errors["errors"]["username"] = "Username is already registered"
     if errors.get("errors"):
         return errors
     return {"success_validation": True}

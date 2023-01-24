@@ -30,18 +30,11 @@ async def check_user_token(
         db: AsyncSession = Depends(get_session),
         token: str = Depends(FrontBearerCookie())
 ):
-    print("CHECK TOKEN", time.time())
     try:
         payload = await jwt_backend.decode_token(token)
-        print("CHECK after decode", time.time())
-
         if not payload:
             return None
-        print("before suer after decode", time.time())
-
         user = await manager.get_user(user_id=payload.get("id"), db=db)
-        print(" after DB", time.time())
-
         if not user:
             return None
         return user

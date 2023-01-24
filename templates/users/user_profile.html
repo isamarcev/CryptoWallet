@@ -32,14 +32,14 @@
                     <!-- header section -->
                     <div class="d-flex">
                         <a href="#" class="me-25">
-                            <img id="avatar_profile" src="{{ url_for('static', path='/custom/image/blank-avatar.png')}}" id="account-upload-img" class="uploadedAvatar rounded me-50" alt="profile image" height="100" width="100">
+                            <img id="avatar_profile"  src="{{ url_for('static', path='/custom/image/blank-avatar.png')}}" class="uploadedAvatar rounded me-50" alt="profile image" height="100" width="100">
                         </a>
                         <!-- upload and reset button -->
                         <div class="d-flex align-items-end mt-75 ms-1">
                             <div>
-                                <label for="account-upload" class="btn btn-sm btn-primary mb-75 me-75 waves-effect waves-float waves-light">Upload</label>
-                                <input type="file" id="account-upload" hidden="" accept="image/*">
-                                <button type="button" id="account-reset" class="btn btn-sm btn-outline-secondary mb-75 waves-effect">Reset</button>
+                                <label for="avatar-upload" class="btn btn-sm btn-primary mb-75 me-75 waves-effect waves-float waves-light">Upload</label>
+                                <input type="file" id="avatar-upload" onchange="loadPreviewImage(this)" hidden="" accept="image/*">
+                                <button type="button" id="avatar-reset" onclick="deleteImage()" class="btn btn-sm btn-outline-secondary mb-75 waves-effect">Reset</button>
                                 <p class="mb-0">Allowed file types: png, jpg, jpeg.</p>
                             </div>
                         </div>
@@ -53,6 +53,7 @@
                                 <div class="mb-1">
                                     <label class="form-label" for="username_input">Username</label>
                                     <input type="text" id="username_input" class="form-control" placeholder="Username" name="fname-column">
+                                    <p class="error" id="username_error">fasdfsdf</p>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
@@ -65,16 +66,18 @@
                                 <div class="mb-1">
                                     <label class="form-label" for="password">New password</label>
                                     <input type="text" id="password" class="form-control" placeholder="New password" name="city-column">
+                                    <p class="error" id="password_error">fasdfsdf</p>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="mb-1">
                                     <label class="form-label" for="password2">Repeat password</label>
                                     <input type="text" id="password2" class="form-control" name="country-floating" placeholder="Repeat password">
+                                    <p class="error" id="password2_error">fasdfsdf</p>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button type="button" id="save_button" class="btn btn-primary me-1 waves-effect waves-float waves-light">Save</button>
+                                <button type="button" id="save_button" onclick="updateProfile()" class="btn btn-primary me-1 waves-effect waves-float waves-light">Save</button>
                             </div>
                         </div>
                     </form>
@@ -109,7 +112,7 @@
                         <div class="ethereum-wallet">
 <!--                            <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="ETH" width="5px" height="10px" >-->
                             <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="ETH" width="70px" height="50px">
-                            <span class="wallet_number">fasdfsdfsffsadfsadfsdfsdfsdfsfsdjfsajdfjasd;fs;jfdjsadfj;sdjf</span>
+                            <span class="wallet_number">THIS IS TEST ALREADY JUST FOR VIEW</span>
                         </div>
                         <div class="col-12 mt-75">
                                 <button type="button" id="import_button" class="btn btn-primary me-1 waves-effect waves-float waves-light">Import ETH wallet</button>
@@ -140,6 +143,9 @@
 
 <script>
     get_info()
+</script>
+<script>
+        const blank_avatar = "{{ url_for('static', path='/custom/image/blank-avatar.png')}}"
 </script>
 
 {% endblock %}
