@@ -56,3 +56,11 @@ class UserManager:
     async def get_user(self, user_id: str, db: AsyncSession) -> User:
         print('user_id == ', user_id)
         return await self.database.get_user_by_id(user_id, db)
+
+    async def collect_profile_info(self, user) -> Dict:
+        profile_info = {
+            "email": user.email,
+            "username": user.username
+        }
+        return profile_info
+
