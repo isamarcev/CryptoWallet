@@ -66,6 +66,7 @@ class UserDatabase:
         result = await db.execute(
             user_table.select().where(user_table.c.id == user_id)
         )
+
         result_data = result.first()
         return None if not result_data else self.user_model(**result_data._asdict())
 

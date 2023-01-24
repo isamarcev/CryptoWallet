@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
 
-from .dependencies import get_db, get_user_manager
+from .dependencies import get_db, get_user_manager, get_current_user
 from .manager import UserManager
 from .models import User
 from fastapi import APIRouter, Depends, Response, HTTPException
@@ -61,3 +61,4 @@ async def get_profile(
         raise HTTPException(status_code=403, detail="You don't have permission")
     profile_info = await user_manager.collect_profile_info(user=current_user)
     return profile_info
+

@@ -1,6 +1,8 @@
 
 
+
 const login_url = window.location.origin + "/api/user/login/"
+
 
 $( "#login_button" ).click(function() {
   var email = $("#email");

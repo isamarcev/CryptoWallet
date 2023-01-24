@@ -1,3 +1,5 @@
+import aioredis
+from aioredis import Redis
 from async_lru import alru_cache
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -16,9 +18,15 @@ async def get_session() -> AsyncSession:
         yield session
 
 
+async def get_redis() -> Redis:
+    redis = aioredis.from_url("redis://localhost", decode_responses=True)
+    return redis
+
+
 @alru_cache()
 async def get_chat_db() -> ChatDatabase:
-    return ChatDatabase(Message)
+    redis = await get_redis()
+    return ChatDatabase(Message, redis)
 
 
 @alru_cache()
@@ -30,3 +38,6 @@ async def get_chat_manager() -> ChatManager:
 
 async def get_producer() -> BaseApiProducer:
     return BaseApiProducer()
+
+
+

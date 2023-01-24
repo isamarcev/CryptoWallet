@@ -66,6 +66,7 @@
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
                 <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
                         <div class="user-nav d-sm-flex d-none">
                             <span id="username_basic" class="user-name fw-bolder">John Doe</span>
                         </div><span class="avatar"><img id="avatar_basic" class="round" src="{{ url_for('static', path='/custom/image/blank-avatar.png')}}" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
@@ -156,7 +157,7 @@
 
     <!-- BEGIN: Theme JS-->
     <script src="{{ url_for('static', path='/app-assets/js/core/app-menu.js')}}"></script>
-    <script src="{{ url_for('static', path='/app-assets/js/core/app.js')}}"></script>
+    <script src="{{ url_for('static', path='/app-assets/js/core/app.min.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
@@ -166,40 +167,15 @@
         integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
         crossorigin="anonymous"></script>
 
-    <script>
-        let ws_url = "ws://127.0.0.1:8001"
-        const sio = io(ws_url,
-            {
-                path: '/ws/socket.io'
-            });
+    <script src="{{ url_for('static', path='/custom/js/basic.js')}}"></script>
 
-
-        sio.on("connect", () => {
-            console.log('connect_basic')
-        });
-
-        sio.on("disconnect", () => {
-            console.log('disconnect')
-        });
-    </script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>-->
 
 
     {% block script %}
 
     {% endblock %}
 
-
-
-    <script>
-        $(window).on('load', function() {
-            if (feather) {
-                feather.replace({
-                    width: 14,
-                    height: 14
-                });
-            }
-        })
-    </script>
 </body>
 <!-- END: Body-->
 
