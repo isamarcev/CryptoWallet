@@ -24,12 +24,12 @@ sio.on("disconnect", () => {
 
 const current_user_url = window.location.origin + "/api/user/"
 const current_url = window.location.pathname
-let user_data = {}
+const user_data = {};
 
 $(window).on('load', function() {
-    const current_user_url = window.location.origin + "/api/user/"
-    const current_url = window.location.pathname
-
+    const current_user_url = window.location.origin + "/api/user/";
+    const current_url = window.location.pathname;
+    // const user_data = {};
 
     if (feather) {
         feather.replace({
@@ -41,6 +41,7 @@ $(window).on('load', function() {
         url: current_user_url,
         type: 'GET',
         success: function (data) {
+
             console.log('data = ', data)
             user_data['user_id'] = data.id
             user_data['user_photo'] = data.photo
@@ -50,11 +51,13 @@ $(window).on('load', function() {
             console.log('url = ', current_url)
             user_data['url'] = current_url
             document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
+            console.log('user_data = ', user_data)
+            sio.auth = user_data;
+            sio.connect();
         },
         error: (error) => {
             console.log('error');
         }
     })
-    sio.auth = user_data;
-    sio.connect();
+
 })

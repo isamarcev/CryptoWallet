@@ -18,7 +18,8 @@ class ChatManager:
         message = {
             'user_id': str(created_message.user),
             'text': created_message.text,
-            'image': created_message.image
+            'image': created_message.image,
+            'user_photo': user.photo
         }
         await self.producer.publish_message(exchange_name='new_message', message=message)
         return created_message

@@ -8,7 +8,24 @@ function new_message(source){
         console.log('message')
 
     }
-    enterChat();
+    console.log($('.chat:last-child')[0].className)
+    let chat_body = $('.chat:last-child')[0]
+    let chat_list = $('.chats')
+    if (chat_body.className == 'chat'){
+        enterChat();
+    }
+    else {
+        // var html = '<div class="chat-content">' + '<p>' + message + '</p>' + '</div>';
+        let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                    '" alt="avatar" height="36" width="36"></span></div>'
+        let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message + '</p></div></div>'
+        let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
+        chat_list.append(chat)
+        $('.message').val('');
+        $('.user-chats').scrollTop($('.user-chats > .chats').height());
+    }
+    // let last_chat_body = $('.chat-body').last()
+    // enterChat();
 }
 
 
@@ -47,7 +64,8 @@ sio.on("get_history", (data) => {
                 let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
                 let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                 chat_list.append(chat)
-            } else {
+            }
+            else {
                 let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
@@ -56,6 +74,16 @@ sio.on("get_history", (data) => {
             }
         }
         else {
+            console.log('one')
+            // if (user_data.user_id == message.user_id) {
+                let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
+                let last_chat_body = $('.chat-body').last()
+                last_chat_body.append(chat_content)
+                console.log('last elem = ', $('.chat-body').last())
+            // }
+            // else {
+            //
+            // }
 
         }
         prev_user_message = message.user_id
@@ -84,10 +112,32 @@ sio.on('get_online_users', (data) => {
         }
         user_list.push(auth.user_id)
     }
+})
 
+let prev_user_new_message = ''
 
+sio.on('new_message', (message) => {
+    console.log('new test message = ', message)
+    let chat_list = $('.chats')
+     if (prev_user_new_message !== message.user_id) {
+            if (user_data.user_id !== message.user_id) {
+               let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                    '" alt="avatar" height="36" width="36"></span></div>'
+                let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
+                chat_list.append(chat)
+            }
+        }
+     else {
+         console.log('one')
+         // if (user_data.user_id == message.user_id) {
+         let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
+         let last_chat_body = $('.chat-body').last()
+         last_chat_body.append(chat_content)
+         console.log('last elem = ', $('.chat-body').last())
+     }
 
-
+     prev_user_new_message = message.user_id
 })
 
 
