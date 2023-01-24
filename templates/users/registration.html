@@ -31,6 +31,8 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/assets/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/custom/css/main.css') }}">
+
     <!-- END: Custom CSS-->
 
 </head>
@@ -53,6 +55,9 @@
                                 <div class="card-header" style="justify-content: center">
                                     <h4 class="card-title">Register</h4>
                                 </div>
+                                <div class="card-header error_field" style="text-align: center; justify-content: center">
+                                    <h5 id="error_empty" style="display: none; color: #ff277f"></h5>
+                                </div>
                                 <div class="card-body">
                                     <form class="form form-horizontal">
                                         <div class="row">
@@ -66,6 +71,7 @@
                                                             <span class="input-group-text"><i data-feather="user"></i></span>
                                                             <input type="text" id="username" class="form-control" name="fname-icon" placeholder="Username" />
                                                         </div>
+                                                        <p id="error_username" class="error"  style="display: none">fasdfsdf</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -79,6 +85,7 @@
                                                             <span class="input-group-text"><i data-feather="mail"></i></span>
                                                             <input type="email" id="email" class="form-control" name="email-id-icon" placeholder="Email" />
                                                         </div>
+                                                        <p id="error_email" class="error"  style="display: none">fasdfsdf</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,6 +99,7 @@
                                                             <span class="input-group-text"><i data-feather="smartphone"></i></span>
                                                             <input type="password" id="password" class="form-control" name="contact-icon" placeholder="Password" />
                                                         </div>
+                                                        <p id="error_password" class="error" style="display: none">fasdfsdf</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,6 +113,7 @@
                                                             <span class="input-group-text"><i data-feather="lock"></i></span>
                                                             <input type="password" id="password2" class="form-control" name="contact-icon" placeholder="Repeat Password" />
                                                         </div>
+                                                        <p id="error_password2" class="error"  style="display: none">fasdfsdf</p>
                                                     </div>
                                                 </div>
                                             </div>

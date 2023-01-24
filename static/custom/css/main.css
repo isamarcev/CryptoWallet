@@ -1,0 +1,36 @@
+.error {
+    color: #ff277f;
+    padding: 0 20px;
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.card-header {
+    padding: 10px 0 10px 20px;
+}
+
+.card-title {
+    margin-bottom: 0;
+}
+
+.card-block {
+    border: 1px solid black!important;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.wallet_number {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.ethereum-wallet {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
