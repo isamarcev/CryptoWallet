@@ -14,4 +14,4 @@ class UserRegister(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
-    remember_me: bool
+    remember_me: bool = False

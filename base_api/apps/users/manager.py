@@ -40,10 +40,10 @@ class UserManager:
         return result[0]
 
     async def login(self, user: UserLogin, session: AsyncSession) -> Dict:
-        validated_email = await validate_email_(user.email)
-        if not validated_email.get("valid"):
-            raise HTTPException(status_code=400, detail=validated_email.get("invalid"))
-        user.email = validated_email.get("valid")
+        # validated_email = await validate_email_(user.email)
+        # if not validated_email.get("valid"):
+        #     raise HTTPException(status_code=400, detail=validated_email.get("invalid"))
+        # user.email = validated_email.get("valid")
         user_instance = await self.database.get_user_by_email(user.email, session)
         if user_instance and verify_password(user.password, user_instance.password):
             payload = await self.get_payload(user_instance)
