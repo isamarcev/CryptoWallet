@@ -75,15 +75,10 @@ sio.on("get_history", (data) => {
         }
         else {
             console.log('one')
-            // if (user_data.user_id == message.user_id) {
-                let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
-                let last_chat_body = $('.chat-body').last()
-                last_chat_body.append(chat_content)
-                console.log('last elem = ', $('.chat-body').last())
-            // }
-            // else {
-            //
-            // }
+            let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
+            let last_chat_body = $('.chat-body').last()
+            last_chat_body.append(chat_content)
+            console.log('last elem = ', $('.chat-body').last())
 
         }
         prev_user_message = message.user_id
@@ -127,6 +122,7 @@ sio.on('new_message', (message) => {
                 let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
                 let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                 chat_list.append(chat)
+                $('.user-chats').scrollTop($('.user-chats > .chats').height());
             }
         }
      else {
@@ -136,6 +132,7 @@ sio.on('new_message', (message) => {
              let last_chat_body = $('.chat-body').last()
              last_chat_body.append(chat_content)
              console.log('last elem = ', $('.chat-body').last())
+             $('.user-chats').scrollTop($('.user-chats > .chats').height());
          }
      }
 
