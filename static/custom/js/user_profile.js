@@ -63,7 +63,7 @@ function updateProfile() {
                 console.log("SUCCESS")
             },
             error: function (data) {
-                console.log(data)
+                console.log(data.responseJSON)
                 console.log("EROORS")
 
             }

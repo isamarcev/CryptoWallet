@@ -6,15 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/frontend/dependecies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/frontend/dependecies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/exeptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/exeptions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/users/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/utils/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/utils/validators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/custom/js/user_profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/js/user_profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/basic_template/basic.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/basic_template/basic.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/user_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/user_profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,9 +24,9 @@
         <option value="FastAPI main" />
         <option value="FastAPI test_main" />
         <option value="HTML File" />
-        <option value="Python Script" />
         <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -63,7 +60,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject/static/custom/image&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject/sockets&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -75,11 +72,13 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/sockets" />
       <recent name="$PROJECT_DIR$/static/custom/image" />
       <recent name="$PROJECT_DIR$/templates/users" />
       <recent name="$PROJECT_DIR$/static/custom/js" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/sockets" />
       <recent name="$PROJECT_DIR$/static/custom/js" />
       <recent name="$PROJECT_DIR$/static/custom" />
       <recent name="$PROJECT_DIR$/base" />
@@ -155,7 +154,9 @@
       <workItem from="1674507187941" duration="3205000" />
       <workItem from="1674510516855" duration="6023000" />
       <workItem from="1674590473361" duration="902000" />
-      <workItem from="1674592357267" duration="12071000" />
+      <workItem from="1674592357267" duration="12421000" />
+      <workItem from="1674658073824" duration="3551000" />
+      <workItem from="1674675491123" duration="12743000" />
     </task>
     <servers />
   </component>

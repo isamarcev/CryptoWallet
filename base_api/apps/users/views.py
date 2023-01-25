@@ -1,8 +1,10 @@
+from fastapi_helper.schemas.examples_generate import examples_generate
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
 
 from .dependencies import get_db, get_user_manager, get_current_user
+from .exeptions import UsernameInvalidException
 from .manager import UserManager
 from .models import User
 from fastapi import APIRouter, Depends, Response, HTTPException
@@ -50,12 +52,12 @@ async def login(
     return result
 
 
-@user_router.get("/",
-                  status_code=status.HTTP_200_OK)
+@user_router.get("/", status_code=status.HTTP_200_OK)
 async def get_current_user(
     user: User = Depends(get_current_user)
 ):
     return user
+
 
 @user_router.get("/profile/")
 async def get_profile(
@@ -68,7 +70,10 @@ async def get_profile(
     return profile_info
 
 
-@user_router.put("/update/")
+@user_router.put("/update/",
+                 responses=examples_generate.get_error_responses(
+                    UsernameInvalidException, auth=True
+                 ))
 async def update_profile(
         user: UserProfileUpdate = Depends(UserProfileUpdate.as_form),
         user_manager: UserManager = Depends(get_user_manager),
