@@ -1,5 +1,5 @@
 const message_create_url = window.location.origin + "/api/chat/message_create"
-
+let prev_user_new_message = ''
 
 function new_message(source){
     var message = $('.message').val();
@@ -87,6 +87,7 @@ sio.on("get_history", (data) => {
 
         }
         prev_user_message = message.user_id
+        prev_user_new_message = prev_user_message
     }
 
 });
@@ -114,7 +115,7 @@ sio.on('get_online_users', (data) => {
     }
 })
 
-let prev_user_new_message = ''
+
 
 sio.on('new_message', (message) => {
     console.log('new test message = ', message)
@@ -130,11 +131,12 @@ sio.on('new_message', (message) => {
         }
      else {
          console.log('one')
-         // if (user_data.user_id == message.user_id) {
-         let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
-         let last_chat_body = $('.chat-body').last()
-         last_chat_body.append(chat_content)
-         console.log('last elem = ', $('.chat-body').last())
+         if (user_data.user_id !== message.user_id) {
+             let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
+             let last_chat_body = $('.chat-body').last()
+             last_chat_body.append(chat_content)
+             console.log('last elem = ', $('.chat-body').last())
+         }
      }
 
      prev_user_new_message = message.user_id
