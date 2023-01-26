@@ -7,13 +7,13 @@ from aio_pika import ExchangeType, connect
 from aio_pika.abc import AbstractIncomingMessage
 
 from sockets.config.settings import settings
-from sockets.socket_manager import new_message
+# from sockets.socket_manager import new_message
 
 
 async def on_message(message: AbstractIncomingMessage) -> None:
     async with message.process():
         print('message type = ',type(message.body))
-        await new_message(message.body)
+        # await new_message(message.body)
 
 
 async def main() -> None:

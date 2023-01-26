@@ -1,5 +1,6 @@
 let ws_url = "ws://127.0.0.1:8001"
 
+
 const sio = io(ws_url,
     {
         path: '/ws/socket.io',
@@ -50,7 +51,7 @@ $(window).on('load', function() {
             user_data['username'] = data.username
             console.log('url = ', current_url)
             user_data['url'] = current_url
-            document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
+            // document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
             console.log('user_data = ', user_data)
             sio.auth = user_data;
             sio.connect();

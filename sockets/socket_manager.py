@@ -6,6 +6,6 @@ import socketio
 from sockets.socketio_server import sio
 
 
-async def new_message(message):
-    message = json.loads(message)
-    await sio.emit('new_message', message)
+# async def new_message(message):
+#     message = json.loads(message)
+#     await sio.emit('new_message', message, room='chat')

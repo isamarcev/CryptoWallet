@@ -8,7 +8,7 @@ from base_api.apps.users.schemas import UserRegister, UserLogin
 from .jwt_backend import JWTBackend
 from .models import User
 from .utils.password_hasher import get_password_hash, verify_password
-from .utils.validators import validate_email_, validate_register, validate_username
+from .utils.validators import validate_email_, validate_register, validate_username, validate_update_profile
 
 
 class UserManager:
@@ -54,5 +54,18 @@ class UserManager:
             raise HTTPException(status_code=404, detail="User with this email does not exist or password with mistakes")
 
     async def get_user(self, user_id: str, db: AsyncSession) -> User:
-        print('user_id == ', user_id)
         return await self.database.get_user_by_id(user_id, db)
+
+    async def collect_profile_info(self, user) -> Dict:
+        profile_info = {
+            "email": user.email,
+            "username": user.username
+        }
+        return profile_info
+
+    async def update_user_profile(self, user_data, current_user, session):
+        errors = await validate_update_profile(user_data, current_user, session, self.database)
+        if errors.get("errors"):
+            raise HTTPException(status_code=400, detail=errors.get("errors"))
+
+        return {"GOOD": "GOOD"}

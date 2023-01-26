@@ -22,6 +22,14 @@
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/app-assets/vendors/css/vendors.min.css')}}">
     <!-- END: Vendor CSS-->
+    <!-- TOASTR -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/app-assets/vendors/css/extensions/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', path='/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', path='/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
+    <!-- END TOASTR -->
+
 
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/app-assets/css/bootstrap.css')}}">
@@ -69,9 +77,9 @@
 
                         <div class="user-nav d-sm-flex d-none">
                             <span id="username_basic" class="user-name fw-bolder">John Doe</span>
-                        </div><span class="avatar"><img class="round" src="{{ url_for('static', path='/custom/image/blank-avatar.png')}}" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
+                        </div><span class="avatar"><img id="avatar_basic" class="round" src="{{ url_for('static', path='/custom/image/blank-avatar.png')}}" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user"><a class="dropdown-item" href="#"><i class="me-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="mail"></i> Inbox</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="check-square"></i> Task</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="message-square"></i> Chats</a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user"><a class="dropdown-item" href="/"><i class="me-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="mail"></i> Inbox</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="check-square"></i> Task</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="message-square"></i> Chats</a>
                         <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="me-50" data-feather="settings"></i> Settings</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="credit-card"></i> Pricing</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="help-circle"></i> FAQ</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="power"></i> Logout</a>
                     </div>
                 </li>
@@ -117,7 +125,7 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="user">My Profile</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="/"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="user">My Profile</span></a></li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="credit-card">My Wallets</span></a></li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="shopping-cart"></i><span class="menu-title text-truncate" data-i18n="shopping-cart">iBay</span></a></li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="/chat"><i data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="message-square">Chat</span></a></li>
@@ -151,6 +159,11 @@
     <!-- BEGIN: Vendor JS-->
     <script src="{{ url_for('static', path='/app-assets/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
+    <!-- TOASTR -->
+    <script src="{{ url_for('static', path='/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/app-assets/js/scripts/extensions/ext-component-toastr.js') }}"></script>
+
+    <!-- END TOASTR -->
 
     <!-- BEGIN: Page Vendor JS-->
     <!-- END: Page Vendor JS-->
