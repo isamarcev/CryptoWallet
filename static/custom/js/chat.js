@@ -41,21 +41,33 @@ function create_message_post(message_text) {
 
                 },
                 error: (error) => {
-                    console.log(error);
+                    console.log(error.status);
+                    if (error.status == 403) {
+                        document.location.reload();
+                    }
                 }
             })
         }
 
 
 
+$(function() {
+        $(document).on('click', '.online_user', function(){
+            console.log($(this));
+
+            $('.user-profile-sidebar').addClass('show');
+            overlay.addClass('show');
+        });
+    });
+
 sio.on("get_history", (data) => {
     console.log('get_history')
-    console.log(user_data)
+    // console.log(user_data)
     let chat_list = $('.chats')
     let prev_user_message = ''
     for (let prop in data) {
         message = data[prop]
-        console.log(data[prop])
+        // console.log(data[prop].datetime)
 
         if (prev_user_message !== message.user_id) {
             if (user_data.user_id == message.user_id) {
@@ -74,11 +86,11 @@ sio.on("get_history", (data) => {
             }
         }
         else {
-            console.log('one')
+            // console.log('one')
             let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
             let last_chat_body = $('.chat-body').last()
             last_chat_body.append(chat_content)
-            console.log('last elem = ', $('.chat-body').last())
+            // console.log('last elem = ', $('.chat-body').last())
 
         }
         prev_user_message = message.user_id
@@ -92,7 +104,7 @@ sio.on('get_online_users', (data) => {
     console.log('get_users')
     let user_list_block = $('.chat-users-list')
     $('.online_user').remove()
-    console.log(user_list_block)
+    // console.log(user_list_block)
     let user_list = []
     for (let prop in data) {
         console.log(data[prop].auth)
@@ -100,20 +112,30 @@ sio.on('get_online_users', (data) => {
 
         let avatar = '<span class="avatar"><img src="' + auth.user_photo + '" height="42" width="42" alt="Generic placeholder image">' +
             '<span class="avatar-status-online"></span>' + '</span>'
-        let info = '<div class="chat-info flex-grow-1"><h5 class="mb-0">' + auth.first_name + ' ' + auth.last_name +
+        let info = '<div class="chat-info flex-grow-1"><h5 class="mb-0">' + auth.username +
         '</h5></div>'
         let li = '<li class="online_user">' + avatar + info + '</li>'
         if (!user_list.includes(auth.user_id)){
             user_list_block.append(li)
         }
         user_list.push(auth.user_id)
+
+        let headers = '<header class="user-profile-header"><span class="close-icon">' +
+            '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
+            '<div class="header-profile-sidebar"><div class="avatar box-shadow-1 avatar-border avatar-xl"<img src="' +
+            auth.user_photo + '" alt="user_avatar" height="70" width="70"><span class="avatar-status-online avatar-status-lg"></span></div>' +
+            '<h4 className="chat-user-name">' + auth.username + '</h4><span class="user-post">👩🏻‍💻</span></div></header>'
+        let main_info = '<div class="user-profile-sidebar-area" style="overflow: scroll;"><div class="personal-info">'+
+            '<ul class="list-unstyled"><li class="mb-1"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail font-medium-2 me-50"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>'+
+            '<span class="align-middle">' + auth.email + '</span></li></ul></div>'
+        let div = '<div class="user-profile-sidebar">' + headers + main_info + '</div>'
     }
 })
 
 
 
 sio.on('new_message', (message) => {
-    console.log('new test message = ', message)
+    // console.log('new test message = ', message)
     let chat_list = $('.chats')
      if (prev_user_new_message !== message.user_id) {
             if (user_data.user_id !== message.user_id) {
@@ -126,18 +148,20 @@ sio.on('new_message', (message) => {
             }
         }
      else {
-         console.log('one')
+         // console.log('one')
          if (user_data.user_id !== message.user_id) {
              let chat_content = '<div class="chat-content"><p>' + message.text + '</p></div>'
              let last_chat_body = $('.chat-body').last()
              last_chat_body.append(chat_content)
-             console.log('last elem = ', $('.chat-body').last())
+             // console.log('last elem = ', $('.chat-body').last())
              $('.user-chats').scrollTop($('.user-chats > .chats').height());
          }
      }
 
      prev_user_new_message = message.user_id
 })
+
+
 
 
 

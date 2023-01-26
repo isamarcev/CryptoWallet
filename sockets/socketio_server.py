@@ -47,7 +47,4 @@ def disconnect_from_chat(sid):
     print('disconnect ', sid)
 
 
-@sio.event
-async def new_message(sid):
-    print('new message')
-    await sio.emit('new_message')
+

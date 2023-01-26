@@ -49,10 +49,11 @@ $(window).on('load', function() {
             user_data['first_name'] = data.first_name
             user_data['last_name'] = data.last_name
             user_data['username'] = data.username
-            console.log('url = ', current_url)
+            user_data['email'] = data.email
+            // console.log('url = ', current_url)
             user_data['url'] = current_url
-            // document.querySelector('.user-name').textContent = user_data['first_name'] + ' ' +  user_data['last_name']
-            console.log('user_data = ', user_data)
+            document.querySelector('.user-name').textContent = user_data['username']
+            // console.log('user_data = ', user_data)
             sio.auth = user_data;
             sio.connect();
         },
@@ -60,5 +61,6 @@ $(window).on('load', function() {
             console.log('error');
         }
     })
+
 
 })
