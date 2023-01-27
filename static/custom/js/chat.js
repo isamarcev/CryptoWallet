@@ -1,5 +1,11 @@
 const message_create_url = window.location.origin + "/api/chat/message_create"
 let prev_user_new_message = ''
+let image = null
+
+$('#attach-doc').on('change', function (event) {
+   image = $('#attach-doc')[0].files[0];
+   console.log('file = ', image)
+})
 
 function new_message(source){
     var message = $('.message').val();
@@ -29,25 +35,36 @@ function new_message(source){
 }
 
 
-function create_message_post(message_text) {
-            $.ajax({
-                url: message_create_url,
-                type: 'POST',
-                data: {
-                    'text': message_text
-                },
-                success: function (data) {
-                    console.log('success return data = ', data)
 
-                },
-                error: (error) => {
-                    console.log(error.status);
-                    if (error.status == 403) {
-                        document.location.reload();
-                    }
-                }
-            })
+
+
+function create_message_post(message_text) {
+    console.log('message_crate image', image)
+    let data_message = new FormData()
+    data_message.append('text', message_text)
+    if (image){
+        data_message.append('image', image)
+    }
+    console.log(data_message)
+    $.ajax({
+        url: message_create_url,
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        enctype: "multipart/form-data",
+        cache: false,
+        data: data_message,
+        success: function (data) {
+            console.log('success return data = ', data)
+        },
+        error: (error) => {
+            console.log(error);
+            if (error.status == 403) {
+                document.location.reload();
+            }
         }
+    })
+}
 
 
 

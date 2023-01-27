@@ -16,6 +16,8 @@ class ChatManager:
         self.producer = producer
 
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
+        print('message with image = ', message)
+        # image
         created_message = await self.database.create_message(message, db, user)
         message = {
             'user_id': str(created_message.user),

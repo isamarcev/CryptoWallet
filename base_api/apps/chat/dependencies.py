@@ -11,6 +11,9 @@ from base_api.apps.chat.manager import ChatManager
 from base_api.apps.chat.models import Message
 from base_api.base_api_producer import BaseApiProducer
 from base_api.config.db import async_session
+from boto3 import Session
+
+from base_api.config.settings import settings
 
 
 async def get_session() -> AsyncSession:
@@ -39,5 +42,15 @@ async def get_chat_manager() -> ChatManager:
 async def get_producer() -> BaseApiProducer:
     return BaseApiProducer()
 
+
+@alru_cache()
+async def get_s3_client():
+    session = Session()
+    client = session.client('s3',
+                            region_name=settings.spase_region,
+                            endpoint_url=str(settings.space_url),
+                            aws_access_key_id=settings.space_access_key,
+                            aws_secret_access_key=settings.space_secret_key)
+    return client
 
 

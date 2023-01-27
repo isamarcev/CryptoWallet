@@ -31,6 +31,13 @@ class Settings(BaseSettings):
     rabbit_pool_size: int = 2
     rabbit_channel_pool_size: int = 10
 
+    #digital_ocean_space
+    space_name: str
+    space_access_key: str
+    space_secret_key: str
+    space_region: str
+
+
     @property
     def postgres_url(self) -> URL:
         """
@@ -59,6 +66,19 @@ class Settings(BaseSettings):
             user=self.rabbit_user,
             password=self.rabbit_pass,
             path=self.rabbit_vhost,
+        )
+
+    @property
+    def space_url(self) -> URL:
+        """
+        Assemble DigitalOceanSpace URL from settings.
+        Returns: space URL.
+
+        """
+
+        return URL.build(
+            scheme='https',
+            host=f"{self.space_access_key}.{self.spase_region}.digitaloceanspaces.com"
         )
 
     class Config:
