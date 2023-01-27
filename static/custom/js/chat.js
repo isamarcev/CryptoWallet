@@ -51,13 +51,26 @@ function create_message_post(message_text) {
 
 
 
-$(function() {
-        $(document).on('click', '.online_user', function(){
-            console.log($(this));
+// $(function() {
+//         $(document).on('click', '.online_user', function(){
+//             console.log($(this));
+//
+//             $('.user-profile-sidebar').addClass('show');
+//             overlay.addClass('show');
+//         });
+//     });
 
-            $('.user-profile-sidebar').addClass('show');
-            overlay.addClass('show');
-        });
+
+
+function show_user_info(number){
+    console.log(number, 'num')
+    $('#profile_'+number).addClass('show')
+    overlay.addClass('show');
+}
+
+overlay.on('click', function () {
+      $('.user-profile-sidebar').removeClass('show');
+      overlay.removeClass('show');
     });
 
 sio.on("get_history", (data) => {
@@ -103,9 +116,11 @@ sio.on("get_history", (data) => {
 sio.on('get_online_users', (data) => {
     console.log('get_users')
     let user_list_block = $('.chat-users-list')
+    let content_body = $('.content-body')
     $('.online_user').remove()
     // console.log(user_list_block)
     let user_list = []
+    let number = 0
     for (let prop in data) {
         console.log(data[prop].auth)
         auth = data[prop].auth
@@ -114,21 +129,27 @@ sio.on('get_online_users', (data) => {
             '<span class="avatar-status-online"></span>' + '</span>'
         let info = '<div class="chat-info flex-grow-1"><h5 class="mb-0">' + auth.username +
         '</h5></div>'
-        let li = '<li class="online_user">' + avatar + info + '</li>'
+        let li = '<li class="online_user" onclick="show_user_info('+ number +')">' + avatar + info + '</li>'
         if (!user_list.includes(auth.user_id)){
             user_list_block.append(li)
         }
-        user_list.push(auth.user_id)
+
 
         let headers = '<header class="user-profile-header"><span class="close-icon">' +
-            '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
+            '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>' +
             '<div class="header-profile-sidebar"><div class="avatar box-shadow-1 avatar-border avatar-xl"<img src="' +
             auth.user_photo + '" alt="user_avatar" height="70" width="70"><span class="avatar-status-online avatar-status-lg"></span></div>' +
             '<h4 className="chat-user-name">' + auth.username + '</h4><span class="user-post">👩🏻‍💻</span></div></header>'
         let main_info = '<div class="user-profile-sidebar-area" style="overflow: scroll;"><div class="personal-info">'+
             '<ul class="list-unstyled"><li class="mb-1"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail font-medium-2 me-50"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>'+
             '<span class="align-middle">' + auth.email + '</span></li></ul></div>'
-        let div = '<div class="user-profile-sidebar">' + headers + main_info + '</div>'
+        let div = '<div class="user-profile-sidebar" id="profile_' + number + '">' + headers + main_info + '</div>'
+        if (!user_list.includes(auth.user_id)){
+            content_body.append(div)
+        }
+
+        number += 1
+        user_list.push(auth.user_id)
     }
 })
 
