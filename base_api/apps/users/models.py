@@ -1,19 +1,18 @@
+# -*- coding: utf-8 -*-
 import uuid
+import uuid as uuid_id
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, text
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy_utils import EmailType, URLType
-import uuid as uuid_id
-from sqlalchemy.orm import relationship
-
 from sqlalchemy.ext.declarative import declarative_base
-
+from sqlalchemy.orm import relationship
+from sqlalchemy_utils import EmailType, URLType
 
 Base = declarative_base()
 
 
 class Permission(Base):
-    __tablename__ = 'permissions'
+    __tablename__ = "permissions"
     id: int = Column(Integer, primary_key=True)
     has_chat_access = Column(Boolean)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
@@ -35,7 +34,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     permission = relationship(Permission, backref="users", uselist=False)
-    #message = relationship("..chat.models.Message", backref="users")
+    # message = relationship("..chat.models.Message", backref="users")
 
 
 user = User.__table__

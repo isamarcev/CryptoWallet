@@ -344,4 +344,3 @@ script[type='text/plain'].language-markup {
 .command-line-prompt > span[data-prompt]:before {
 	content: attr(data-prompt);
 }
-

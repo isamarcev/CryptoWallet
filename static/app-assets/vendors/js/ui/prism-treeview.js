@@ -47,7 +47,7 @@ Prism.hooks.add('wrap', function(env) {
 				if(/(^|[^\\])[=*|]\s*$/.test(env.content)) {
 					env.content = env.content.slice(0,-1);
 				}
-				
+
 				var parts = env.content.toLowerCase().split('.');
 				while (parts.length > 1) {
 					parts.shift();

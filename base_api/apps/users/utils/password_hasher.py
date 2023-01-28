@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from passlib.context import CryptContext
 
-
 pwd_context = CryptContext(
-    schemes=["bcrypt", "django_pbkdf2_sha256"], deprecated="auto"
+    schemes=["bcrypt", "django_pbkdf2_sha256"],
+    deprecated="auto",
 )
 
 

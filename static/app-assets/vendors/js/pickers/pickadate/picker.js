@@ -18,7 +18,7 @@
     // Browser globals.
     else if ( typeof window == 'object' )
         window.Picker = factory( jQuery )
-    
+
     else this.Picker = factory( jQuery )
 
 }(function( $ ) {

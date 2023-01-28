@@ -1,22 +1,21 @@
+# -*- coding: utf-8 -*-
 from pathlib import Path
 
 from pydantic import BaseSettings, DirectoryPath, SecretStr
-
 from yarl import URL
 
 BASE_DIR = Path(__file__).parent.parent
 
 
 class Settings(BaseSettings):
-    #postgres_db
+    # postgres_db
     postgres_pass: str
-    postgres_host: str = 'localhost'
-    postgres_port: str = '5432'
+    postgres_host: str = "localhost"
+    postgres_port: str = "5432"
     postgres_user: str
     postgres_name: str
 
-
-    #rabbitmq
+    # rabbitmq
     rabbit_host: str = "rabbitmq"
     rabbit_port: int = 15672
     rabbit_user: str = "guest"
@@ -26,18 +25,18 @@ class Settings(BaseSettings):
     rabbit_pool_size: int = 2
     rabbit_channel_pool_size: int = 10
 
-
-    #mongodb
-    mongo_host: str = 'localhost'
+    # mongodb
+    mongo_host: str = "localhost"
     mongo_port: str
     mongo_name: str
-
 
     @property
     def postgres_url(self) -> URL:
         """
         Assemble database URL from settings.
+
         :return: database URL.
+
         """
         return URL.build(
             scheme="postgresql",
@@ -52,7 +51,9 @@ class Settings(BaseSettings):
     def rabbit_url(self) -> URL:
         """
         Assemble RabbitMQ URL from settings.
+
         :return: rabbit URL.
+
         """
         return URL.build(
             scheme="amqp",
@@ -66,11 +67,13 @@ class Settings(BaseSettings):
     @property
     def mongodb_url(self) -> URL:
         """
-            Assemble MongoDB URL from settings.
-            :return: mongodb URL.
+        Assemble MongoDB URL from settings.
+
+        :return: mongodb URL.
+
         """
         return URL.build(
-            scheme='mongodb',
+            scheme="mongodb",
             host=self.mongo_host,
             port=self.mongo_port,
         )

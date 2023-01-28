@@ -245,6 +245,19 @@ dev = ["check-manifest"]
 test = ["coverage"]
 
 [[package]]
+name = "flake8"
+version = "6.0.0"
+description = "the modular source code checker: pep8 pyflakes and co"
+category = "main"
+optional = false
+python-versions = ">=3.8.1"
+
+[package.dependencies]
+mccabe = ">=0.7.0,<0.8.0"
+pycodestyle = ">=2.10.0,<2.11.0"
+pyflakes = ">=3.0.0,<3.1.0"
+
+[[package]]
 name = "greenlet"
 version = "2.0.1"
 description = "Lightweight in-process concurrent programming"
@@ -322,6 +335,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "mccabe"
+version = "0.7.0"
+description = "McCabe checker, plugin for flake8"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "motor"
 version = "3.1.1"
 description = "Non-blocking MongoDB driver for Tornado or asyncio"
@@ -384,6 +405,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pycodestyle"
+version = "2.10.0"
+description = "Python style guide checker"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "pydantic"
 version = "1.10.4"
 description = "Data validation and settings management using python type hints"
@@ -398,6 +427,14 @@ typing-extensions = ">=4.2.0"
 [package.extras]
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
+
+[[package]]
+name = "pyflakes"
+version = "3.0.1"
+description = "passive checker of Python programs"
+category = "main"
+optional = false
+python-versions = ">=3.6"
 
 [[package]]
 name = "pyhumps"
@@ -624,7 +661,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "cf9b6271126a3b04243df5723e19dcf5ee74271c383bd73e3eab03a2ef1383e2"
+content-hash = "190adb44dba022761039eca7249810dc5ad9bcc1f94d4bcd5d155d6530c93ff6"
 
 [metadata.files]
 aio-pika = []
@@ -645,6 +682,7 @@ dnspython = []
 email-validator = []
 fastapi = []
 fastapi-helper = []
+flake8 = []
 greenlet = []
 h11 = []
 idna = []
@@ -652,12 +690,15 @@ jinja2 = []
 lazy-model = []
 mako = []
 markupsafe = []
+mccabe = []
 motor = []
 multidict = []
 pamqp = []
 passlib = []
 psycopg2-binary = []
+pycodestyle = []
 pydantic = []
+pyflakes = []
 pyhumps = []
 pyjwt = []
 pymongo = []

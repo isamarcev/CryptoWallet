@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 
 from typing import Awaitable, Callable
+
 from fastapi import FastAPI
 
 from sockets.apps.chat.dependencies import get_redis
@@ -22,9 +24,9 @@ def register_startup_event(
 
     @app.on_event("startup")
     async def _startup() -> None:
-        socket_consumer_thread.start()  #Запуск подписчика в новом потоке
+        socket_consumer_thread.start()  # Запуск подписчика в новом потоке
         redis = await get_redis()
-        await redis.delete('chat_users')
+        await redis.delete("chat_users")
         # await init_db()
         # await init_mongo()
 

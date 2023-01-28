@@ -17,30 +17,30 @@
    * See the License for the specific language governing permissions and
    * limitations under the License.
    * ======================================================================== */
-  
-  
+
+
   +function ($) { "use strict";
-  
+
     // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
     // ============================================================
-  
+
     function transitionEnd() {
       var el = document.createElement('bootstrap')
-  
+
       var transEndEventNames = {
         'WebkitTransition' : 'webkitTransitionEnd'
       , 'MozTransition'    : 'transitionend'
       , 'OTransition'      : 'oTransitionEnd otransitionend'
       , 'transition'       : 'transitionend'
       }
-  
+
       for (var name in transEndEventNames) {
         if (el.style[name] !== undefined) {
           return { end: transEndEventNames[name] }
         }
       }
     }
-  
+
     // http://blog.alexmaccaw.com/css-transitions
     $.fn.emulateTransitionEnd = function (duration) {
       var called = false, $el = this
@@ -49,11 +49,11 @@
       setTimeout(callback, duration)
       return this
     }
-  
+
     $(function () {
       $.support.transition = transitionEnd()
     })
-  
+
   }(jQuery);
-  
+
 })();

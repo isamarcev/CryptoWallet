@@ -1,27 +1,26 @@
+# -*- coding: utf-8 -*-
 from pathlib import Path
 
 from pydantic import BaseSettings, DirectoryPath, SecretStr
-
 from yarl import URL
 
 BASE_DIR = Path(__file__).parent.parent
 
 
 class Settings(BaseSettings):
-    #postgres_db
+    # postgres_db
     postgres_pass: str
-    postgres_host: str = 'localhost'
-    postgres_port: str = '5432'
+    postgres_host: str = "localhost"
+    postgres_port: str = "5432"
     postgres_user: str
     postgres_name: str
 
-    #jwt settings
+    # jwt settings
     jwt_secret_key: str = "09d25e094faa6ca25563f7099f6f0f4caa6cf63b88e8d3e7"
     jwt_algorithm: str = "HS256"
     jwt_expire: int = 30
 
-
-    #rabbitmq
+    # rabbitmq
     rabbit_host: str = "rabbitmq"
     rabbit_port: int = 15672
     rabbit_user: str = "guest"
@@ -35,7 +34,9 @@ class Settings(BaseSettings):
     def postgres_url(self) -> URL:
         """
         Assemble database URL from settings.
+
         :return: database URL.
+
         """
         return URL.build(
             scheme="postgresql+asyncpg",
@@ -50,7 +51,9 @@ class Settings(BaseSettings):
     def rabbit_url(self) -> URL:
         """
         Assemble RabbitMQ URL from settings.
+
         :return: rabbit URL.
+
         """
         return URL.build(
             scheme="amqp",
