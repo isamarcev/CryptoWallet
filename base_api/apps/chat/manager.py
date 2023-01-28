@@ -7,17 +7,21 @@ from base_api.apps.chat.schemas import MessageCreate
 from base_api.apps.users.models import User
 from base_api.base_api_producer import BaseApiProducer
 from base_api.config.settings import settings
+from base_api.config.storage import Storage
 
 
 class ChatManager:
 
-    def __init__(self, database: ChatDatabase, producer: BaseApiProducer):
+    def __init__(self, database: ChatDatabase, producer: BaseApiProducer, storage: Storage):
         self.database = database
         self.producer = producer
+        self.storage = storage
 
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
         print('message with image = ', message)
-        # image
+        image = message.image
+        if image:
+            message.image = await self.storage.upload_image(image, 'chat')
         created_message = await self.database.create_message(message, db, user)
         message = {
             'user_id': str(created_message.user),

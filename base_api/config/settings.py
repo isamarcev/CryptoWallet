@@ -69,6 +69,19 @@ class Settings(BaseSettings):
         )
 
     @property
+    def space_endpoint_url(self) -> URL:
+        """
+        Assemble DigitalOceanSpace URL from settings.
+        Returns: space URL.
+
+        """
+
+        return URL.build(
+            scheme='https',
+            host=f"{self.space_region}.digitaloceanspaces.com"
+        )
+
+    @property
     def space_url(self) -> URL:
         """
         Assemble DigitalOceanSpace URL from settings.
@@ -78,7 +91,8 @@ class Settings(BaseSettings):
 
         return URL.build(
             scheme='https',
-            host=f"{self.space_access_key}.{self.spase_region}.digitaloceanspaces.com"
+
+            host=f"{self.space_name}.{self.space_region}.digitaloceanspaces.com"
         )
 
     class Config:
