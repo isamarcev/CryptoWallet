@@ -33,6 +33,8 @@ pyhumps = "^3.8.0"
 python-multipart = "^0.0.5"
 pydantic = {extras = ["email"], version = "^1.10.4"}
 aioredis = "^2.0.1"
+boto3 = "^1.26.58"
+pillow = "^9.4.0"
 flake8 = "^6.0.0"
 
 

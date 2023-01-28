@@ -4,7 +4,13 @@ import socketio
 # create a Socket.IO server
 from sockets.apps.chat.dependencies import get_user_db
 
-sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
+# socket_manager = socketio.AsyncRedisManager("redis://localhost")
+from sockets.config.settings import settings
+
+socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
+
+sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*", client_manager=socket_manager)
+
 
 
 @sio.event
@@ -43,7 +49,3 @@ def disconnect_from_chat(sid):
     print("disconnect ", sid)
 
 
-@sio.event
-async def new_message(sid):
-    print("new message")
-    await sio.emit("new_message")
