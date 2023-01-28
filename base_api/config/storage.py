@@ -38,7 +38,7 @@ class Storage:
 
         bytes_image = await self.convert_to_bytes(image)
 
-        key = f"{dir_name}/image_{uuid.uuid4()}.jpeg"
+        key = f"{dir_name}/image_{uuid.uuid4()}.png"
 
         self.client.put_object(
                 Bucket=self.bucket,
@@ -46,7 +46,7 @@ class Storage:
                 Body=bytes_image,
                 ACL="public-read",
                 Metadata={
-                    "Content-Type": "image/jpeg",
+                    "Content-Type": "image/png",
                 },
         )
         return await self.make_image_url(key)
@@ -54,7 +54,7 @@ class Storage:
     @staticmethod
     async def convert_to_bytes(image):
         buf = io.BytesIO()
-        image.save(buf, format='JPEG')
+        image.save(buf, format='PNG')
         byte_image = buf.getvalue()
         return byte_image
 

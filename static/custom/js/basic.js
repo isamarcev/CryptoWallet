@@ -10,7 +10,6 @@ const sio = io(ws_url,
 
 
 var currentLocation = window.location;
-console.log(currentLocation)
 
 sio.on("connect", () => {
     console.log('connect_basic')
@@ -30,7 +29,6 @@ const user_data = {};
 $(window).on('load', function() {
     const current_user_url = window.location.origin + "/api/user/";
     const current_url = window.location.pathname;
-    // const user_data = {};
 
     if (feather) {
         feather.replace({

@@ -18,7 +18,6 @@ class ChatManager:
         self.storage = storage
 
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
-        print('message with image = ', message)
         image = message.image
         if image:
             message.image = await self.storage.upload_image(image, 'chat')
@@ -30,7 +29,6 @@ class ChatManager:
             'user_photo': user.photo
         }
 
-        # socket_manager = socketio.AsyncRedisManager("redis://localhost", write_only=True)
         socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
         await socket_manager.emit('new_message', data=message, room='chat')
         # await self.producer.publish_message(exchange_name='new_message', message=message)
