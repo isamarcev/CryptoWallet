@@ -44,6 +44,9 @@ function updateProfile() {
     form_data.append("password", password_input.val())
     form_data.append("password2", password2_input.val())
     // form_data.append("avatar", null)
+    $("#username_error").text("")
+    $("#password_error").text("")
+    $("#password2_error").text("")
     if (profile_image) {
         form_data.append("avatar", profile_image)
     }
@@ -60,9 +63,18 @@ function updateProfile() {
             url: update_profile_url,
             success: function (data) {
                 console.log(data)
-                console.log("SUCCESS")
+                let detail = data.detail
+                username_basic.text(detail.username)
+                username_input.val(detail.username)
+                console.log(detail)
+                password_input.val("")
+                password2_input.val("")
             },
             error: function (data) {
+                let detail = data.responseJSON.detail
+                for (let i of detail) {
+                    $("#"+ i.field + "_error").text("*" + i.message)
+                }
                 console.log(data.responseJSON)
                 console.log("EROORS")
 
