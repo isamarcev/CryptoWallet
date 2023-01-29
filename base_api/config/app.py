@@ -66,24 +66,33 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
+#
+# @app.exception_handler(ValidationError)
+# async def validation_exception_handler(request: Request, exc: ValidationError) -> JSONResponse:
+#     errors = []
+#     for each in exc.errors():
+#         result = {
+#             "code": "validation-error",
+#             "type": each.get("type"),
+#             "field": each.get("loc")[0],
+#             "message": each.get("msg"),
+#         }
+#         errors.append(result)
+#
+#     return JSONResponse({"detail": errors}, status_code=422)
+#     # return JSONResponse(
+#     #     status_code=exc.status_code,
+#     #     content=[{"code": exc.code,
+#     #               "type": exc.type,
+#     #               "message": exc.message}],
+#     # )
 
-@app.exception_handler(ValidationError)
-async def validation_exception_handler(request: Request, exc: ValidationError) -> JSONResponse:
-    errors = []
-    for each in exc.errors():
-        result = {
-            "code": "validation-error",
-            "type": each.get("type"),
-            "field": each.get("loc")[0],
-            "message": each.get("msg"),
-        }
-        errors.append(result)
 
-    return JSONResponse({"detail": errors}, status_code=422)
-    # return JSONResponse(
-    #     status_code=exc.status_code,
-    #     content=[{"code": exc.code,
-    #               "type": exc.type,
-    #               "message": exc.message}],
-    # )
+
+@app.exception_handler(DefaultHTTPException)
+async def unicorn_exception_handler(request: Request, exc: DefaultHTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"message": exc.message, 'type': exc.type, 'code': exc.code},
+    )
 

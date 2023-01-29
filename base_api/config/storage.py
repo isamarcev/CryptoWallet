@@ -3,7 +3,7 @@ import uuid
 from typing import Tuple, List, Union
 
 from PIL import Image
-from fastapi import UploadFile
+from fastapi import UploadFile, HTTPException
 from fastapi_helper import DefaultHTTPException
 from starlette import status
 
@@ -24,20 +24,23 @@ class Storage:
         self.bucket = bucket
 
     async def upload_image(self, file: UploadFile,
-                           dir_name: str
-                           # size: Union[Tuple[int, int]],
+                           dir_name: str,
+                           size: Union[Tuple[int, int]]
                            # types: List[str]
                            ) -> str:
         try:
             print(type(file.file))
             image = Image.open(file.file)
         except:
-            print("Файл не найден")
-            #TODO: make validation error raise
-            raise ImageFormatError()
+            print("Файл не найден 666")
+            print('error')
+            raise ImageFormatError(
+                message='not photo'
+            )
 
+        print('storage')
+        image = await self.resize_image(image, size)
         bytes_image = await self.convert_to_bytes(image)
-
         key = f"{dir_name}/image_{uuid.uuid4()}.png"
 
         self.client.put_object(
@@ -50,6 +53,10 @@ class Storage:
                 },
         )
         return await self.make_image_url(key)
+
+    @staticmethod
+    async def resize_image(image, size: Tuple[int, int]):
+        return image.resize(size)
 
     @staticmethod
     async def convert_to_bytes(image):

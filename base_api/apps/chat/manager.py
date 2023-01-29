@@ -1,5 +1,6 @@
 import socketio
 from aioredis import Redis
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.chat.database import ChatDatabase
@@ -19,8 +20,10 @@ class ChatManager:
 
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
         image = message.image
+        # raise HTTPException(status_code=404, detail="Item not found")
         if image:
-            message.image = await self.storage.upload_image(image, 'chat')
+            message.image = await self.storage.upload_image(image, 'chat', [200, 150])
+            print('nice')
         created_message = await self.database.create_message(message, db, user)
         message = {
             'user_id': str(created_message.user),
