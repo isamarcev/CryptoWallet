@@ -396,7 +396,7 @@ DatePicker.prototype.normalize = function( value/*, options*/ ) {
 DatePicker.prototype.measure = function( type, value/*, options*/ ) {
 
     var calendar = this
-    
+
     // If it's an integer, get a date relative to today.
     if ( _.isInteger( value ) ) {
         value = calendar.now( type, value, { rel: value } )
@@ -1352,6 +1352,3 @@ Picker.extend( 'pickadate', DatePicker )
 
 
 }));
-
-
-

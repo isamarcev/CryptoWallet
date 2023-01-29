@@ -1,21 +1,25 @@
+# -*- coding: utf-8 -*-
 from typing import Dict
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.users.database import UserDatabase
-from base_api.apps.users.schemas import UserRegister, UserLogin
+from base_api.apps.users.schemas import UserLogin, UserProfileUpdate, UserRegister
+
+from .exeptions import UsernameAlreadyExists
 from .jwt_backend import JWTBackend
 from .models import User
 from .utils.password_hasher import get_password_hash, verify_password
-from .utils.validators import validate_email_, validate_register, validate_username, validate_update_profile
+from .utils.validators import validate_email_, validate_register, validate_update_profile, validate_username
 
 
 class UserManager:
-
-    def __init__(self,
-                 database: UserDatabase,
-                 jwt_backend: JWTBackend):
+    def __init__(
+        self,
+        database: UserDatabase,
+        jwt_backend: JWTBackend,
+    ):
         self.database = database
         self.jwt_backend = jwt_backend
 
@@ -23,7 +27,7 @@ class UserManager:
     async def get_payload(user_data: User):
         payload = {
             "id": str(user_data.id),
-            "username": user_data.username
+            "username": user_data.username,
         }
         return payload
 
@@ -59,13 +63,32 @@ class UserManager:
     async def collect_profile_info(self, user) -> Dict:
         profile_info = {
             "email": user.email,
-            "username": user.username
+            "username": user.username,
         }
         return profile_info
 
-    async def update_user_profile(self, user_data, current_user, session):
-        errors = await validate_update_profile(user_data, current_user, session, self.database)
-        if errors.get("errors"):
-            raise HTTPException(status_code=400, detail=errors.get("errors"))
-
-        return {"GOOD": "GOOD"}
+    async def update_user_profile(
+        self,
+        user_data: UserProfileUpdate,
+        current_user: User,
+        session: AsyncSession,
+    ) -> User:
+        if user_data.password:
+            user_data.password = get_password_hash(user_data.password)
+        else:
+            user_data.password = current_user.password
+        if user_data.username != current_user.username:
+            is_user_exists = await self.database.get_user_by_username(user_data.username, session)
+            if is_user_exists:
+                raise UsernameAlreadyExists()
+        avatar = user_data.avatar
+        if avatar:
+            print(avatar.filename)
+            print(avatar.content_type)
+        new_data = {
+            "username": user_data.username,
+            "password": user_data.password,
+            "photo": user_data.avatar,
+        }
+        result = await self.database.update_user(current_user.id, new_data, session)
+        return result

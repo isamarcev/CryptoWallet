@@ -1011,6 +1011,3 @@ Picker.extend( 'pickatime', TimePicker )
 
 
 }));
-
-
-

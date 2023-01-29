@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import asyncio
 import concurrent
 import functools
@@ -10,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.users.database import UserDatabase
 from base_api.apps.users.models import User
-from base_api.apps.users.schemas import UserRegister, UserProfileUpdate
+from base_api.apps.users.schemas import UserProfileUpdate, UserRegister
 
 
 async def validate_email_(email: str) -> Dict:
@@ -19,7 +20,9 @@ async def validate_email_(email: str) -> Dict:
         loop = asyncio.get_event_loop()
         with concurrent.futures.ThreadPoolExecutor() as pool:
             validation = await loop.run_in_executor(
-                pool, functools.partial(validate_email, email=email, check_deliverability=True))
+                pool,
+                functools.partial(validate_email, email=email, check_deliverability=True),
+            )
         email = validation.email
         result["valid"] = email
     except EmailNotValidError as e:
@@ -49,9 +52,11 @@ async def validate_register(user: UserRegister, session: AsyncSession, user_db: 
         errors["errors"]["email"] = validated_email["invalid"]
     validated_password = await validate_password(user.password)
     if not validated_password:
-        errors["errors"]["password"] = ("Password must contain at least: one digit, "
-                                        "one uppercase letter, one lowercase letter,"
-                                        " one special character[$@#], 8 to 20 characters")
+        errors["errors"]["password"] = (
+            "Password must contain at least: one digit, "
+            "one uppercase letter, one lowercase letter,"
+            " one special character[$@#], 8 to 20 characters"
+        )
     if user.password != user.password2:
         errors["errors"]["mismatch_password"] = "Password missmatch"
     if not await validate_username(user.username):
@@ -63,17 +68,21 @@ async def validate_register(user: UserRegister, session: AsyncSession, user_db: 
     return {"success_validation": True}
 
 
-async def validate_update_profile(user: UserProfileUpdate,
-                                  current_user: User,
-                                  session: AsyncSession,
-                                  user_db: UserDatabase):
+async def validate_update_profile(
+    user: UserProfileUpdate,
+    current_user: User,
+    session: AsyncSession,
+    user_db: UserDatabase,
+):
     errors = {"errors": {}}
     if user.password and user.password2:
         validated_password = await validate_password(user.password)
         if not validated_password:
-            errors["errors"]["password"] = ("Password must contain at least: one digit, "
-                                            "one uppercase letter, one lowercase letter,"
-                                            " one special character[$@#], 8 to 20 characters")
+            errors["errors"]["password"] = (
+                "Password must contain at least: one digit, "
+                "one uppercase letter, one lowercase letter,"
+                " one special character[$@#], 8 to 20 characters"
+            )
         if user.password != user.password2:
             errors["errors"]["mismatch_password"] = "Password missmatch"
     if not await validate_username(user.username):
@@ -84,4 +93,3 @@ async def validate_update_profile(user: UserProfileUpdate,
     if errors.get("errors"):
         return errors
     return {"success_validation": True}
-

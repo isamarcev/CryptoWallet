@@ -1,16 +1,18 @@
+# -*- coding: utf-8 -*-
 import uuid
+from typing import Dict, List, Type
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from base_api.apps.users.models import User, Permission
-from typing import Type, Dict, List
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Session
-from .models import user as user_table
 from databases import Database
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
-from .schemas import UserRegister
+from base_api.apps.users.models import Permission, User
+
 from ...config.settings import settings
+from .models import user as user_table
+from .schemas import UserProfileUpdate, UserRegister
+
 # from ...config.db import database
 
 database = Database("postgresql+asyncpg://nikitin:admin@localhost/crypto_wallet_base")
@@ -23,6 +25,7 @@ class UserDatabase:
     :param permission_model: permission_model
 
     """
+
     def __init__(self, user_model: Type[User], permission_model: Type[Permission]):
         self.user_model = user_model
         self.permission_model = permission_model
@@ -41,14 +44,14 @@ class UserDatabase:
         await session.commit()
         await session.refresh(user_instance)
         result_1 = await session.execute(
-            user_table.select().where(user_table.c.username == user_instance.username)
+            user_table.select().where(user_table.c.username == user_instance.username),
         )
         user_instance = self.user_model(**result_1.first()._asdict())
         return user_instance
 
     async def get_user_by_email(self, user_email: str, session: AsyncSession):
         result = await session.execute(
-            user_table.select().where(user_table.c.email == user_email)
+            user_table.select().where(user_table.c.email == user_email),
         )
         result_data = result.first()
         print(result_data, "result data")
@@ -56,7 +59,7 @@ class UserDatabase:
 
     async def get_user_by_username(self, username: str, session: AsyncSession):
         result = await session.execute(
-            user_table.select().where(user_table.c.username == username)
+            user_table.select().where(user_table.c.username == username),
         )
         result_data = result.first()
         print(result_data, "result data username")
@@ -64,11 +67,19 @@ class UserDatabase:
 
     async def get_user_by_id(self, user_id: str, db: AsyncSession) -> User:
         result = await db.execute(
-            user_table.select().where(user_table.c.id == user_id)
+            user_table.select().where(user_table.c.id == user_id),
         )
 
         result_data = result.first()
         return None if not result_data else self.user_model(**result_data._asdict())
 
-
-
+    async def update_user(self, user_id: str, new_data: Dict, db: AsyncSession):
+        query = (
+            user_table.update()
+            .where(user_table.c.id == user_id)
+            .values(new_data)
+            # .execution_options(synchronize_session="fetch")
+        )
+        await db.execute(query)
+        await db.commit()
+        return User(id=user_id, **new_data)

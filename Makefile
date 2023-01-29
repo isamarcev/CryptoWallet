@@ -3,3 +3,5 @@ run:
 
 run_sockets:
 	uvicorn sockets.config.app:app --reload --port 8001
+run_parser:
+	python eth_node/eth_parser.py

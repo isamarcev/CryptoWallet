@@ -252,8 +252,3 @@ sio.on('new_message', (message) => {
      prev_user_new_message = message.user_id
 })
 
-
-
-
-
-

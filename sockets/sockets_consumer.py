@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import asyncio
 import logging
 from threading import Thread
@@ -25,10 +26,9 @@ async def main() -> None:
         channel = await connection.channel()
         # await channel.set_qos(prefetch_count=1)
 
-
-
         new_message_exchange = await channel.declare_exchange(
-            "new_message", ExchangeType.FANOUT,
+            "new_message",
+            ExchangeType.FANOUT,
         )
 
         # Declaring queue
@@ -39,11 +39,6 @@ async def main() -> None:
 
         # Start listening the queue
         await new_message_queue.consume(on_message)
-
-
-
-
-
 
         print(" [*] Waiting for logs. To exit press CTRL+C")
         await asyncio.Future()

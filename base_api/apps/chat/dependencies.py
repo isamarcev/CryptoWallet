@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import aioredis
 from aioredis import Redis
 from async_lru import alru_cache
@@ -60,7 +61,3 @@ async def get_chat_manager() -> ChatManager:
 
 async def get_producer() -> BaseApiProducer:
     return BaseApiProducer()
-
-
-
-

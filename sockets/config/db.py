@@ -1,21 +1,20 @@
+# -*- coding: utf-8 -*-
 import os
 
 from databases import Database
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 #
 from sqlalchemy.orm import sessionmaker
 
 from base_api.config.settings import settings
 
-
-#print(settings.loc)
+# print(settings.loc)
 DATABASE_URL = str("postgresql+asyncpg://nikitin:admin@localhost/sockets_db")
 
 
-#ASYNC
+# ASYNC
 engine = create_async_engine(DATABASE_URL, future=True)
 
 metadata = MetaData()
@@ -37,8 +36,10 @@ async def init_db():
 
 
 async_session = sessionmaker(
-        engine, class_=AsyncSession, expire_on_commit=False
-    )
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+)
 
 
 # конструктор запитів бази даних

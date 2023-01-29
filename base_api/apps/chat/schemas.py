@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 import datetime as date
+from typing import Optional, Union
 from uuid import UUID
 
 from fastapi import UploadFile
 from fastapi_helper.schemas.camel_schema import ApiSchema, as_form
 from pydantic import BaseModel
-from typing import Union, Optional
 
 
 @as_form
@@ -21,7 +22,7 @@ class MessageDetail(BaseModel):
     id: UUID
 
     class Config:
-        orm_mode = True   # или использовать вместо BaseModel ApiSchema)
+        orm_mode = True  # или использовать вместо BaseModel ApiSchema)
 
 
 class MessageDetail1(BaseModel):
@@ -32,8 +33,4 @@ class MessageDetail1(BaseModel):
     id: UUID
 
     class Config:
-        orm_mode = True   # или использовать вместо BaseModel ApiSchema)
-
-
-
-
+        orm_mode = True  # или использовать вместо BaseModel ApiSchema)
