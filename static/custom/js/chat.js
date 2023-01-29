@@ -46,7 +46,6 @@ function new_message(source){
 // send message when you press enter
 $(document).keydown(function(e) {
     if (e.keyCode === 13) {
-        console.log('enter')
         new_message()
     }
 })
@@ -74,7 +73,12 @@ function create_message_post(message_text, image) {
             console.log('success return data = ', data)
         },
         error: (error) => {
-            console.log('error = ', error.responseJSON);
+            if (error.status == 400){
+                let error_text = error.responseJSON[0]
+                if (error_text.code == 'image_format_error'){
+                    toastr.error(error_text.message, 'Error')
+                }
+            }
             if (error.status == 403) {
                 document.location.reload();
             }

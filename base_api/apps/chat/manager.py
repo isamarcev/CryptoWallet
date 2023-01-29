@@ -21,7 +21,6 @@ class ChatManager:
 
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
         image = message.image
-        # raise HTTPException(status_code=404, detail="Item not found")
         if image:
             message.image = await self.storage.upload_image(image, 'chat', [200, 150])
             print('nice')

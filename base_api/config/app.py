@@ -93,7 +93,7 @@ async def backend_validation_handler(request: Request, exc: DefaultHTTPException
         "type": exc.type,
         "message": exc.message,
     }
-    if getattr(exc, "field"):
+    if getattr(exc, "field", ' '):
         content["field"] = exc.field
     return JSONResponse(
         status_code=exc.status_code,

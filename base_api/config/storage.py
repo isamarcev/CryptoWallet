@@ -14,6 +14,7 @@ class ImageFormatError(DefaultHTTPException):
     code = "image_format_error"
     type = "Image Invalid"
     message = "Image format is not valid"
+    field = 'image'
     status_code = status.HTTP_400_BAD_REQUEST
 
 
@@ -29,13 +30,12 @@ class Storage:
                            # types: List[str]
                            ) -> str:
         try:
-            print(type(file.file))
             image = Image.open(file.file)
         except:
             print("Файл не найден 666")
             print('error')
             raise ImageFormatError(
-                message='not photo'
+                message='This type of file is unsupported, please upload image '
             )
 
         print('storage')
