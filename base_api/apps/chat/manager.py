@@ -23,7 +23,6 @@ class ChatManager:
         image = message.image
         if image:
             message.image = await self.storage.upload_image(image, 'chat', [200, 150])
-            print('nice')
         created_message = await self.database.create_message(message, db, user)
         message = {
             'user_id': str(created_message.user),

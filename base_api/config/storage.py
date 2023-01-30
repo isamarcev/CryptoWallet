@@ -18,6 +18,13 @@ class ImageFormatError(DefaultHTTPException):
     status_code = status.HTTP_400_BAD_REQUEST
 
 
+class SpaceError(DefaultHTTPException):
+    code = "remote_space_error"
+    type = "Connection Error"
+    message = "Error connection to remote space"
+    status_code = status.HTTP_400_BAD_REQUEST
+
+
 class Storage:
 
     def __init__(self, client, bucket: str):
@@ -32,27 +39,29 @@ class Storage:
         try:
             image = Image.open(file.file)
         except:
-            print("Файл не найден 666")
-            print('error')
             raise ImageFormatError(
-                message='This type of file is unsupported, please upload image '
+                message='This type of file is unsupported, please upload image in one of this types ("jpeg", "png", "gif")'
             )
 
-        print('storage')
         image = await self.resize_image(image, size)
         bytes_image = await self.convert_to_bytes(image)
         key = f"{dir_name}/image_{uuid.uuid4()}.png"
 
-        self.client.put_object(
-                Bucket=self.bucket,
-                Key=key,
-                Body=bytes_image,
-                ACL="public-read",
-                Metadata={
-                    "Content-Type": "image/png",
-                },
-        )
-        return await self.make_image_url(key)
+        try:
+            self.client.put_object(
+                    Bucket=self.bucket,
+                    Key=key,
+                    Body=bytes_image,
+                    ACL="public-read",
+                    Metadata={
+                        "Content-Type": "image/png",
+                    },
+            )
+            return await self.make_image_url(key)
+        except:
+            raise SpaceError(
+                message='Error connection to remote space, please try again later'
+            )
 
     @staticmethod
     async def resize_image(image, size: Tuple[int, int]):

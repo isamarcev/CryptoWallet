@@ -78,8 +78,11 @@ function create_message_post(message_text, image) {
                 if (error_text.code == 'image_format_error'){
                     toastr.error(error_text.message, 'Error')
                 }
+                if (error_text.code == 'remote_space_error'){
+                    toastr.error(error_text.message, 'Error')
+                }
             }
-            if (error.status == 403) {
+            if (error.status == 403 || error.status == 401) {
                 document.location.reload();
             }
         }
