@@ -7,7 +7,7 @@ from fastapi import APIRouter, Response, Depends
 from base_api.apps.frontend.dependecies import check_user_token
 
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="base_api/templates")
 
 
 chat_router = APIRouter()

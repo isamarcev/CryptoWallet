@@ -7,7 +7,7 @@ from starlette.templating import Jinja2Templates
 from .auth import auth_router
 from .dependecies import check_user_token
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="base_api/templates")
 
 
 profile_router = APIRouter()

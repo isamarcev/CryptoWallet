@@ -59,11 +59,12 @@ def get_application() -> FastAPI:
     register_startup_event(app_)
     register_shutdown_event(app_)
 
-    app_.mount("/static", StaticFiles(directory="static"), name="static")
+    app_.mount("/static", StaticFiles(directory="base_api/static"), name="static")
     app_.include_router(router)
     app_.include_router(auth_router)
     app_.include_router(profile_router)
     app_.include_router(chat_router)
+
     return app_
 
 
