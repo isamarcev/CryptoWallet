@@ -76,27 +76,38 @@ async def start_parse():
                 )
 
                 # publish new message with aio-pika
-                connection = await connect_robust(settings.rabbit_url)
+                # connection = await connect_robust(settings.rabbit_url)
 
-                async with connection:
-                    channel = await connection.channel()
-
-                    new_blocks_exchange = await channel.declare_exchange(
-                        "new_blocks",
-                        ExchangeType.FANOUT,
-                    )
-
-                    message = Message(
-                        f"{block_number}".encode(),
-                        delivery_mode=DeliveryMode.PERSISTENT,
-                    )
-
-                    # Sending the message
-                    await new_blocks_exchange.publish(message, routing_key="info")
+#подшаманить версию Веб3, вебсокетс
 
             except Exception:
                 pass
 
 
 if __name__ == "__main__":
-    asyncio.run(start_parse())
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(start_parse())
+    # asyncio.run(start_parse())
+
+
+# НАСКОЛЬКО ВЕРОЯТНО ЧТО 2 UUID 4 СЛУЧАЙНО СОВПАДУТ.
+
+
+
+
+# async with connection:
+#     channel = await connection.channel()
+#
+# new_blocks_exchange = await channel.declare_exchange(
+#                         "new_blocks",
+#                         ExchangeType.FANOUT,
+#                     )
+#
+#                     message = Message(
+#                         f"{block_number}".encode(),
+#                         delivery_mode=DeliveryMode.PERSISTENT,
+#                     )
+#
+#                     # Sending the message
+#                     await new_blocks_exchange.publish(message, routing_key="info")

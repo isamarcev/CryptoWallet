@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     space_region: str
 
 
+
     @property
     def postgres_url(self) -> URL:
         """
