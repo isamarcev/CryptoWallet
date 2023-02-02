@@ -22,7 +22,7 @@ from base_api.config.router import router
 
 
 def get_project_data() -> dict:
-    pyproject_path = pathlib.Path("pyproject.toml")
+    pyproject_path = pathlib.Path("base_api/pyproject.toml")
     pyproject_data = toml.load(pyproject_path.open())
     poetry_data = pyproject_data["tool"]["poetry"]
     return poetry_data

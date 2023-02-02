@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "sockets"
+version = "0.1.0"
+description = ""
+authors = ["dima_nikitin <nikitindima1206@gmail.com>"]
+readme = "README.md"
+packages = [{include = "sockets"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.89.1"
+python-socketio = "^5.7.2"
+aioredis = "^2.0.1"
+aio-pika = "^8.3.0"
+python-dotenv = "^0.21.0"
+uvicorn = "^0.20.0"
+websockets = "^10.4"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

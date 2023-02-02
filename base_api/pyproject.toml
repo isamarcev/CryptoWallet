@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "crypto-wallet"
+name = "base-api"
 version = "0.1.0"
 description = ""
 authors = ["dima_nikitin <nikitindima1206@gmail.com>"]
 readme = "README.md"
+packages = [{include = "base_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -36,7 +37,6 @@ aioredis = "^2.0.1"
 boto3 = "^1.26.58"
 pillow = "^9.4.0"
 flake8 = "^6.0.0"
-
 
 
 [build-system]
