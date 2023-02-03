@@ -4,20 +4,28 @@ let image = null
 
 //get image from form
 $('#attach-doc').on('change', function (event) {
+    $('.preview_image')[0].innerHTML = '';
     image = $('#attach-doc')[0].files[0];
-    let delete_button = '<button class="delete_preview_image"><svg data-testid="close-no-outline" fill="none" height="24"' +
-       ' viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">' +
-       '<path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="black"></path></svg></button>'
-    let preview_image = '<img src="' + URL.createObjectURL(image) + '" alt="' + image.name + '" id="image_preview"' +
-        ' style="height: 50px; width: 50px">'
-    // const img = document.createElement('img');
-    // img.src = URL.createObjectURL(image);
-    // img.alt = image.name;
-    // img.id = "image_preview";
+        if (image) {
+            let delete_button = '<button class="delete_preview_image" type="button"><svg data-testid="close-no-outline" fill="none" height="15"' +
+                ' viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg">' +
+                '<path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="black"></path></svg></button>'
 
-    let preview_image_block =  delete_button + preview_image
-    $('.preview_image').append(preview_image_block)
-   // console.log('file = ', image)
+            let preview_image = '<img src="' + URL.createObjectURL(image) + '" alt="' + image.name + '" id="image_preview"' +
+                ' style="height: 45px; width: 45px; border-radius: 5px; margin-right: 7px">'
+
+            let preview_image_block = delete_button + preview_image
+            $('.preview_image').append(preview_image_block)
+        }
+})
+
+//delete uploaded image
+$(function() {
+     $(document).on('click', '.delete_preview_image', function(){
+        console.log('click delete')
+        $('.preview_image')[0].innerHTML = '';
+        image = null
+    })
 })
 
 //post new message
@@ -29,38 +37,15 @@ function new_message(source){
         }
         create_message_post(message, image)
         image = null
-
-        // console.log($('.chat:last-child')[0].className)
-        // let chat_body = $('.chat:last-child')[0]
-        // let chat_list = $('.chats')
-        // if (chat_body.className == 'chat') {
-            // if (image){
-            //     let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
-            //
-            // }
-            // var html = '<div class="chat-content">' + '<p>' + message + '</p>' + '</div>';
-            // $('.chat:last-child .chat-body').append(html);
-            $('.message').val('');
-            $('#attach-doc').val(null);
-            // $('.user-chats').scrollTop($('.user-chats > .chats').height());
-        // }
-        // else {
-        //     let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
-        //         '" alt="avatar" height="36" width="36"></span></div>'
-        //     let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message + '</p></div></div>'
-        //     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
-        //     chat_list.append(chat)
-        //     $('.message').val('');
-        //     $('#attach-doc').val(null);
-        //     $('.user-chats').scrollTop($('.user-chats > .chats').height());
-        // }
+        $('.preview_image')[0].innerHTML = '';
+        $('.message').val('');
+        $('#attach-doc').val(null);
     }
 }
 
 // send message when you press enter
 $(document).keydown(function(e) {
     if (e.keyCode === 13) {
-        console.log('enter')
         new_message()
     }
 })
@@ -88,24 +73,22 @@ function create_message_post(message_text, image) {
             console.log('success return data = ', data)
         },
         error: (error) => {
-            console.log(error);
-            if (error.status == 403) {
+            if (error.status == 400){
+                let error_text = error.responseJSON[0]
+                if (error_text.code == 'image_format_error'){
+                    toastr.error(error_text.message, 'Error')
+                }
+                if (error_text.code == 'remote_space_error'){
+                    toastr.error(error_text.message, 'Error')
+                }
+            }
+            if (error.status == 403 || error.status == 401) {
                 document.location.reload();
             }
         }
     })
 }
 
-
-
-// $(function() {
-//         $(document).on('click', '.online_user', function(){
-//             console.log($(this));
-//
-//             $('.user-profile-sidebar').addClass('show');
-//             overlay.addClass('show');
-//         });
-//     });
 
 
 //show modal window with user profile info
@@ -133,7 +116,7 @@ sio.on("get_history", (data) => {
                 let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
-                    let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
+                    let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
                     let chat_body = '<div class="chat-body"><div class="chat-content">'+ image_chat +'<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
@@ -148,7 +131,7 @@ sio.on("get_history", (data) => {
                 let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
-                    let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
+                    let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
                     let chat_body = '<div class="chat-body"><div class="chat-content">' + image_chat + '<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
@@ -162,7 +145,7 @@ sio.on("get_history", (data) => {
         }
         else {
             if (message.image){
-                let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
+                let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
                 let chat_content = '<div class="chat-content">' + image_chat + '<p>' + message.text + '</p></div>'
                 let last_chat_body = $('.chat-body').last()
                 last_chat_body.append(chat_content)
@@ -229,7 +212,7 @@ sio.on('new_message', (message) => {
                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
-                    let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
+                    let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
                     let chat_body = '<div class="chat-body"><div class="chat-content">' + image_chat +'<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
@@ -245,7 +228,7 @@ sio.on('new_message', (message) => {
                 let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
-                    let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
+                    let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
                     let chat_body = '<div class="chat-body"><div class="chat-content">' + image_chat +'<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
@@ -259,9 +242,8 @@ sio.on('new_message', (message) => {
             }
         }
      else {
-         // if (user_data.user_id !== message.user_id) {
              if (message.image){
-                 let image_chat = '<img src="' + message.image + '" style="width: 200px; height: 150px">'
+                 let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
                  let chat_content = '<div class="chat-content">' + image_chat + '<p>' + message.text + '</p></div>'
                  let last_chat_body = $('.chat-body').last()
                  last_chat_body.append(chat_content)
@@ -272,7 +254,6 @@ sio.on('new_message', (message) => {
                  last_chat_body.append(chat_content)
              }
              $('.user-chats').scrollTop($('.user-chats > .chats').height());
-         // }
      }
 
      prev_user_new_message = message.user_id

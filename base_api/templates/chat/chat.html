@@ -107,9 +107,6 @@
 
     <!-- Submit Chat form -->
     <form class="chat-app-form" action="javascript:void(0);" onsubmit="new_message();">
-      <div class="preview_image">
-
-      </div>
       <div class="input-group input-group-merge me-1 form-send-message">
         <span class="speech-to-text input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mic cursor-pointer"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></span>
         <input type="text" class="form-control message" placeholder="Type your message or use speech to text" value="">
@@ -118,6 +115,11 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image cursor-pointer text-secondary"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
             <input type="file" id="attach-doc" hidden="" accept=".png, .jpg, .jpeg"> </label></span>
       </div>
+
+      <div class="preview_image">
+
+      </div>
+
       <button type="button" class="btn btn-primary send waves-effect waves-float waves-light" onclick="new_message();">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send d-lg-none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         <span class="d-none d-lg-block">Send</span>
@@ -190,10 +192,15 @@
 <style>
   .preview_image .delete_preview_image{
     position: absolute;
-    top: 2px;
-    right: 2px;
     z-index: 100;
+    border: none;
+    background: none;
+    margin-left: 20px;
+    margin-top: -3px;
   }
+.toast {
+  background-color: #fff;
+  color: #6e6b7b !important; }
 </style>
 
 {% endblock %}

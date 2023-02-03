@@ -1,6 +1,8 @@
 
 const get_info_url = window.location.origin + "/api/user/profile/"
 const update_profile_url = window.location.origin + "/api/user/update/"
+const create_wallet_url = window.location.origin + "/api/wallet/create_new_wallet/"
+
 
 var profile_image = null
 var profile_image_def = null
@@ -33,6 +35,32 @@ function get_info() {
                     avatar_profile.attr("src", data.avatar);
                     avatar_basic.attr("src", data.avatar);
                 }
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        },
+    )
+}
+
+function create_wallet() {
+    $.ajax(
+        {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: '',
+            url: create_wallet_url,
+            success: function (data) {
+                console.log(data)
+                // email_input.val(data.email)
+                // username_input.val(data.username)
+                // username_basic.text(data.username)
+                // if (data.avatar) {
+                //     avatar_profile.attr("src", data.avatar);
+                //     avatar_basic.attr("src", data.avatar);
+                // }
             },
             error: function (data) {
                 console.log(data)

@@ -22,7 +22,7 @@ from base_api.config.router import router
 
 
 def get_project_data() -> dict:
-    pyproject_path = pathlib.Path("pyproject.toml")
+    pyproject_path = pathlib.Path("base_api/pyproject.toml")
     pyproject_data = toml.load(pyproject_path.open())
     poetry_data = pyproject_data["tool"]["poetry"]
     return poetry_data
@@ -59,11 +59,12 @@ def get_application() -> FastAPI:
     register_startup_event(app_)
     register_shutdown_event(app_)
 
-    app_.mount("/static", StaticFiles(directory="static"), name="static")
+    app_.mount("/static", StaticFiles(directory="base_api/static"), name="static")
     app_.include_router(router)
     app_.include_router(auth_router)
     app_.include_router(profile_router)
     app_.include_router(chat_router)
+
     return app_
 
 
@@ -92,9 +93,8 @@ async def backend_validation_handler(request: Request, exc: DefaultHTTPException
         "code": exc.code,
         "type": exc.type,
         "message": exc.message,
+        "field": getattr(exc, "field", '')
     }
-    if getattr(exc, "field"):
-        content["field"] = exc.field
     return JSONResponse(
         status_code=exc.status_code,
         content=[content],

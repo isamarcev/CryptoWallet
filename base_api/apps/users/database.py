@@ -39,7 +39,7 @@ class UserDatabase:
     #     return user
 
     async def create_user(self, user: UserRegister, session: AsyncSession) -> User:
-        user_instance = User(email=user.email, username=user.username, password=user.password)
+        user_instance = self.user_model(email=user.email, username=user.username, password=user.password)
         session.add(user_instance)
         await session.commit()
         await session.refresh(user_instance)

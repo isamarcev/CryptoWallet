@@ -94,7 +94,7 @@ class UserManager:
         if user_data.reset:
             new_data["photo"] = None
         elif user_data.avatar:
-            filepath = await self.storage.upload_image(user_data.avatar, "user")
+            filepath = await self.storage.upload_image(user_data.avatar, "user", (100, 100))
             avatar = filepath
             new_data["photo"] = avatar
 

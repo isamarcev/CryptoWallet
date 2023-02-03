@@ -5,6 +5,7 @@ from fastapi import Depends
 from fastapi_helper.authorization.cookies_jwt_http_bearer import auth_bearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from base_api.apps.chat.exeptions import UndefinedUser
 from base_api.apps.users.database import UserDatabase
 from base_api.apps.users.jwt_backend import JWTBackend
 from base_api.apps.users.manager import UserManager
@@ -72,12 +73,17 @@ async def get_current_user(
     manager: UserManager = Depends(get_user_manager),
     db: AsyncSession = Depends(get_session),
 ) -> User:
-    payload = await jwt_backend.decode_token(token)
-    print("user payload - ", payload.get("id"))
-    user = await manager.get_user(user_id=payload.get("id"), db=db)
-    print("dep user = ", user)
+    try:
+        payload = await jwt_backend.decode_token(token)
+        if payload:
+            print("user payload - ", payload.get("id"))
+            user = await manager.get_user(user_id=payload.get("id"), db=db)
+            print("dep user = ", user)
+        else:
+            raise UndefinedUser()
+    except:
+        raise UndefinedUser()
     if user:
         return user
     else:
-        # нужно будет райзить ошибку
-        return None
+        raise UndefinedUser()

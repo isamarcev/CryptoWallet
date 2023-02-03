@@ -1,5 +1,6 @@
 import socketio
 from aioredis import Redis
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.chat.database import ChatDatabase
@@ -21,7 +22,7 @@ class ChatManager:
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
         image = message.image
         if image:
-            message.image = await self.storage.upload_image(image, 'chat')
+            message.image = await self.storage.upload_image(image, 'chat', [200, 150])
         created_message = await self.database.create_message(message, db, user)
         message = {
             'user_id': str(created_message.user),
@@ -33,9 +34,5 @@ class ChatManager:
         socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
         await socket_manager.emit('new_message', data=message, room='chat')
         # await self.producer.publish_message(exchange_name='new_message', message=message)
-        #     "user_id": str(created_message.user),
-        #     "text": created_message.text,
-        #     "image": created_message.image,
-        # }
-        await self.producer.publish_message(exchange_name="new_message", message=message)
+
         return created_message
