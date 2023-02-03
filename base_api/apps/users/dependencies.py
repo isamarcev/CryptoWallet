@@ -56,9 +56,7 @@ async def get_current_user(
     try:
         payload = await jwt_backend.decode_token(token)
         if payload:
-            print("user payload - ", payload.get("id"))
             user = await manager.get_user(user_id=payload.get("id"), db=db)
-            print("dep user = ", user)
         else:
             raise UndefinedUser()
     except:
