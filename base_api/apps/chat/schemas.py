@@ -17,7 +17,7 @@ class MessageCreate(BaseModel):
 class MessageDetail(BaseModel):
     text: str
     image: Union[None, str]
-    user: UUID
+    user_id: UUID
     datetime: date.datetime
     id: UUID
 
@@ -31,6 +31,7 @@ class MessageDetail1(BaseModel):
     user_id: UUID
     datetime: date.datetime
     id: UUID
+    user_photo: Union[None, str]
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)

@@ -26,6 +26,7 @@ class UserProfileUpdate(BaseModel):
     avatar: Union[UploadFile, None]
     password: Union[str, None]
     password2: Union[str, None]
+    reset: Union[bool, None]
 
     @validator("username", pre=True)
     def name_must_be_more_than_five(cls, username):

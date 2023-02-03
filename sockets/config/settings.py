@@ -26,9 +26,9 @@ class Settings(BaseSettings):
     rabbit_channel_pool_size: int = 10
 
     # mongodb
-    mongo_host: str = "localhost"
-    mongo_port: str
-    mongo_name: str
+    # mongo_host: str = "localhost"
+    # mongo_port: str
+    # mongo_name: str
 
     @property
     def postgres_url(self) -> URL:
@@ -64,19 +64,19 @@ class Settings(BaseSettings):
             path=self.rabbit_vhost,
         )
 
-    @property
-    def mongodb_url(self) -> URL:
-        """
-        Assemble MongoDB URL from settings.
-
-        :return: mongodb URL.
-
-        """
-        return URL.build(
-            scheme="mongodb",
-            host=self.mongo_host,
-            port=self.mongo_port,
-        )
+    # @property
+    # def mongodb_url(self) -> URL:
+    #     """
+    #     Assemble MongoDB URL from settings.
+    #
+    #     :return: mongodb URL.
+    #
+    #     """
+    #     return URL.build(
+    #         scheme="mongodb",
+    #         host=self.mongo_host,
+    #         port=self.mongo_port,
+    #     )
 
     class Config:
         env_file = BASE_DIR / ".env"

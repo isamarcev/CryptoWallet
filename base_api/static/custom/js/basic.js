@@ -29,6 +29,7 @@ const user_data = {};
 $(window).on('load', function() {
     const current_user_url = window.location.origin + "/api/user/";
     const current_url = window.location.pathname;
+    const blank_avatar = "{{ url_for('static', path='/custom/image/blank-avatar.png')}}"
 
     toastr.options = {
       "closeButton": true,
@@ -69,7 +70,10 @@ $(window).on('load', function() {
             // console.log('url = ', current_url)
             user_data['url'] = current_url
             document.querySelector('.user-name').textContent = user_data['username']
-            // console.log('user_data = ', user_data)
+            if (data.photo) {
+                console.log('avatar')
+                document.querySelector("#avatar_basic").src =  data.photo;
+            }
             sio.auth = user_data;
             sio.connect();
         },
@@ -79,6 +83,4 @@ $(window).on('load', function() {
     })
 })
 
-
-//toastr settings
 

@@ -5,6 +5,8 @@ from datetime import datetime
 from aioredis import Redis
 from sqlalchemy import asc
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 
 from base_api.apps.chat.models import Message
 from base_api.apps.chat.models import message as message_table
@@ -24,22 +26,31 @@ class ChatDatabase:
         self.redis = redis
 
     async def create_message(self, message: MessageCreate, db: AsyncSession, user: User):
-        message_instance = Message(**message.dict(), user=user.id, datetime=datetime.now())
+        message_instance = Message(**message.dict(), user_id=user.id, datetime=datetime.now())
         db.add(message_instance)
         await db.commit()
         result = await db.execute(
-            message_table.select().order_by(message_table.c.datetime.desc()).limit(10),
+            select(Message).order_by(message_table.c.datetime.desc()).options(selectinload(Message.user_model)).limit(10)
         )
+
+        result = result.scalars().all()
+
 
         new = []
         for message in result:
-            message = message._asdict()
-            message["id"] = str(message["id"])
-            message["user_id"] = str(message["user_id"])
-            message["datetime"] = str(message["datetime"])
-            new.append(message)
+            message = MessageDetail1(
+                text=message.text,
+                image=message.image,
+                user_id=message.user_id,
+                datetime=message.datetime,
+                id=message.id,
+                user_photo=message.user_model.photo
+            )
+
+            new.append(json.loads(message.json()))
         new = list(reversed(new))
         result = json.dumps(new)
+        print(type(result))
         await self.redis.set("message_list", result)
 
         return message_instance

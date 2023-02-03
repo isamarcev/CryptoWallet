@@ -12,6 +12,7 @@ from .jwt_backend import JWTBackend
 from .models import User
 from .utils.password_hasher import get_password_hash, verify_password
 from .utils.validators import validate_email_, validate_register, validate_update_profile, validate_username
+from ...config.storage import Storage
 
 
 class UserManager:
@@ -19,9 +20,11 @@ class UserManager:
         self,
         database: UserDatabase,
         jwt_backend: JWTBackend,
+        storage: Storage
     ):
         self.database = database
         self.jwt_backend = jwt_backend
+        self.storage = storage
 
     @staticmethod
     async def get_payload(user_data: User):
@@ -64,6 +67,7 @@ class UserManager:
         profile_info = {
             "email": user.email,
             "username": user.username,
+            "avatar": user.photo
         }
         return profile_info
 
@@ -73,6 +77,7 @@ class UserManager:
         current_user: User,
         session: AsyncSession,
     ) -> User:
+        print(user_data)
         if user_data.password:
             user_data.password = get_password_hash(user_data.password)
         else:
@@ -81,14 +86,17 @@ class UserManager:
             is_user_exists = await self.database.get_user_by_username(user_data.username, session)
             if is_user_exists:
                 raise UsernameAlreadyExists()
-        avatar = user_data.avatar
-        if avatar:
-            print(avatar.filename)
-            print(avatar.content_type)
+
         new_data = {
             "username": user_data.username,
             "password": user_data.password,
-            "photo": user_data.avatar,
         }
+        if user_data.reset:
+            new_data["photo"] = None
+        elif user_data.avatar:
+            filepath = await self.storage.upload_image(user_data.avatar, "user", [100, 100])
+            avatar = filepath
+            new_data["photo"] = avatar
+
         result = await self.database.update_user(current_user.id, new_data, session)
         return result

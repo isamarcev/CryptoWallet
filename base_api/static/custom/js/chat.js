@@ -93,7 +93,8 @@ function create_message_post(message_text, image) {
 
 //show modal window with user profile info
 function show_user_info(number){
-    console.log(number, 'num')
+    console.log(number, 'num');
+    $('.user-profile-sidebar').removeClass('show');
     $('#profile_'+number).addClass('show')
     overlay.addClass('show');
 }
@@ -108,12 +109,14 @@ overlay.on('click', function () {
 sio.on("get_history", (data) => {
     console.log('get_history')
     let chat_list = $('.chats')
+    $('.chat').remove()
     let prev_user_message = ''
     for (let prop in data) {
         message = data[prop]
+        console.log(message)
         if (prev_user_message !== message.user_id) {
             if (user_data.user_id == message.user_id) {
-                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + message.user_photo +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
@@ -128,7 +131,7 @@ sio.on("get_history", (data) => {
                 }
             }
             else {
-                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + message.user_photo +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
@@ -187,7 +190,7 @@ sio.on('get_online_users', (data) => {
 
         let headers = '<header class="user-profile-header"><span class="close-icon">' +
             '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>' +
-            '<div class="header-profile-sidebar"><div class="avatar box-shadow-1 avatar-border avatar-xl"<img src="' +
+            '<div class="header-profile-sidebar"><div class="avatar box-shadow-1 avatar-border avatar-xl"><img src="' +
             auth.user_photo + '" alt="user_avatar" height="70" width="70"><span class="avatar-status-online avatar-status-lg"></span></div>' +
             '<h4 className="chat-user-name">' + auth.username + '</h4><span class="user-post">👩🏻‍💻</span></div></header>'
         let main_info = '<div class="user-profile-sidebar-area" style="overflow: scroll;"><div class="personal-info">'+
@@ -209,7 +212,7 @@ sio.on('new_message', (message) => {
     let chat_list = $('.chats')
      if (prev_user_new_message !== message.user_id) {
             if (user_data.user_id !== message.user_id) {
-               let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+               let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + message.user_photo +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
@@ -225,7 +228,7 @@ sio.on('new_message', (message) => {
                 $('.user-chats').scrollTop($('.user-chats > .chats').height());
             }
             else {
-                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + '#' +
+                let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + message.user_photo +
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'

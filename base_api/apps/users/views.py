@@ -70,6 +70,7 @@ async def get_profile(
     if not current_user:
         raise HTTPException(status_code=403, detail="You don't have permission")
     profile_info = await user_manager.collect_profile_info(user=current_user)
+    print(profile_info)
     return profile_info
 
 
@@ -90,9 +91,9 @@ async def update_profile(
     if not current_user:
         raise HTTPException(status_code=403, detail="You don`t have permission for this action")
     result = await user_manager.update_user_profile(user, current_user, session)
-    print(result)
     return {
         "detail": {
             "username": result.username,
+            "avatar": result.photo,
         },
     }

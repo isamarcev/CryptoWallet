@@ -99,3 +99,4 @@ async def backend_validation_handler(request: Request, exc: DefaultHTTPException
         status_code=exc.status_code,
         content=[content],
     )
+# массимв объекто в котором будет мессадж
