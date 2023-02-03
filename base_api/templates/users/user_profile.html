@@ -109,14 +109,16 @@
                     </div>
                 <div class="card-body pb-0 pt-0">
                     <div class="card card-block">
-                        <div class="ethereum-wallet">
-<!--                            <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="ETH" width="5px" height="10px" >-->
-                            <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="ETH" width="70px" height="50px">
-                            <span class="wallet_number">THIS IS TEST ALREADY JUST FOR VIEW</span>
+                        <div class="wallets">
+
                         </div>
+<!--                        <div class="ethereum-wallet">-->
+<!--                            <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="ETH" width="70px" height="50px">-->
+<!--                            <span class="wallet_number">THIS IS TEST ALREADY JUST FOR VIEW</span>-->
+<!--                        </div>-->
                         <div class="col-12 mt-75">
                                 <button type="button" id="import_button" class="btn btn-primary me-1 waves-effect waves-float waves-light">Import ETH wallet</button>
-                                <button type="button" id="create_button" class="btn btn-primary me-1 waves-effect waves-float waves-light">Create ETH wallet</button>
+                                <button type="button" id="create_button" class="btn btn-primary me-1 waves-effect waves-float waves-light" onclick="create_wallet()">Create ETH wallet</button>
                         </div>
                     </div>
 
@@ -146,6 +148,7 @@
 </script>
 <script>
         const blank_avatar = "{{ url_for('static', path='/custom/image/blank-avatar.png')}}"
+        const eth_avatar = "{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}"
 </script>
 
 {% endblock %}

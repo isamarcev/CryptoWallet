@@ -10,7 +10,7 @@ from sqlalchemy.orm import selectinload
 
 from base_api.apps.chat.models import Message
 from base_api.apps.chat.models import message as message_table
-from base_api.apps.chat.schemas import MessageCreate, MessageDetail, MessageDetail1
+from base_api.apps.chat.schemas import MessageCreate, NewMessageDetail
 from base_api.apps.users.models import User
 from base_api.apps.users.models import user as user_table
 
@@ -35,16 +35,16 @@ class ChatDatabase:
 
         result = result.scalars().all()
 
-
         new = []
         for message in result:
-            message = MessageDetail1(
+            message = NewMessageDetail(
                 text=message.text,
                 image=message.image,
                 user_id=message.user_id,
                 datetime=message.datetime,
                 id=message.id,
-                user_photo=message.user_model.photo
+                user_photo=message.user_model.photo,
+                username=message.user_model.username
             )
 
             new.append(json.loads(message.json()))

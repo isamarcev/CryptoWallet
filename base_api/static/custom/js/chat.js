@@ -120,12 +120,12 @@ sio.on("get_history", (data) => {
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
-                    let chat_body = '<div class="chat-body"><div class="chat-content">'+ image_chat +'<p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p>' + image_chat +'<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
                 else {
-                    let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p><p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
@@ -135,12 +135,12 @@ sio.on("get_history", (data) => {
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
-                    let chat_body = '<div class="chat-body"><div class="chat-content">' + image_chat + '<p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p>' + image_chat + '<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
                 else {
-                    let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p><p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
@@ -216,12 +216,12 @@ sio.on('new_message', (message) => {
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
-                    let chat_body = '<div class="chat-body"><div class="chat-content">' + image_chat +'<p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p>' + image_chat +'<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
                 else{
-                    let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p><p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat chat-left">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
@@ -232,12 +232,12 @@ sio.on('new_message', (message) => {
                     '" alt="avatar" height="36" width="36"></span></div>'
                 if (message.image){
                     let image_chat = '<img src="' + message.image + '" style="width: 100%; height: 150px">'
-                    let chat_body = '<div class="chat-body"><div class="chat-content">' + image_chat +'<p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p>' + image_chat +'<p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }
                 else{
-                    let chat_body = '<div class="chat-body"><div class="chat-content"><p>' + message.text + '</p></div></div>'
+                    let chat_body = '<div class="chat-body"><div class="chat-content"><p style="color: darkblue; font-weight: bold">'+ message.username + '</p><p>' + message.text + '</p></div></div>'
                     let chat = '<div class="chat">' + chat_avatar + chat_body + '</div>'
                     chat_list.append(chat)
                 }

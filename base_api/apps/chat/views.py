@@ -21,7 +21,5 @@ async def create_message(
     db: AsyncSession = Depends(get_session),
     message_manager: ChatManager = Depends(get_chat_manager),
 ):
-    print('888')
     response = await message_manager.create_message(message, db, user)
-    print('999')
     return response

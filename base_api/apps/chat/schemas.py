@@ -25,13 +25,14 @@ class MessageDetail(BaseModel):
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
 
 
-class MessageDetail1(BaseModel):
+class NewMessageDetail(BaseModel):
     text: str
     image: Union[None, str]
     user_id: UUID
     datetime: date.datetime
     id: UUID
     user_photo: Union[None, str]
+    username: str
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)

@@ -1,6 +1,7 @@
 
 const get_info_url = window.location.origin + "/api/user/profile/"
 const update_profile_url = window.location.origin + "/api/user/update/"
+const create_wallet_url = window.location.origin + '/api/wallet/create_new_wallet'
 
 var profile_image = null
 var profile_image_def = null
@@ -138,4 +139,36 @@ function deleteImage() {
     //     '    </button>\n' +
     //     '</div>'
     // )
+}
+
+
+function create_wallet(){
+    $.ajax({
+        url: create_wallet_url,
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            console.log('success return data = ', data)
+            let image = '<img src="'+ eth_avatar +'" alt="ETH" width="70px" height="50px">'
+            let wallet = '<span class="wallet_number">'+ data.public_key + '</span>'
+            let block = '<div class="ethereum-wallet">' + image + wallet + '</div>'
+            $('.wallets').append(block)
+        },
+        error: (error) => {
+            // if (error.status == 400){
+            //     let error_text = error.responseJSON[0]
+            //     if (error_text.code == 'image_format_error'){
+            //         toastr.error(error_text.message, 'Error')
+            //     }
+            //     if (error_text.code == 'remote_space_error'){
+            //         toastr.error(error_text.message, 'Error')
+            //     }
+            // }
+            // if (error.status == 403 || error.status == 401) {
+            //     document.location.reload();
+            // }
+        }
+    })
 }
