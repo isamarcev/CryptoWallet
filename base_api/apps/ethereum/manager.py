@@ -6,7 +6,7 @@ from eth_utils import decode_hex
 from sqlalchemy.ext.asyncio import AsyncSession
 from eth_account import Account
 from base_api.apps.ethereum.database import EthereumDatabase
-from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport
+from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport
 from base_api.apps.users.models import User
 
@@ -27,7 +27,7 @@ class EthereumManager:
             account = Account.from_key(privet_key)
             public_key = account.address
             wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key)
-        except Exception as ex:
+        except Exception:
             raise WalletCreatingError()
         return await self.database.add_wallet(wallet, db)
 
@@ -38,11 +38,15 @@ class EthereumManager:
             pk = keys.PrivateKey(pri_key)
             pub_key = pk.public_key
             public_key = pub_key.to_checksum_address()
-            wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key)
-        except:
+        except Exception:
             raise InvalidWalletImport()
+        if await self.database.get_wallet_by_public_key(public_key, db):
+            raise WalletAlreadyExists()
+        wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key)
         return await self.database.add_wallet(wallet, db)
 
+    async def get_user_wallets(self, user: User, db: AsyncSession):
+        return await self.database.get_user_wallets(user, db)
 
 
 

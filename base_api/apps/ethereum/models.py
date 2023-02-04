@@ -20,8 +20,8 @@ class Wallet(Base):
     id: UUID = Column(UUID(as_uuid=True), primary_key=True, default=uuid_id.uuid4)
     currency_type = Column(ChoiceType(TYPES), nullable=False)
     currency_name = Column(String)
-    public_key = Column(String)
-    privet_key = Column(String)
+    public_key = Column(String, unique=True)
+    privet_key = Column(String, unique=True)
     user = Column(ForeignKey(User.id))
 
 

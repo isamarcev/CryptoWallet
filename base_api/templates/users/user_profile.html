@@ -109,21 +109,48 @@
                     </div>
                 <div class="card-body pb-0 pt-0">
                     <div class="card card-block">
-                        <div class="wallets">
-
+                        <div class="row wallets">
+                            <h4 style="color: darkred; font-weight: bold; display: none" id="no_wallets">No wallets</h4>
                         </div>
-<!--                        <div class="ethereum-wallet">-->
-<!--                            <img src="{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}" alt="ETH" width="70px" height="50px">-->
-<!--                            <span class="wallet_number">THIS IS TEST ALREADY JUST FOR VIEW</span>-->
-<!--                        </div>-->
+
                         <div class="col-12 mt-75">
-                                <button type="button" id="import_button" class="btn btn-primary me-1 waves-effect waves-float waves-light">Import ETH wallet</button>
+                                <button type="button" id="import_button" class="btn btn-primary me-1 waves-effect waves-float waves-light" data-bs-toggle="modal" data-bs-target="#addNewCard" onclick="open_modal()">Import ETH wallet</button>
                                 <button type="button" id="create_button" class="btn btn-primary me-1 waves-effect waves-float waves-light" onclick="create_wallet()">Create ETH wallet</button>
                         </div>
                     </div>
 
                 </div>
                         <!-- Modal to add new user starts-->
+
+                <div class="modal fade" id="addNewCard" tabindex="-1" aria-labelledby="addNewCardTitle" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-transparent">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body px-sm-5 mx-50 pb-5">
+                                <h1 class="text-center mb-1" id="addNewCardTitle">Import Wallet</h1>
+
+                                <!-- form -->
+                                <form id="addNewCardValidation" class="row gy-1 gx-2 mt-75" onsubmit="return false" novalidate="novalidate">
+                                    <div class="col-12">
+                                        <label class="form-label" for="modal_key">Wallet private key</label>
+                                        <div class="input-group input-group-merge">
+                                            <input id="modal_key" name="modalAddCard" class="form-control add-credit-card-mask" type="text" placeholder="Enter private key" aria-describedby="modalAddCard2" data-msg="Please enter your credit card number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 text-center">
+                                        <button type="buttton" class="btn btn-primary me-1 mt-1 waves-effect waves-float waves-light" onclick="import_wallet()" data-bs-dismiss="modal" aria-label="Close">Submit</button>
+                                        <button type="reset" class="btn btn-outline-secondary mt-1 waves-effect" data-bs-dismiss="modal" aria-label="Close">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                         <!-- Modal to add new user Ends-->
                     </div>
@@ -150,5 +177,10 @@
         const blank_avatar = "{{ url_for('static', path='/custom/image/blank-avatar.png')}}"
         const eth_avatar = "{{ url_for('static', path='/custom/image/Ethereum-Logo.wine.png')}}"
 </script>
+<style>
+    .wallet_number{
+        max-width: 75%;
+    }
+</style>
 
 {% endblock %}

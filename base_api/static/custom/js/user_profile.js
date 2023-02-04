@@ -2,6 +2,8 @@
 const get_info_url = window.location.origin + "/api/user/profile/"
 const update_profile_url = window.location.origin + "/api/user/update/"
 const create_wallet_url = window.location.origin + '/api/wallet/create_new_wallet'
+const get_wallets_url = window.location.origin + '/api/wallet/user_wallets'
+const import_wallet_url = window.location.origin + '/api/wallet/import_wallet'
 
 var profile_image = null
 var profile_image_def = null
@@ -15,6 +17,27 @@ const avatar_profile = $("#avatar_profile")
 const avatar_input = $("#avatar_upload")
 const password_input = $("#password")
 const password2_input = $("#password2")
+
+
+$(window).on('load', function() {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+})
 
 
 function get_info() {
@@ -40,6 +63,41 @@ function get_info() {
             }
         },
     )
+    $.ajax({
+        url: get_wallets_url,
+        type: 'GET',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            console.log('success return data = ', data.length)
+            if(data.length < 1) {
+                document.getElementById('no_wallets').style.display = 'block';
+            }
+            for (let prop in data) {
+                let wallet_data = data[prop]
+                let image = '<img src="' + eth_avatar + '" alt="ETH" width="70px" height="50px">'
+                let wallet = '<span class="wallet_number">' + wallet_data.public_key + '</span>'
+                let block = '<div class="col-12 ethereum-wallet">' + image + wallet + '</div>'
+                $('.wallets').append(block)
+            }
+        },
+        error: (error) => {
+            console.log('error get')
+            // if (error.status == 400){
+            //     let error_text = error.responseJSON[0]
+            //     if (error_text.code == 'image_format_error'){
+            //         toastr.error(error_text.message, 'Error')
+            //     }
+            //     if (error_text.code == 'remote_space_error'){
+            //         toastr.error(error_text.message, 'Error')
+            //     }
+            // }
+            // if (error.status == 403 || error.status == 401) {
+            //     document.location.reload();
+            // }
+        }
+    })
 }
 
 function updateProfile() {
@@ -77,24 +135,8 @@ function updateProfile() {
                 else if (profile_image_reset) {
                     avatar_basic.attr("src", blank_avatar);
                 }
-                toastr.options = {
-                  "closeButton": true,
-                  "debug": false,
-                  "newestOnTop": false,
-                  "progressBar": false,
-                  "positionClass": "toast-bottom-right",
-                  "preventDuplicates": false,
-                  "onclick": null,
-                  "showDuration": "300",
-                  "hideDuration": "1000",
-                  "timeOut": "5000",
-                  "extendedTimeOut": "1000",
-                  "showEasing": "swing",
-                  "hideEasing": "linear",
-                  "showMethod": "fadeIn",
-                  "hideMethod": "fadeOut"
-                }
-                toastr["success"]("Profile have changed successfully", "Success").css("width","500px")
+
+                toastr["success"]("Profile have changed successfully", "Success").css("width","300px")
 
             },
             error: function (data) {
@@ -105,8 +147,6 @@ function updateProfile() {
                 }
                 console.log(data.responseJSON)
                 console.log("EROORS")
-
-
             }
         },
     )
@@ -150,25 +190,72 @@ function create_wallet(){
         contentType: false,
         cache: false,
         success: function (data) {
-            console.log('success return data = ', data)
+            toastr.success('Import create new wallet', 'Success').css("width","300px")
+            document.getElementById('no_wallets').style.display = 'none';
             let image = '<img src="'+ eth_avatar +'" alt="ETH" width="70px" height="50px">'
             let wallet = '<span class="wallet_number">'+ data.public_key + '</span>'
-            let block = '<div class="ethereum-wallet">' + image + wallet + '</div>'
+            let block = '<div class="col-12 ethereum-wallet">' + image + wallet + '</div>'
             $('.wallets').append(block)
         },
         error: (error) => {
-            // if (error.status == 400){
-            //     let error_text = error.responseJSON[0]
-            //     if (error_text.code == 'image_format_error'){
-            //         toastr.error(error_text.message, 'Error')
-            //     }
-            //     if (error_text.code == 'remote_space_error'){
-            //         toastr.error(error_text.message, 'Error')
-            //     }
-            // }
-            // if (error.status == 403 || error.status == 401) {
-            //     document.location.reload();
-            // }
+            if (error.status == 400){
+                let error_text = error.responseJSON[0]
+                if (error_text.code == 'Privet key error'){
+                    toastr.error(error_text.message, 'Error').css("width","300px")
+                }
+            }
+            if (error.status == 403 || error.status == 401) {
+                document.location.reload();
+            }
         }
     })
+}
+
+function import_wallet(){
+    let key = $('#modal_key')
+    if (!key.val()){
+        toastr.error('Private Key is empty', "Empty field").css("width","300px")
+    }
+    else {
+        $.ajax({
+            url: import_wallet_url,
+            type: 'POST',
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({
+                "privet_key": key.val()
+            }),
+            success: function (data) {
+                toastr.success('Import new wallet', 'Success').css("width","300px")
+                document.getElementById('no_wallets').style.display = 'none';
+                let image = '<img src="' + eth_avatar + '" alt="ETH" width="70px" height="50px">'
+                let wallet = '<span class="wallet_number">' + data.public_key + '</span>'
+                let block = '<div class="col-12 ethereum-wallet">' + image + wallet + '</div>'
+                $('.wallets').append(block)
+            },
+            error: (error) => {
+                console.log('import wallet error  ', error)
+                if (error.status == 400){
+                    let error_text = error.responseJSON[0]
+                    if (error_text.code == 'Privet key error'){
+                        toastr.error(error_text.message, 'Error').css("width","300px")
+                    }
+                    if (error_text.code == 'Wallet already exists'){
+                        toastr.error(error_text.message, 'Error').css("width","300px")
+                    }
+                }
+                if (error.status == 403 || error.status == 401) {
+                    document.location.reload();
+                }
+            }
+        })
+    }
+
+}
+
+function open_modal(){
+    let key = $('#modal_key')
+    key.val('')
 }

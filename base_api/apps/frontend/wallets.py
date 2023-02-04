@@ -10,15 +10,15 @@ from base_api.apps.frontend.dependecies import check_user_token
 templates = Jinja2Templates(directory="base_api/templates")
 
 
-chat_router = APIRouter()
+wallets_router = APIRouter()
 
 
-@chat_router.get("/chat", include_in_schema=False)
-async def chat(
+@wallets_router.get("/my_wallets", include_in_schema=False)
+async def wallets(
         request: Request,
         token=Depends(check_user_token)
 ):
     if not token:
         return RedirectResponse("/login")
-    return templates.TemplateResponse("chat/chat.html", context={"request": request})
+    return templates.TemplateResponse("wallets/wallets.html", context={"request": request})
 

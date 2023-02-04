@@ -76,10 +76,10 @@ function create_message_post(message_text, image) {
             if (error.status == 400){
                 let error_text = error.responseJSON[0]
                 if (error_text.code == 'image_format_error'){
-                    toastr.error(error_text.message, 'Error')
+                    toastr.error(error_text.message, 'Error').css("width","500px")
                 }
                 if (error_text.code == 'remote_space_error'){
-                    toastr.error(error_text.message, 'Error')
+                    toastr.error(error_text.message, 'Error').css("width","500px")
                 }
             }
             if (error.status == 403 || error.status == 401) {
