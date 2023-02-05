@@ -1,3 +1,4 @@
+import asyncio
 import secrets
 from abc import ABC, abstractmethod
 
@@ -10,6 +11,7 @@ from eth_account import Account
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport
+from base_api.apps.ethereum.web3_client import EthereumClient
 from base_api.apps.users.models import User
 
 
@@ -69,6 +71,18 @@ class EthereumManager(EthereumLikeManager):
     async def get_user_wallets(self, user: User, db: AsyncSession):
         return await self.database.get_user_wallets(user, db)
 
+    async def get_balance(self, user: User, db: AsyncSession):
+        wallets = await self.get_user_wallets(user, db)
+        if wallets:
+            client = EthereumClient()
+            result = [client.get_balance(wallet.public_key) for wallet in wallets]
+            balances = await asyncio.gather(*result, return_exceptions=True)
+            print(result, "RESULT GET BALANCE")
+            print(balances, "BALANCES")
+            for i in balances:
+                print(type(i))
+            return balances
+        return {}
 
 
 

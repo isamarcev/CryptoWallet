@@ -36,6 +36,10 @@ class Settings(BaseSettings):
     space_secret_key: str
     space_region: str
 
+    #infura ethereum node
+    infura_api_url: str
+    infura_api_key: str
+
 
 
     @property
