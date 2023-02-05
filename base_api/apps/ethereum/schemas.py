@@ -17,3 +17,17 @@ class WalletDetail(BaseModel):
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
+
+
+class WalletImport(BaseModel):
+    privet_key: str
+
+    class Config:
+        orm_mode = True  # или использовать вместо BaseModel ApiSchema)
+
+
+class Wallets(BaseModel):
+    public_key: str
+
+    class Config:
+        orm_mode = True  # или использовать вместо BaseModel ApiSchema)

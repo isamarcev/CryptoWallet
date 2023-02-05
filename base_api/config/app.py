@@ -17,6 +17,7 @@ from starlette.staticfiles import StaticFiles
 from base_api.apps.frontend.auth import auth_router
 from base_api.apps.frontend.chat import chat_router
 from base_api.apps.frontend.user_profile import profile_router
+from base_api.apps.frontend.wallets import wallets_router
 from base_api.config.lifetime import register_shutdown_event, register_startup_event
 from base_api.config.router import router
 
@@ -64,7 +65,7 @@ def get_application() -> FastAPI:
     app_.include_router(auth_router)
     app_.include_router(profile_router)
     app_.include_router(chat_router)
-
+    app_.include_router(wallets_router)
     return app_
 
 
@@ -96,7 +97,7 @@ async def backend_validation_handler(request: Request, exc: DefaultHTTPException
         "field": getattr(exc, "field", '')
     }
     return JSONResponse(
+        {"detail": [content]},
         status_code=exc.status_code,
-        content=[content],
     )
 # массимв объекто в котором будет мессадж

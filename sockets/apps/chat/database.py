@@ -9,20 +9,12 @@ class ChatUsers:
         self.redis = redis
 
     async def connect_user(self, session):
-        auth = session.get("auth")
-        sid = session.get("sid")
         users = await self.redis.get("chat_users")
-        print(type(users))
         try:
             users = json.loads(users)
         except:
             pass
-        print("2")
         if users:
-            if session in users:
-                print("if")
-            else:
-                print("else")
             users.append(session)
             users = list(users)
             users = json.dumps(users)
@@ -45,7 +37,6 @@ class ChatUsers:
         if not history:
             history = []
         history = json.loads(history)
-        print(type(history))
         return history
 
     async def disconnect_user(self, session):

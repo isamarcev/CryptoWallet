@@ -63,11 +63,22 @@ class UserManager:
     async def get_user(self, user_id: str, db: AsyncSession) -> User:
         return await self.database.get_user_by_id(user_id, db)
 
-    async def collect_profile_info(self, user) -> Dict:
+    async def get_user_wallets(self, user: User, db: AsyncSession) -> list:
+        return await self.database.get_user_wallets(user, db)
+
+    async def get_count_message(self, user: User, db: AsyncSession) -> int:
+        return await self.database.get_count_message(user, db)
+
+
+    async def collect_profile_info(self, user: User, db: AsyncSession) -> Dict:
+        count_message = await self.get_count_message(user, db)
+        user_wallets = await self.get_user_wallets(user, db)
         profile_info = {
             "email": user.email,
             "username": user.username,
-            "avatar": user.photo
+            "avatar": user.photo,
+            "wallets": [res.public_key for res in user_wallets],
+            "messages": count_message
         }
         return profile_info
 

@@ -17,18 +17,14 @@ sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*", client_m
 async def connect(sid, environ, auth):
     await sio.save_session(sid, {"auth": auth, "sid": sid})
     if auth.get("url") == "/chat":
-        print("chat!!!")
         sio.enter_room(sid, "chat")
         db = await get_user_db()
         session = await sio.get_session(sid)
-        print(session)
         await db.connect_user(session)
         users = await db.get_users()
         history = await db.get_chat_history()
         await sio.emit("get_history", history, to=sid)
         await sio.emit("get_online_users", users)
-    # await sio.emit('new_message', sid, to=sid)
-    # await sio.emit('new_message', sid)
 
 
 @sio.event
@@ -44,8 +40,6 @@ async def disconnect(sid):
         await sio.emit("get_online_users", users)
 
 
-@sio.event
-def disconnect_from_chat(sid):
-    print("disconnect ", sid)
+
 
 

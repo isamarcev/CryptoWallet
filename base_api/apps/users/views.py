@@ -65,12 +65,12 @@ async def get_current_user(
 @user_router.get("/profile/")
 async def get_profile(
     user_manager: UserManager = Depends(get_user_manager),
+    session: AsyncSession = Depends(get_session),
     current_user=Depends(check_user_token),
 ):
     if not current_user:
         raise HTTPException(status_code=403, detail="You don't have permission")
-    profile_info = await user_manager.collect_profile_info(user=current_user)
-    print(profile_info)
+    profile_info = await user_manager.collect_profile_info(user=current_user, db=session)
     return profile_info
 
 

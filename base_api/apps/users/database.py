@@ -8,9 +8,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
 from base_api.apps.users.models import Permission, User
+from base_api.apps.users.models import user as user_table
 
-from ...config.settings import settings
-from .models import user as user_table
+from base_api.apps.ethereum.models import wallet as wallet_table
+from base_api.apps.chat.models import message as message_table
+from base_api.apps.ethereum.models import Wallet
 from .schemas import UserProfileUpdate, UserRegister
 
 # from ...config.db import database
@@ -73,13 +75,28 @@ class UserDatabase:
         result_data = result.first()
         return None if not result_data else self.user_model(**result_data._asdict())
 
-    async def update_user(self, user_id: str, new_data: Dict, db: AsyncSession):
+    @staticmethod
+    async def update_user(user_id: str, new_data: Dict, db: AsyncSession):
         query = (
             user_table.update()
             .where(user_table.c.id == user_id)
             .values(new_data)
-            # .execution_options(synchronize_session="fetch")
         )
         await db.execute(query)
         await db.commit()
         return User(id=user_id, **new_data)
+
+    @staticmethod
+    async def get_user_wallets(user: User, db: AsyncSession) -> list:
+        result = await db.execute(
+            wallet_table.select().where(wallet_table.c.user == user.id)
+        )
+        results = result.all()
+        return results
+
+    @staticmethod
+    async def get_count_message(user: User, db: AsyncSession) -> int:
+        messages = await db.execute(
+            message_table.select().where(message_table.c.user_id == user.id)
+        )
+        return len(messages.all()) if messages else 0
