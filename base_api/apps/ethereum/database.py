@@ -1,10 +1,8 @@
 from typing import Type
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-
-from base_api.apps.ethereum.exeptions import WalletAlreadyExists
-from base_api.apps.ethereum.models import Wallet, wallet as wallet_table
+from sqlalchemy.orm import selectinload
+from base_api.apps.ethereum.models import Wallet, wallet as wallet_table, Transaction
 from base_api.apps.ethereum.schemas import WalletCreate
 from base_api.apps.users.models import User
 
@@ -28,9 +26,9 @@ class EthereumDatabase:
 
     async def get_user_wallets(self, user: User, db: AsyncSession):
         result = await db.execute(
-            select(self.wallet_model).where(wallet_table.c.user == user.id)
+            select(self.wallet_model).where(wallet_table.c.user == user.id).options(selectinload(Wallet.transactions))
         )
         results = result.scalars().all()
+        for res in results:
+            print('tr = ', res.transactions)
         return results
-
-

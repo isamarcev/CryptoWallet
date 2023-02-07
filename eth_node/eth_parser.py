@@ -2,11 +2,15 @@
 import asyncio
 import datetime
 import json
+from pathlib import Path
 
 from aio_pika import DeliveryMode, ExchangeType, Message, connect_robust
 from pydantic import BaseSettings
 from websockets import connect
 from yarl import URL
+
+
+BASE_DIR = Path(__file__).parent
 
 
 class Settings(BaseSettings):
@@ -49,7 +53,7 @@ class Settings(BaseSettings):
         Configure the application.
         """
 
-        env_file = ".env"
+        env_file = BASE_DIR / ".env"
         env_file_encoding = "utf-8"
 
 
@@ -70,6 +74,7 @@ async def start_parse():
                 message = await asyncio.wait_for(websocket.recv(), timeout=2)
                 response = json.loads(message)
                 block_number = response["params"]["result"]["number"]
+                print(response)
                 print(
                     f'{datetime.datetime.now().strftime("%H:%M:%S")} '
                     f"-- Got new block form Ethereum Network -- {block_number}",

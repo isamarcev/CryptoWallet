@@ -22,3 +22,10 @@ class WalletAlreadyExists(DefaultHTTPException):
     message = "This wallet is already exists"
     status_code = status.HTTP_400_BAD_REQUEST
 
+
+class WalletIsNotDefine(DefaultHTTPException):
+    code = "Wallet is not defined"
+    type = "Wallet invalid"
+    message = "This wallet is not defined"
+    status_code = status.HTTP_400_BAD_REQUEST
+

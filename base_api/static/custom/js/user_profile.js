@@ -249,7 +249,7 @@ function create_wallet(){
         },
         error: (error) => {
             if (error.status == 400){
-                let error_text = error.responseJSON[0]
+                let error_text = error.responseJSON.detail[0]
                 if (error_text.code == 'Privet key error'){
                     toastr.error(error_text.message, 'Error').css("width","300px")
                 }
@@ -288,7 +288,8 @@ function import_wallet(){
             error: (error) => {
                 console.log('import wallet error  ', error)
                 if (error.status == 400){
-                    let error_text = error.responseJSON[0]
+                    let error_text = error.responseJSON.detail[0]
+                    console.log(error_text)
                     if (error_text.code == 'Privet key error'){
                         toastr.error(error_text.message, 'Error').css("width","300px")
                     }

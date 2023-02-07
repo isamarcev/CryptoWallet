@@ -18,20 +18,47 @@ class BaseClient(ABC):
 
 class EthereumClient(BaseClient):
 
-    async def get_balance(self, address):
-        print('async get balance')
-        loop = asyncio.get_running_loop()
-        balance = await loop.run_in_executor(None, functools.partial(self.sync_get_balance, address=address))
-        print(balance)
-        return balance
+    # async def get_balance(self, address):
+    #     print('async get balance')
+    #     loop = asyncio.get_running_loop()
+    #     balance = await loop.run_in_executor(None, functools.partial(self.sync_get_balance, address=address))
+    #     print(balance)
+    #     return balance
 
-    def sync_get_balance(self, address: str) -> dict:
+    def sync_get_balance(self, address: str) -> str:
         checksum_address = Web3.toChecksumAddress(address)
         try:
             balance = self.provider.eth.get_balance(checksum_address)
         except ValueError:
             return self.sync_get_balance(address)
         ether_balance = Web3.fromWei(balance, 'ether')  # Decimal('1')
-        print(f"balance of {address}={ether_balance} Wei")
-        return {"address": address, "balance": balance}
+        # return {"address": address, "balance": ether_balance}
+        return ether_balance
 
+    @staticmethod
+    def build_txn(provider: Web3, from_address: str, to_address: str, amount: float):
+        gas_price = provider.eth.gas_price
+        gas = 21000
+        nonce = provider.eth.getTransactionCount(from_address)
+
+        txn = {
+            'chainId': provider.eth.chain_id,
+            'from': from_address,
+            'to': to_address,
+            'value': int(Web3.toWei(amount, 'ether')),
+            'nonce': nonce,
+            'gasPrice': gas_price,
+            'gas': gas,
+        }
+        return txn
+
+    def sync_send_transaction(self, from_address: str, to_address: str, amount: float, private_key: str):
+        try:
+            provider = self.provider
+            transaction = self.build_txn(provider, from_address, to_address, amount)
+            signed_txn = provider.eth.account.sign_transaction(transaction, private_key)
+            txn_hash = provider.eth.send_raw_transaction(signed_txn.rawTransaction)
+            print('success transaction = ', txn_hash)
+        except Exception as ex:
+            #TODO: make exeption
+            print('some problem with make transaction = ', ex)
