@@ -58,7 +58,16 @@ class EthereumClient(BaseClient):
             transaction = self.build_txn(provider, from_address, to_address, amount)
             signed_txn = provider.eth.account.sign_transaction(transaction, private_key)
             txn_hash = provider.eth.send_raw_transaction(signed_txn.rawTransaction)
-            print('success transaction = ', txn_hash)
+            print('success transaction = ', txn_hash.hex())
+            return txn_hash.hex()
         except Exception as ex:
             #TODO: make exeption
             print('some problem with make transaction = ', ex)
+
+    def sync_get_transaction_receipt(self, txn_hash: str):
+        try:
+            txn = self.provider.eth.get_transaction_receipt(txn_hash)
+            print(txn)
+            return txn
+        except Exception:
+            print('error get transaction_receipt')

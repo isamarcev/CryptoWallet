@@ -2,14 +2,18 @@ import asyncio
 import functools
 import secrets
 from abc import ABC, abstractmethod
+from datetime import datetime
+
 from eth_keys import keys
 from eth_utils import decode_hex
 from sqlalchemy.ext.asyncio import AsyncSession
 from eth_account import Account
+from web3 import Web3
+
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
     WalletIsNotDefine
-from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction
+from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt
 from base_api.apps.ethereum.web3_client import EthereumClient
 from base_api.apps.users.models import User
 
@@ -88,17 +92,31 @@ class EthereumManager(EthereumLikeManager):
         return result
 
     async def send_transaction(self, transaction: CreateTransaction, user: User, db: AsyncSession):
-        wallet_user = self.database.get_wallet_by_public_key(transaction.from_address, db)
+        wallet_user = await self.database.get_wallet_by_public_key(transaction.from_address, db)
         if not wallet_user or wallet_user.user != user.id:
             raise WalletIsNotDefine()
-        #TODO: check balance and transaction value
-
+        #TODO: check balance and transaction value???
+        if not Web3.isAddress(transaction.to_address):
+            raise WalletIsNotDefine(message='Wallet address is not defined')
         loop = asyncio.get_running_loop()
-        result = await loop.run_in_executor(None, functools.partial(self.client.sync_send_transaction,
-                                                                    from_address='0x26a3da7DCE53Cbcb0a77Df8A41eC2C59050Cd18c',
-                                                                    to_address='0xbB940f3198fDD455AaF8B4e5C7bbd2D5067A9c35',
-                                                                    amount=0.4,
-                                                                    private_key='2f3e90ea508dd911ee318114e89894da9e62318d4073c2dd7dc0823c6e72baff'))
+        txn_hash = await loop.run_in_executor(None, functools.partial(self.client.sync_send_transaction,
+                                                                      from_address=transaction.from_address,
+                                                                      to_address=transaction.to_address,
+                                                                      amount=transaction.amount,
+                                                                      private_key=wallet_user.privet_key))
+        # receipt = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
+        #                                                              txn_hash=txn_hash))
+        transaction_receipt = CreateTransactionReceipt(
+            number=txn_hash,
+            from_address=transaction.from_address,
+            to_address=transaction.to_address,
+            value=transaction.amount,
+            data=datetime.now(),
+            txn_fee=None,
+            status='Pending'
+        )
+        # new_transaction_receipt = await self.database.create_transaction(transaction_receipt)
+        #TODO: make transaction receipt in bd
 
 
 

@@ -44,7 +44,7 @@ class Transaction(Base):
     number = Column(String)
     from_address = Column(String)
     to_address = Column(String)
-    value = Column(String)
+    value = Column(Float)
     date = Column(DateTime(timezone=True), server_default=func.now())
     txn_fee = Column(String)
     status = Column(ChoiceType(STATUS), nullable=False)

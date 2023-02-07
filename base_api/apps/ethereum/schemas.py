@@ -43,7 +43,7 @@ class WalletTransactions(BaseModel):
     number: str
     from_address: str
     to_address: str
-    value: str
+    value: float
     date: datetime
     txn_fee: str
     status: StatusEnum
@@ -69,3 +69,15 @@ class CreateTransaction(BaseModel):
     class Config:
         orm_mode = True
 
+
+class CreateTransactionReceipt(BaseModel):
+    number: str
+    from_address: str
+    to_address: str
+    value: float
+    date: datetime
+    txn_fee: str
+    status: StatusEnum
+
+    class Config:
+        orm_mode = True  # или использовать вместо BaseModel ApiSchema)

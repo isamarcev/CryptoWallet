@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from base_api.apps.ethereum.models import Wallet, wallet as wallet_table, Transaction
-from base_api.apps.ethereum.schemas import WalletCreate
+from base_api.apps.ethereum.schemas import WalletCreate, CreateTransactionReceipt
 from base_api.apps.users.models import User
 
 
@@ -32,3 +32,6 @@ class EthereumDatabase:
         for res in results:
             print('tr = ', res.transactions)
         return results
+
+    async def create_transaction(self, transaction: CreateTransactionReceipt, ):
+        pass

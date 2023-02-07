@@ -27,5 +27,8 @@ class WalletIsNotDefine(DefaultHTTPException):
     code = "Wallet is not defined"
     type = "Wallet invalid"
     message = "This wallet is not defined"
+    field = "from_address"
     status_code = status.HTTP_400_BAD_REQUEST
+
+
 
