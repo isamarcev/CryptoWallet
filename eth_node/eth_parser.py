@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import json
+import logging
 from pathlib import Path
 
 from aio_pika import DeliveryMode, ExchangeType, Message, connect_robust
@@ -11,7 +12,6 @@ from yarl import URL
 
 
 BASE_DIR = Path(__file__).parent
-
 
 class Settings(BaseSettings):
 
@@ -80,8 +80,25 @@ async def start_parse():
                     f"-- Got new block form Ethereum Network -- {block_number}",
                 )
 
+
                 # publish new message with aio-pika
-                # connection = await connect_robust(settings.rabbit_url)
+                connection = await connect_robust(settings.rabbit_url)
+
+                async with connection:
+                    channel = await connection.channel()
+
+                new_blocks_exchange = await channel.declare_exchange(
+                    "new_block",
+                    ExchangeType.FANOUT,
+                )
+
+                message = Message(
+                    f"{block_number}".encode(),
+                    delivery_mode=DeliveryMode.PERSISTENT,
+                )
+
+                # Sending the message
+                await new_blocks_exchange.publish(message, routing_key="info")
 
 #подшаманить версию Веб3, вебсокетс
 
@@ -90,10 +107,10 @@ async def start_parse():
 
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(start_parse())
-    # asyncio.run(start_parse())
+    # loop = asyncio.new_event_loop()
+    # asyncio.set_event_loop(loop)
+    # loop.run_until_complete(start_parse())
+    asyncio.run(start_parse())
 
 
 # НАСКОЛЬКО ВЕРОЯТНО ЧТО 2 UUID 4 СЛУЧАЙНО СОВПАДУТ.
@@ -101,18 +118,3 @@ if __name__ == "__main__":
 
 
 
-# async with connection:
-#     channel = await connection.channel()
-#
-# new_blocks_exchange = await channel.declare_exchange(
-#                         "new_blocks",
-#                         ExchangeType.FANOUT,
-#                     )
-#
-#                     message = Message(
-#                         f"{block_number}".encode(),
-#                         delivery_mode=DeliveryMode.PERSISTENT,
-#                     )
-#
-#                     # Sending the message
-#                     await new_blocks_exchange.publish(message, routing_key="info")
