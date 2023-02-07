@@ -92,8 +92,8 @@ class EthereumManager(EthereumLikeManager):
         return result
 
     async def send_transaction(self, transaction: CreateTransaction, user: User, db: AsyncSession):
-        wallet_user = await self.database.get_wallet_by_public_key(transaction.from_address, db)
-        if not wallet_user or wallet_user.user != user.id:
+        user_wallet = await self.database.get_wallet_by_public_key(transaction.from_address, db)
+        if not user_wallet or user_wallet.user != user.id:
             raise WalletIsNotDefine()
         #TODO: check balance and transaction value???
         if not Web3.isAddress(transaction.to_address):
@@ -103,7 +103,7 @@ class EthereumManager(EthereumLikeManager):
                                                                       from_address=transaction.from_address,
                                                                       to_address=transaction.to_address,
                                                                       amount=transaction.amount,
-                                                                      private_key=wallet_user.privet_key))
+                                                                      private_key=user_wallet.privet_key))
         # receipt = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
         #                                                              txn_hash=txn_hash))
         transaction_receipt = CreateTransactionReceipt(
@@ -111,13 +111,12 @@ class EthereumManager(EthereumLikeManager):
             from_address=transaction.from_address,
             to_address=transaction.to_address,
             value=transaction.amount,
-            data=datetime.now(),
+            date=datetime.now(),
             txn_fee=None,
             status='Pending'
         )
-        # new_transaction_receipt = await self.database.create_transaction(transaction_receipt)
-        #TODO: make transaction receipt in bd
-
+        new_transaction_receipt = await self.database.create_transaction(transaction_receipt, user_wallet, db)
+        return new_transaction_receipt
 
 
 

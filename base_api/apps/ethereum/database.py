@@ -8,8 +8,9 @@ from base_api.apps.users.models import User
 
 
 class EthereumDatabase:
-    def __init__(self, wallet_model: Type[Wallet]):
+    def __init__(self, wallet_model: Type[Wallet], transaction_model: Type[Transaction]):
         self.wallet_model = wallet_model
+        self.transaction_model = transaction_model
 
     async def add_wallet(self, wallet: WalletCreate, db: AsyncSession):
         wallet_instance = self.wallet_model(**wallet.dict(), currency_type='token', currency_name='ethereum')
@@ -33,5 +34,8 @@ class EthereumDatabase:
             print('tr = ', res.transactions)
         return results
 
-    async def create_transaction(self, transaction: CreateTransactionReceipt, ):
-        pass
+    async def create_transaction(self, transaction: CreateTransactionReceipt, user_wallet: Wallet, db: AsyncSession):
+        transaction_instance = self.transaction_model(**transaction.dict(), wallet_id=user_wallet.id)
+        db.add(transaction_instance)
+        await db.commit()
+        return transaction_instance

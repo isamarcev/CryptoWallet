@@ -45,7 +45,7 @@ class WalletTransactions(BaseModel):
     to_address: str
     value: float
     date: datetime
-    txn_fee: str
+    txn_fee: Union[None, str]
     status: StatusEnum
 
     class Config:
@@ -76,7 +76,7 @@ class CreateTransactionReceipt(BaseModel):
     to_address: str
     value: float
     date: datetime
-    txn_fee: str
+    txn_fee: Union[None, str]
     status: StatusEnum
 
     class Config:
