@@ -21,12 +21,11 @@ class Settings(BaseSettings):
     jwt_expire: int = 30
 
     # rabbitmq
-    rabbit_host: str = "rabbitmq"
-    rabbit_port: int = 15672
-    rabbit_user: str = "guest"
-    rabbit_pass: str = "guest"
-    rabbit_vhost: str = "/"
-
+    rabbit_host: str
+    rabbit_port: int
+    rabbit_user: str
+    rabbit_pass: str
+    rabbit_vhost: str
     rabbit_pool_size: int = 2
     rabbit_channel_pool_size: int = 10
 
@@ -39,6 +38,12 @@ class Settings(BaseSettings):
     #infura ethereum node
     infura_api_url: str
     infura_api_key: str
+
+    #redis url
+    redis_url: str
+    #etherscan
+    # etherscan_get_block_url: str
+    # etherscan_api_key: str
 
 
 

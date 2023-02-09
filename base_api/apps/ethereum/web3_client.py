@@ -71,3 +71,13 @@ class EthereumClient(BaseClient):
             return txn
         except Exception:
             print('error get transaction_receipt')
+
+    def get_transaction_by_block(self, block_number: str, addresses: list):
+
+        transactions = self.provider.eth.getBlock(block_number, True)["transactions"]
+        if transactions:
+            return [transaction for transaction in transactions
+                    if transaction['to'] in addresses or transaction["from"] in addresses]
+
+
+

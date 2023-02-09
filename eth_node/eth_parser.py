@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     # etherscan_api_url: str
     # etherscan_api_key: str
 
-    # @property
+    @property
     def rabbit_url(self) -> URL:
         """
         Assemble RabbitMQ URL from settings.
@@ -74,12 +74,10 @@ async def start_parse():
                 message = await asyncio.wait_for(websocket.recv(), timeout=2)
                 response = json.loads(message)
                 block_number = response["params"]["result"]["number"]
-                print(response)
                 print(
                     f'{datetime.datetime.now().strftime("%H:%M:%S")} '
                     f"-- Got new block form Ethereum Network -- {block_number}",
                 )
-
 
                 # publish new message with aio-pika
                 connection = await connect_robust(settings.rabbit_url)
@@ -87,20 +85,19 @@ async def start_parse():
                 async with connection:
                     channel = await connection.channel()
 
-                new_blocks_exchange = await channel.declare_exchange(
-                    "new_block",
-                    ExchangeType.FANOUT,
-                )
+                    new_blocks_exchange = await channel.declare_exchange(
+                        "new_block",
+                        ExchangeType.FANOUT,
+                    )
 
-                message = Message(
-                    f"{block_number}".encode(),
-                    delivery_mode=DeliveryMode.PERSISTENT,
-                )
+                    message = Message(
+                        f"{block_number}".encode(),
+                        delivery_mode=DeliveryMode.PERSISTENT,
+                    )
 
-                # Sending the message
-                await new_blocks_exchange.publish(message, routing_key="info")
+                    # Sending the message
+                    await new_blocks_exchange.publish(message, routing_key="info")
 
-#подшаманить версию Веб3, вебсокетс
 
             except Exception:
                 pass

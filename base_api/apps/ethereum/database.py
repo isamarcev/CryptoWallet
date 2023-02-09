@@ -1,5 +1,5 @@
 from typing import Type
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from base_api.apps.ethereum.models import Wallet, wallet as wallet_table, Transaction
@@ -39,3 +39,14 @@ class EthereumDatabase:
         db.add(transaction_instance)
         await db.commit()
         return transaction_instance
+
+    async def get_wallets(self, engine) -> list:
+        # async with engine.connect() as conn:
+        # async with engine
+        result = await engine.execute(select(wallet_table))
+        # result = await db.execute(
+        #     select(self.wallet_model)
+        # )
+        result_scalar = result.all()
+        print(result_scalar, "RESULT SCALAR")
+        return result_scalar

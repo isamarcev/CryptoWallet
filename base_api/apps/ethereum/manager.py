@@ -6,7 +6,7 @@ from datetime import datetime
 
 from eth_keys import keys
 from eth_utils import decode_hex
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from eth_account import Account
 from web3 import Web3
 
@@ -38,7 +38,8 @@ class EthereumLikeManager(BaseManager):
 
 
 class EthereumManager(EthereumLikeManager):
-    def __init__(self, database: EthereumDatabase, client: EthereumClient):
+    def __init__(self, database: EthereumDatabase,
+                 client: EthereumClient):
         self.database = database
         self.client = client
 
@@ -117,6 +118,18 @@ class EthereumManager(EthereumLikeManager):
         )
         new_transaction_receipt = await self.database.create_transaction(transaction_receipt, user_wallet, db)
         return new_transaction_receipt
+
+    async def check_transaction_in_block(self, block_number: str, db: AsyncSession):
+        # wallets = await self.database.get_wallets(db)
+        # addresses = [wallet.public_key for wallet in wallets]
+        # loop = asyncio.get_running_loop()
+        # block_info = await loop.run_in_executor(None, functools.partial(self.client.get_transaction_by_block,
+        #                                                                 block_number=block_number,
+        #                                                                 addresses=addresses))
+        # print(addresses, "adresses INFO")
+        # print(block_info, "BLOCKINFO")
+        print("CELERY CHECKER")
+        return
 
 
 

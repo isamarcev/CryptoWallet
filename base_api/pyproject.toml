@@ -38,6 +38,7 @@ boto3 = "^1.26.58"
 pillow = "^9.4.0"
 flake8 = "^6.0.0"
 web3 = "^5.31.3"
+celery = "^5.2.7"
 
 
 [build-system]

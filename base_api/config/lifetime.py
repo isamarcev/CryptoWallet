@@ -6,6 +6,7 @@ import aio_pika
 from aio_pika import connect_robust
 from fastapi import FastAPI
 
+from base_api.base_api_consumer import base_api_consumer_thread
 from base_api.config.db import init_db
 from base_api.config.settings import settings
 from services.rabbit.lifetime import init_rabbit, shutdown_rabbit
@@ -35,7 +36,7 @@ def register_startup_event(
             await connection.close()
         except Exception:
             await asyncio.sleep(10)
-
+        base_api_consumer_thread.start()
     return _startup
 
 

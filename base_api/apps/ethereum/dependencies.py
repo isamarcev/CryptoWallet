@@ -1,3 +1,4 @@
+from async_lru import alru_cache
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.ethereum.database import EthereumDatabase
