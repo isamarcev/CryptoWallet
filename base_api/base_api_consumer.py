@@ -36,7 +36,8 @@ async def check_transaction_by_block(message: AbstractIncomingMessage):
         print(message.body)
         print(message.body.decode())
         # await ethereum_manager.check_transaction_in_block(message.body.decode("utf-8"), db)
-        check_transactions_by_block.apply_async(args=[f"{message.body}"])
+        check_transactions_by_block.apply_async(args=["124553"])
+        # check_transactions_by_block.apply_async(args=[f"{message.body.decode()}"])
         # await new_message(message.body)
 
 

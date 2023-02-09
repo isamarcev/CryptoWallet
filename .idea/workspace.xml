@@ -6,19 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/base_api_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/base_api_consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/lifetime.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eth_node/eth_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/eth_node/eth_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/celery_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/celery_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,6 +171,7 @@
       <workItem from="1675852093102" duration="11002000" />
       <workItem from="1675868441969" duration="6850000" />
       <workItem from="1675890012853" duration="12352000" />
+      <workItem from="1675937640702" duration="1236000" />
     </task>
     <servers />
   </component>
