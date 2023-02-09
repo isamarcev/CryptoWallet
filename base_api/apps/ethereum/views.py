@@ -1,4 +1,4 @@
-
+import time
 from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,7 +6,7 @@ from base_api.apps.chat.dependencies import get_session
 from base_api.apps.ethereum.dependencies import get_ethereum_manager
 from base_api.apps.ethereum.manager import EthereumManager
 from base_api.apps.ethereum.schemas import WalletCreate, WalletDetail, WalletImport, WalletsInfo, CreateTransaction, \
-    WalletTransactions
+    WalletTransactions, TransactionURL
 from base_api.apps.users.dependencies import get_current_user
 from base_api.apps.users.models import User
 
@@ -62,11 +62,14 @@ async def get_user_wallets(
     db: AsyncSession = Depends(get_session),
     manager: EthereumManager = Depends(get_ethereum_manager)
 ):
+    start = time.time()
     response = await manager.get_user_wallets(user, db)
+    end = time.time() - start  ## собственно время работы программы
+    print('async = ', end)  ## вывод времени
     return response
 
 
-@ethereum_router.post('/send_transaction', response_model=WalletTransactions)
+@ethereum_router.post('/send_transaction', response_model=TransactionURL)
 async def send_transaction(
     transaction: CreateTransaction,
     user: User = Depends(get_current_user),

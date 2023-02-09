@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, List, Union
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -27,26 +27,18 @@ class EthereumDatabase:
 
     async def get_user_wallets(self, user: User, db: AsyncSession):
         result = await db.execute(
-            select(self.wallet_model).where(wallet_table.c.user == user.id).options(selectinload(Wallet.transactions))
+            select(self.wallet_model).where(wallet_table.c.user == user.id)
         )
         results = result.scalars().all()
-        for res in results:
-            print('tr = ', res.transactions)
         return results
 
-    async def create_transaction(self, transaction: CreateTransactionReceipt, user_wallet: Wallet, db: AsyncSession):
-        transaction_instance = self.transaction_model(**transaction.dict(), wallet_id=user_wallet.id)
+    async def create_transaction(self, transaction: CreateTransactionReceipt, db: AsyncSession):
+        transaction_instance = self.transaction_model(**transaction.dict())
         db.add(transaction_instance)
         await db.commit()
         return transaction_instance
 
-    async def get_wallets(self, engine) -> list:
-        # async with engine.connect() as conn:
-        # async with engine
-        result = await engine.execute(select(wallet_table))
-        # result = await db.execute(
-        #     select(self.wallet_model)
-        # )
-        result_scalar = result.all()
-        print(result_scalar, "RESULT SCALAR")
-        return result_scalar
+    async def get_wallets(self, engine) -> Union[List[Wallet], None]:
+        wallets = await engine.execute(select(wallet_table))
+        result = wallets.all()
+        return result if result else None

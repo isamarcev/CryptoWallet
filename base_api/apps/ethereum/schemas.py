@@ -12,7 +12,6 @@ class WalletCreate(BaseModel):
     public_key: str
     privet_key: str
     user: UUID
-    balance: float
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
@@ -55,7 +54,7 @@ class WalletTransactions(BaseModel):
 class WalletsInfo(BaseModel):
     public_key: str
     balance: float
-    transactions: List[WalletTransactions] = []
+    # transactions: List[WalletTransactions] = []
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
@@ -81,3 +80,10 @@ class CreateTransactionReceipt(BaseModel):
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
+
+
+class TransactionURL(BaseModel):
+    url: str
+
+    class Config:
+        orm_mode = True

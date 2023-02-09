@@ -23,10 +23,7 @@ class Wallet(Base):
     currency_name = Column(String)
     public_key = Column(String, unique=True)
     privet_key = Column(String, unique=True)
-    balance = Column(Float)
     user = Column(ForeignKey(User.id))
-
-    transactions = relationship('Transaction', back_populates='wallet')
 
 
 wallet = Wallet.__table__
@@ -48,6 +45,3 @@ class Transaction(Base):
     date = Column(DateTime(timezone=True), server_default=func.now())
     txn_fee = Column(String)
     status = Column(ChoiceType(STATUS), nullable=False)
-    wallet_id = Column('wallet_id', ForeignKey(Wallet.id))
-
-    wallet = relationship(Wallet, back_populates='transactions')
