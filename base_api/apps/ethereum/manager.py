@@ -1,9 +1,11 @@
 import asyncio
 import functools
+import json
 import secrets
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+from aioredis import Redis
 from eth_keys import keys
 from eth_utils import decode_hex
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,7 +15,8 @@ from web3 import Web3
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
     WalletIsNotDefine
-from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt
+from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt, \
+    TransactionURL
 from base_api.apps.ethereum.web3_client import EthereumClient
 from base_api.apps.users.models import User
 
@@ -38,9 +41,10 @@ class EthereumLikeManager(BaseManager):
 
 
 class EthereumManager(EthereumLikeManager):
-    def __init__(self, database: EthereumDatabase, client: EthereumClient):
+    def __init__(self, database: EthereumDatabase, client: EthereumClient, redis: Redis):
         self.database = database
         self.client = client
+        self.redis = redis
 
     @staticmethod
     async def create_privet_key():
@@ -69,8 +73,7 @@ class EthereumManager(EthereumLikeManager):
             raise InvalidWalletImport()
         if await self.database.get_wallet_by_public_key(public_key, db):
             raise WalletAlreadyExists()
-        balance = await self.get_wallet_balance(public_key)
-        wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key, balance=balance)
+        wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key)
         return await self.database.add_wallet(wallet, db)
 
     # async def get_balance(self, wallets: List[Wallet]):
@@ -84,7 +87,15 @@ class EthereumManager(EthereumLikeManager):
     #     return {}
 
     async def get_user_wallets(self, user: User, db: AsyncSession):
-        return await self.database.get_user_wallets(user, db)
+        wallets = await self.database.get_user_wallets(user, db)
+        if wallets:
+            loop = asyncio.get_running_loop()
+            result = [loop.run_in_executor(None, functools.partial(self.client.sync_get_balance, address=wallet.public_key))
+                      for wallet in wallets]
+            balances = await asyncio.gather(*result, return_exceptions=False)
+            for number, wallet in enumerate(wallets):
+                wallet.balance = balances[number]
+        return wallets
 
     async def get_wallet_balance(self, wallet: str):
         loop = asyncio.get_running_loop()
@@ -95,7 +106,6 @@ class EthereumManager(EthereumLikeManager):
         user_wallet = await self.database.get_wallet_by_public_key(transaction.from_address, db)
         if not user_wallet or user_wallet.user != user.id:
             raise WalletIsNotDefine()
-        #TODO: check balance and transaction value???
         if not Web3.isAddress(transaction.to_address):
             raise WalletIsNotDefine(message='Wallet address is not defined')
         loop = asyncio.get_running_loop()
@@ -104,8 +114,6 @@ class EthereumManager(EthereumLikeManager):
                                                                       to_address=transaction.to_address,
                                                                       amount=transaction.amount,
                                                                       private_key=user_wallet.privet_key))
-        # receipt = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
-        #                                                              txn_hash=txn_hash))
         transaction_receipt = CreateTransactionReceipt(
             number=txn_hash,
             from_address=transaction.from_address,
@@ -115,8 +123,14 @@ class EthereumManager(EthereumLikeManager):
             txn_fee=None,
             status='Pending'
         )
-        new_transaction_receipt = await self.database.create_transaction(transaction_receipt, user_wallet, db)
-        return new_transaction_receipt
+        new_transaction_receipt = await self.database.create_transaction(transaction_receipt, db)
+        tracking_transaction = await self.redis.get('transaction')
+        if tracking_transaction:
+            tracking_transaction.append(txn_hash)
+        else:
+            tracking_transaction = [txn_hash]
+        await self.redis.set("transaction", json.dumps(tracking_transaction))
+        return TransactionURL(url='https://sepolia.etherscan.io/tx/' + txn_hash)
 
 
 

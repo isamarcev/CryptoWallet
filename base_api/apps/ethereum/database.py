@@ -27,15 +27,13 @@ class EthereumDatabase:
 
     async def get_user_wallets(self, user: User, db: AsyncSession):
         result = await db.execute(
-            select(self.wallet_model).where(wallet_table.c.user == user.id).options(selectinload(Wallet.transactions))
+            select(self.wallet_model).where(wallet_table.c.user == user.id)
         )
         results = result.scalars().all()
-        for res in results:
-            print('tr = ', res.transactions)
         return results
 
-    async def create_transaction(self, transaction: CreateTransactionReceipt, user_wallet: Wallet, db: AsyncSession):
-        transaction_instance = self.transaction_model(**transaction.dict(), wallet_id=user_wallet.id)
+    async def create_transaction(self, transaction: CreateTransactionReceipt, db: AsyncSession):
+        transaction_instance = self.transaction_model(**transaction.dict())
         db.add(transaction_instance)
         await db.commit()
         return transaction_instance

@@ -4,6 +4,7 @@ import functools
 from abc import ABC
 from web3 import Web3
 
+from base_api.apps.ethereum.exeptions import Web3ConnectionError, TransactionError
 from base_api.config.settings import settings
 
 
@@ -11,8 +12,12 @@ class BaseClient(ABC):
 
     @property
     def provider(self):
-        provider = Web3(Web3.WebsocketProvider(settings.infura_api_url))
-        print(f"Is connected: {provider.isConnected()}")
+        try:
+            provider = Web3(Web3.WebsocketProvider(settings.infura_api_url))
+            print(f"Is connected: {provider.isConnected()}")
+        except:
+            print('888')
+            raise Web3ConnectionError()
         return provider
 
 
@@ -31,8 +36,7 @@ class EthereumClient(BaseClient):
             balance = self.provider.eth.get_balance(checksum_address)
         except ValueError:
             return self.sync_get_balance(address)
-        ether_balance = Web3.fromWei(balance, 'ether')  # Decimal('1')
-        # return {"address": address, "balance": ether_balance}
+        ether_balance = Web3.fromWei(balance, 'ether')
         return ether_balance
 
     @staticmethod
@@ -61,8 +65,8 @@ class EthereumClient(BaseClient):
             print('success transaction = ', txn_hash.hex())
             return txn_hash.hex()
         except Exception as ex:
-            #TODO: make exeption
-            print('some problem with make transaction = ', ex)
+            print(ex)
+            raise TransactionError(str(ex))
 
     def sync_get_transaction_receipt(self, txn_hash: str):
         try:

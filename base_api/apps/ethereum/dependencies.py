@@ -1,3 +1,5 @@
+import aioredis
+from aioredis import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base_api.apps.ethereum.database import EthereumDatabase
@@ -20,7 +22,13 @@ async def get_client() -> EthereumClient:
     return EthereumClient()
 
 
+async def get_redis() -> Redis:
+    redis = aioredis.from_url("redis://localhost", decode_responses=True)
+    return redis
+
+
 async def get_ethereum_manager() -> EthereumManager:
     ethereum_db = await get_db()
     eth_client = await get_client()
-    return EthereumManager(ethereum_db, eth_client)
+    redis = await get_redis()
+    return EthereumManager(ethereum_db, eth_client, redis)

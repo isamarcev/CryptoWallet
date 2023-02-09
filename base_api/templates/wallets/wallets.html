@@ -80,6 +80,41 @@
 <!--                        </div>-->
                 </div>
             </div>
+          <div class="modal fade" id="addNewCard" tabindex="-1" aria-labelledby="addNewCardTitle" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-transparent">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body px-sm-5 mx-50 pb-5">
+                                <h1 class="text-center mb-1" id="addNewCardTitle">Import Wallet</h1>
+
+                                <!-- form -->
+                                <form id="addNewCardValidation" class="row gy-1 gx-2 mt-75" onsubmit="return false" novalidate="novalidate">
+                                    <div class="col-12">
+                                        <label class="form-label" for="modal_address">Send To:</label>
+                                        <div class="input-group input-group-merge">
+                                            <input id="modal_address" name="modalAddCard" class="form-control add-credit-card-mask" type="text" placeholder="Please enter address" aria-describedby="modalAddCard2" data-msg="Please enter address">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="modal_value">Value:</label>
+                                        <div class="input-group input-group-merge">
+                                            <input id="modal_value" name="modalAddCard" class="form-control add-credit-card-mask" type="text" placeholder="Please enter send amount" aria-describedby="modalAddCard2" data-msg="Please enter">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 text-center">
+                                        <button type="buttton" class="btn btn-primary me-1 mt-1 waves-effect waves-float waves-light" onclick="send_transaction()" data-bs-dismiss="modal" aria-label="Close">Submit</button>
+                                        <button type="reset" class="btn btn-outline-secondary mt-1 waves-effect" data-bs-dismiss="modal" aria-label="Close">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
 
 </div>
