@@ -3,6 +3,8 @@ import concurrent
 import functools
 from abc import ABC
 from web3 import Web3
+from web3.middleware import geth_poa_middleware
+
 
 from base_api.config.settings import settings
 
@@ -12,6 +14,7 @@ class BaseClient(ABC):
     @property
     def provider(self):
         provider = Web3(Web3.WebsocketProvider(settings.infura_api_url))
+        provider.middleware_onion.inject(geth_poa_middleware, layer=0)
         print(f"Is connected: {provider.isConnected()}")
         return provider
 
@@ -72,9 +75,10 @@ class EthereumClient(BaseClient):
         except Exception:
             print('error get transaction_receipt')
 
-    def get_transaction_by_block(self, block_number: str, addresses: list):
+    def get_transaction_by_block(self, block_number, addresses: list):
 
-        transactions = self.provider.eth.getBlock(block_number, True)["transactions"]
+        transactions = self.provider.eth.get_block(block_number, True)["transactions"]
+        print(transactions, "TRANSACTIONS")
         if transactions:
             return [transaction for transaction in transactions
                     if transaction['to'] in addresses or transaction["from"] in addresses]

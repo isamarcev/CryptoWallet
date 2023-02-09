@@ -31,12 +31,9 @@ async def check_transaction_by_block(message: AbstractIncomingMessage):
     # ethereum_manager = await get_ethereum_manager()
     print('fsadfsadf')
     async with message.process():
-        db = async_session()
         logger.info(f"Got new block: {message.body}")
-        print(message.body)
-        print(message.body.decode())
         # await ethereum_manager.check_transaction_in_block(message.body.decode("utf-8"), db)
-        check_transactions_by_block.apply_async(args=["124553"])
+        check_transactions_by_block.apply_async(args=[message.body.decode()])
         # check_transactions_by_block.apply_async(args=[f"{message.body.decode()}"])
         # await new_message(message.body)
 

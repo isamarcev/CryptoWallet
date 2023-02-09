@@ -120,14 +120,15 @@ class EthereumManager(EthereumLikeManager):
         return new_transaction_receipt
 
     async def check_transaction_in_block(self, block_number: str, db: AsyncSession):
-        # wallets = await self.database.get_wallets(db)
-        # addresses = [wallet.public_key for wallet in wallets]
-        # loop = asyncio.get_running_loop()
-        # block_info = await loop.run_in_executor(None, functools.partial(self.client.get_transaction_by_block,
-        #                                                                 block_number=block_number,
-        #                                                                 addresses=addresses))
-        # print(addresses, "adresses INFO")
-        # print(block_info, "BLOCKINFO")
+        wallets = await self.database.get_wallets(db)
+        addresses = [wallet.public_key for wallet in wallets]
+        print("--->>>adresses INFO", addresses, "--->>>adresses INFO")
+        loop = asyncio.get_running_loop()
+        print(block_number, "CHECK TRANSACTION ")
+        block_info = await loop.run_in_executor(None, functools.partial(self.client.get_transaction_by_block,
+                                                                        block_number=block_number,
+                                                                        addresses=addresses))
+        print(block_info, "BLOCKINFO")
         print("CELERY CHECKER")
         return
 
