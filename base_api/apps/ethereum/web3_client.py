@@ -1,9 +1,6 @@
-import asyncio
-import concurrent
-import functools
 from abc import ABC
 from web3 import Web3
-
+from web3.middleware import geth_poa_middleware
 from base_api.apps.ethereum.exeptions import Web3ConnectionError, TransactionError
 from base_api.config.settings import settings
 
@@ -14,21 +11,14 @@ class BaseClient(ABC):
     def provider(self):
         try:
             provider = Web3(Web3.WebsocketProvider(settings.infura_api_url))
+            provider.middleware_onion.inject(geth_poa_middleware, layer=0)
             print(f"Is connected: {provider.isConnected()}")
         except:
-            print('888')
             raise Web3ConnectionError()
         return provider
 
 
 class EthereumClient(BaseClient):
-
-    # async def get_balance(self, address):
-    #     print('async get balance')
-    #     loop = asyncio.get_running_loop()
-    #     balance = await loop.run_in_executor(None, functools.partial(self.sync_get_balance, address=address))
-    #     print(balance)
-    #     return balance
 
     def sync_get_balance(self, address: str) -> str:
         checksum_address = Web3.toChecksumAddress(address)
@@ -75,3 +65,14 @@ class EthereumClient(BaseClient):
             return txn
         except Exception:
             print('error get transaction_receipt')
+
+    def get_transaction_by_block(self, block_number, addresses: list):
+
+        transactions = self.provider.eth.get_block(block_number, True)["transactions"]
+        print(transactions, "TRANSACTIONS")
+        if transactions:
+            return [transaction for transaction in transactions
+                    if transaction['to'] in addresses or transaction["from"] in addresses]
+
+
+

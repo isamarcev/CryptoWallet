@@ -4,7 +4,6 @@ from typing import List
 
 import toml
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
 from fastapi_helper import DefaultHTTPException
 from fastapi_helper.exceptions.validation_exceptions import init_validation_handler
 from pydantic import ValidationError
@@ -18,6 +17,7 @@ from base_api.apps.frontend.auth import auth_router
 from base_api.apps.frontend.chat import chat_router
 from base_api.apps.frontend.user_profile import profile_router
 from base_api.apps.frontend.wallets import wallets_router
+from base_api.config.celery_utils import create_celery
 from base_api.config.lifetime import register_shutdown_event, register_startup_event
 from base_api.config.router import router
 
@@ -54,7 +54,7 @@ def get_application() -> FastAPI:
         # middleware=make_middleware(),
         # openapi_tags=metadata_tags
     )
-
+    app_.celery_app = create_celery()
     init_validation_handler(app=app_)
     # app_.exception_handler(DefaultHTTPException)
     register_startup_event(app_)
@@ -71,6 +71,7 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
+celery = app.celery_app
 
 @app.exception_handler(ValidationError)
 async def validation_exception_handler(request: Request, exc: ValidationError) -> JSONResponse:

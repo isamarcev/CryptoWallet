@@ -5,38 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/base_api/apps/ethereum/exeptions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base_api/apps/frontend/wallets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base_api/static/custom/image/Ethereum_logo.svg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base_api/templates/wallets/wallets.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CryptoWalletProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CryptoWalletProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/basic.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/basic.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/user_profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/user_profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/basic_template/basic.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/basic_template/basic.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/chat/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/chat/chat.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/users/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/users/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/users/user_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/users/user_profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockets/apps/chat/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/apps/chat/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockets/poetry.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockets/socketio_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/socketio_server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/base_api_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/base_api_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +64,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pathVariables&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -109,7 +84,7 @@
       <recent name="$PROJECT_DIR$/services" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.app">
+  <component name="RunManager" selected="FastAPI.CryptoWalletProject">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CryptoWalletProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -195,6 +170,12 @@
       <workItem from="1675373579244" duration="4518000" />
       <workItem from="1675583730645" duration="3343000" />
       <workItem from="1675588070041" duration="13100000" />
+      <workItem from="1675810607392" duration="891000" />
+      <workItem from="1675852093102" duration="11002000" />
+      <workItem from="1675868441969" duration="6850000" />
+      <workItem from="1675890012853" duration="12352000" />
+      <workItem from="1675937640702" duration="1236000" />
+      <workItem from="1675949938397" duration="1520000" />
     </task>
     <servers />
   </component>

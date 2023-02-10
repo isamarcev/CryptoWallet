@@ -5,6 +5,8 @@
 $(function () {
   'use strict';
 
+  console.log('dima')
+
   var dt_basic_table = $('.datatables-basic'),
     dt_date_table = $('.dt-date'),
     dt_complex_header_table = $('.dt-complex-header'),
@@ -20,6 +22,7 @@ $(function () {
   // --------------------------------------------------------------------
 
   if (dt_basic_table.length) {
+    console.log('dima222')
     var dt_basic = dt_basic_table.DataTable({
       ajax: assetPath + 'data/table-datatable.json',
       columns: [
@@ -551,81 +554,82 @@ $(function () {
   // Multilingual DataTable
   // --------------------------------------------------------------------
 
-  var lang = 'German';
+  var lang = 'English';
   if (dt_multilingual_table.length) {
+    console.log('dima1')
     var table_language = dt_multilingual_table.DataTable({
-      ajax: assetPath + 'data/table-datatable.json',
-      columns: [
-        { data: 'responsive_id' },
-        { data: 'full_name' },
-        { data: 'post' },
-        { data: 'email' },
-        { data: 'start_date' },
-        { data: 'salary' },
-        { data: 'status' },
-        { data: '' }
-      ],
-      columnDefs: [
-        {
-          // For Responsive
-          className: 'control',
-          orderable: false,
-          targets: 0
-        },
-        {
-          // Label
-          targets: -2,
-          render: function (data, type, full, meta) {
-            var $status_number = full['status'];
-            var $status = {
-              1: { title: 'Current', class: 'badge-light-primary' },
-              2: { title: 'Professional', class: ' badge-light-success' },
-              3: { title: 'Rejected', class: ' badge-light-danger' },
-              4: { title: 'Resigned', class: ' badge-light-warning' },
-              5: { title: 'Applied', class: ' badge-light-info' }
-            };
-            if (typeof $status[$status_number] === 'undefined') {
-              return data;
-            }
-            return (
-              '<span class="badge rounded-pill ' +
-              $status[$status_number].class +
-              '">' +
-              $status[$status_number].title +
-              '</span>'
-            );
-          }
-        },
-        {
-          // Actions
-          targets: -1,
-          title: 'Actions',
-          orderable: false,
-          render: function (data, type, full, meta) {
-            return (
-              '<div class="d-inline-flex">' +
-              '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
-              feather.icons['more-vertical'].toSvg({ class: 'font-small-4' }) +
-              '</a>' +
-              '<div class="dropdown-menu dropdown-menu-end">' +
-              '<a href="javascript:;" class="dropdown-item">' +
-              feather.icons['file-text'].toSvg({ class: 'me-50 font-small-4' }) +
-              'Details</a>' +
-              '<a href="javascript:;" class="dropdown-item">' +
-              feather.icons['archive'].toSvg({ class: 'me-50 font-small-4' }) +
-              'Archive</a>' +
-              '<a href="javascript:;" class="dropdown-item delete-record">' +
-              feather.icons['trash-2'].toSvg({ class: 'me-50 font-small-4' }) +
-              'Delete</a>' +
-              '</div>' +
-              '</div>' +
-              '<a href="javascript:;" class="item-edit">' +
-              feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
-              '</a>'
-            );
-          }
-        }
-      ],
+      // ajax: assetPath + 'data/table-datatable.json',
+      // columns: [
+      //   { data: 'responsive_id' },
+      //   { data: 'full_name' },
+      //   { data: 'post' },
+      //   { data: 'email' },
+      //   { data: 'start_date' },
+      //   { data: 'salary' },
+      //   { data: 'status' },
+      //   { data: '' }
+      // ],
+      // columnDefs: [
+      //   {
+      //     // For Responsive
+      //     className: 'control',
+      //     orderable: false,
+      //     targets: 0
+      //   },
+      //   {
+      //     // Label
+      //     targets: -2,
+      //     render: function (data, type, full, meta) {
+      //       var $status_number = full['status'];
+      //       var $status = {
+      //         1: { title: 'Current', class: 'badge-light-primary' },
+      //         2: { title: 'Professional', class: ' badge-light-success' },
+      //         3: { title: 'Rejected', class: ' badge-light-danger' },
+      //         4: { title: 'Resigned', class: ' badge-light-warning' },
+      //         5: { title: 'Applied', class: ' badge-light-info' }
+      //       };
+      //       if (typeof $status[$status_number] === 'undefined') {
+      //         return data;
+      //       }
+      //       return (
+      //         '<span class="badge rounded-pill ' +
+      //         $status[$status_number].class +
+      //         '">' +
+      //         $status[$status_number].title +
+      //         '</span>'
+      //       );
+      //     }
+      //   },
+        // {
+        //   // Actions
+        //   targets: -1,
+        //   title: 'Actions',
+        //   orderable: false,
+        //   render: function (data, type, full, meta) {
+        //     return (
+        //       '<div class="d-inline-flex">' +
+        //       '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
+        //       feather.icons['more-vertical'].toSvg({ class: 'font-small-4' }) +
+        //       '</a>' +
+        //       '<div class="dropdown-menu dropdown-menu-end">' +
+        //       '<a href="javascript:;" class="dropdown-item">' +
+        //       feather.icons['file-text'].toSvg({ class: 'me-50 font-small-4' }) +
+        //       'Details</a>' +
+        //       '<a href="javascript:;" class="dropdown-item">' +
+        //       feather.icons['archive'].toSvg({ class: 'me-50 font-small-4' }) +
+        //       'Archive</a>' +
+        //       '<a href="javascript:;" class="dropdown-item delete-record">' +
+        //       feather.icons['trash-2'].toSvg({ class: 'me-50 font-small-4' }) +
+        //       'Delete</a>' +
+        //       '</div>' +
+        //       '</div>' +
+        //       '<a href="javascript:;" class="item-edit">' +
+        //       feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
+        //       '</a>'
+        //     );
+        //   }
+        // }
+      // ],
       language: {
         url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/' + lang + '.json',
         paginate: {
