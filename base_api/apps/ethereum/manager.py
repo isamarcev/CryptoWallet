@@ -15,7 +15,7 @@ from web3 import Web3
 
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
-    WalletIsNotDefine
+    WalletIsNotDefine, WalletAddressError
 from base_api.apps.ethereum.models import Transaction
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt, \
     TransactionURL, GetTransactions
@@ -150,8 +150,10 @@ class EthereumManager(EthereumLikeManager):
         print("CELERY CHECKER")
         return
 
-    async def get_wallet_transactions(self, wallet: GetTransactions, db: AsyncSession):
-        wallet = wallet.wallet.lower()
+    async def get_wallet_transactions(self, wallet: str, db: AsyncSession):
+        if not Web3.isAddress(wallet):
+            raise WalletAddressError()
+        wallet = wallet.lower()
         first_pending_transaction = await self.database.get_first_pending_transaction(wallet, db)
         if first_pending_transaction:
             transaction = first_pending_transaction

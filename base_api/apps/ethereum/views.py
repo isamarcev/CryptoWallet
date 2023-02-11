@@ -80,12 +80,12 @@ async def send_transaction(
     return response
 
 
-@ethereum_router.post('/get_wallet_transactions', response_model=List[WalletTransactions])
+@ethereum_router.get('/get_wallet_transactions/{wallet_id}', response_model=List[WalletTransactions])
 async def get_wallet_transaction(
-    wallet: GetTransactions,
+    wallet_id,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
     manager: EthereumManager = Depends(get_ethereum_manager)
 ):
-    response = await manager.get_wallet_transactions(wallet, db)
+    response = await manager.get_wallet_transactions(wallet_id, db)
     return response
