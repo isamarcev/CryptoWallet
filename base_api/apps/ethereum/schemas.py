@@ -1,11 +1,12 @@
 from enum import Enum
 from typing import List, Union, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from pydantic.types import UUID
 from datetime import datetime
 
 from sqlalchemy_utils.types import choice
+from web3 import Web3
 
 
 class WalletCreate(BaseModel):
@@ -77,6 +78,7 @@ class CreateTransactionReceipt(BaseModel):
     date: datetime
     txn_fee: Union[None, str]
     status: StatusEnum
+    wallet: str
 
     class Config:
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
@@ -87,3 +89,18 @@ class TransactionURL(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GetTransactions(BaseModel):
+    wallet: str
+
+    @validator("wallet", pre=True)
+    def name_must_be_more_than_five(cls, wallet):
+        if Web3.isAddress(wallet):
+            return wallet
+        raise ValueError("Not valid wallet address")
+
+    class Config:
+        orm_mode = True
+
+

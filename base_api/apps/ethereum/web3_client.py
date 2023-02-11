@@ -1,13 +1,8 @@
-import asyncio
-import concurrent
-import functools
 from abc import ABC
 from datetime import datetime
 
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
-
-
 from base_api.apps.ethereum.exeptions import Web3ConnectionError, TransactionError
 from base_api.apps.ethereum.schemas import CreateTransactionReceipt
 from base_api.config.settings import settings
@@ -22,7 +17,6 @@ class BaseClient(ABC):
             provider.middleware_onion.inject(geth_poa_middleware, layer=0)
             print(f"Is connected: {provider.isConnected()}")
         except:
-            print('888')
             raise Web3ConnectionError()
         return provider
 
@@ -31,13 +25,6 @@ class BaseClient(ABC):
 
 
 class EthereumClient(BaseClient):
-
-    # async def get_balance(self, address):
-    #     print('async get balance')
-    #     loop = asyncio.get_running_loop()
-    #     balance = await loop.run_in_executor(None, functools.partial(self.sync_get_balance, address=address))
-    #     print(balance)
-    #     return balance
 
     def sync_get_balance(self, address: str) -> str:
         checksum_address = Web3.toChecksumAddress(address)
@@ -71,26 +58,21 @@ class EthereumClient(BaseClient):
             transaction = self.build_txn(provider, from_address, to_address, amount)
             signed_txn = provider.eth.account.sign_transaction(transaction, private_key)
             txn_hash = provider.eth.send_raw_transaction(signed_txn.rawTransaction)
-            print('success transaction = ', txn_hash.hex())
             return txn_hash.hex()
         except Exception as ex:
-            print(ex)
             raise TransactionError(str(ex))
 
     def sync_get_transaction_receipt(self, txn_hash: str):
         try:
             txn = self.provider.eth.get_transaction_receipt(txn_hash)
-            print(txn)
             return txn
         except Exception:
-            print('error get transaction_receipt')
+            return None
 
     def get_transaction_by_block(self, block_number, addresses: list):
 
         transactions = self.provider.eth.get_block(block_number, True)["transactions"]
         if transactions:
-            print(transactions[0], "TRANSACTION 0")
-            # return [transaction for transaction in transactions]
             return [transaction for transaction in transactions
                     if transaction['to'] in addresses or transaction["from"] in addresses]
 

@@ -39,6 +39,7 @@ pillow = "^9.4.0"
 flake8 = "^6.0.0"
 web3 = "^5.31.3"
 celery = "^5.2.7"
+aiohttp = "^3.8.3"
 
 
 [build-system]

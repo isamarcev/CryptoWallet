@@ -6,7 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/exeptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/exeptions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/js/scripts/tables/table-datatables-basic.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/js/scripts/tables/table-datatables-basic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/templates/wallets/wallets.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/wallets/wallets.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/config/.gitkeep" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +187,7 @@
       <workItem from="1676013352559" duration="6640000" />
       <workItem from="1676028998179" duration="10643000" />
       <workItem from="1676101109051" duration="13074000" />
-      <workItem from="1676150987249" duration="317000" />
+      <workItem from="1676150987249" duration="3577000" />
     </task>
     <servers />
   </component>

@@ -127,6 +127,10 @@ function send_transaction(){
 }
 
 
+<<<<<<< HEAD
+
+
+=======
 $(function () {
     var dt_multilingual_table = $('.dt-multilingual'),
     assetPath = '../../../app-assets/';
@@ -257,7 +261,5 @@ $(function () {
     });
   }
 });
-
-
-
+>>>>>>> dima_dev
 

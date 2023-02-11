@@ -1,7 +1,11 @@
-import datetime
+<<<<<<< HEAD
 from typing import Type, List, Union
+=======
+import datetime
+from typing import Type, List
 
 from sqlalchemy import delete
+>>>>>>> dima_dev
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -26,7 +30,6 @@ class EthereumDatabase:
             wallet_table.select().where(wallet_table.c.public_key == public_key),
         )
         result_data = result.first()
-        print(result_data._asdict(), "RESULTDATA")
         return None if not result_data else self.wallet_model(**result_data._asdict())
 
     async def get_user_wallets(self, user: User, db: AsyncSession):
@@ -42,11 +45,31 @@ class EthereumDatabase:
         await db.commit()
         return transaction_instance
 
+<<<<<<< HEAD
     async def get_wallets(self, db: AsyncSession) -> Union[List[Wallet], None]:
         wallets = await db.execute(select(wallet_table))
         result = wallets.all()
         return result if result else None
 
+    async def bulk_update(self, tuple_data, db):
+        bulk_update_query = """Update transaction set status = status * %s where  number = %s"""
+        try:
+            result = await db.executemany(bulk_update_query, tuple_data)
+            print(result, "RESULT BULK UPDATE")
+        except Exception as e:
+            print("Error while updating PostgreSQL table", e)
+
+=======
+    async def get_wallets(self, engine) -> list:
+        # async with engine.connect() as conn:
+        # async with engine
+        result = await engine.execute(select(wallet_table))
+        # result = await db.execute(
+        #     select(self.wallet_model)
+        # )
+        result_scalar = result.all()
+        print(result_scalar, "RESULT SCALAR")
+        return result_scalar
 
     async def get_wallet_transactions(self, wallet: GetTransactions, db: AsyncSession):
         result = await db.execute(
@@ -86,3 +109,4 @@ class EthereumDatabase:
     async def add_transactions(self, transactions: List[CreateTransactionReceipt], db: AsyncSession):
         db.add_all(transactions)
         await db.commit()
+>>>>>>> dima_dev

@@ -7,7 +7,11 @@ import socketio
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+<<<<<<< HEAD
+=======
 import aiohttp
+from aioredis import Redis
+>>>>>>> dima_dev
 from eth_keys import keys
 from eth_utils import decode_hex
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
@@ -143,6 +147,7 @@ class EthereumManager(EthereumLikeManager):
     async def check_transaction_in_block(self, block_number, db: AsyncSession):
         wallets = await self.database.get_wallets(db)
         addresses = [wallet.public_key for wallet in wallets]
+        print(addresses, "ADDREDDSE")
         loop = asyncio.get_event_loop()
         transactions = await loop.run_in_executor(None, functools.partial(self.client.get_transaction_by_block,
                                                                         block_number=block_number,
@@ -166,33 +171,33 @@ class EthereumManager(EthereumLikeManager):
                     current_balance = await loop.run_in_executor(None, functools.partial(self.client.sync_get_balance,
                                                                             address=transaction["to"],
                                                                             ))
-                    user_id = str(wallet_owner.user)
+                    print(current_balance, "CURRENT BALANCE")
                     message = {
                         "operation": "income",
                         "result": True if result.get("status") else False,
                         "public_key": transaction["to"],
-                        "current_balance": str(current_balance)
+                        "current_balance": current_balance,
                     }
                     await socket_manager.emit("transaction_alert",
                                               data=message,
-                                              room=users.get(user_id, "nowhere"))
+                                              room=users.get(wallet_owner.user.id, "nowhere"))
 
-                if transaction["from"] in addresses:
+                elif transaction["from"] in addresses:
                     address = transaction["from"]
                     wallet_owner = await self.database.get_wallet_by_public_key(transaction["from"], db)
                     current_balance = await loop.run_in_executor(None, functools.partial(self.client.sync_get_balance,
                                                                                          address=address,
                                                                                          ))
-                    user_id = str(wallet_owner.user)
+                    print(current_balance, "CURRENT BALANCE")
                     message = {
                         "operation": "outcome",
                         "result": True if result.get("status") else False,
                         "public_key": address,
-                        "current_balance": str(current_balance)
+                        "current_balance": current_balance,
                     }
                     await socket_manager.emit("transaction_alert",
                                               data=message,
-                                              room=users.get(user_id, "nowhere"))
+                                              room=users.get(wallet_owner.user.id, "nowhere"))
 
             # хочет ли фронтенд обновлять данные на следующую страницу по скроллу
             # если хочет получить оффсет и лимит , нам нужно это учесть.

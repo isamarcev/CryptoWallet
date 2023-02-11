@@ -45,6 +45,8 @@ class Settings(BaseSettings):
     # etherscan_get_block_url: str
     # etherscan_api_key: str
 
+    #etherscan
+    etherscan_key: str
 
 
     @property

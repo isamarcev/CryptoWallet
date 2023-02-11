@@ -45,3 +45,8 @@ class Transaction(Base):
     date = Column(DateTime(timezone=True), server_default=func.now())
     txn_fee = Column(String)
     status = Column(ChoiceType(STATUS), nullable=False)
+    wallet = Column(String)
+
+
+transaction = Transaction.__table__
+
