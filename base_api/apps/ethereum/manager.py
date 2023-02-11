@@ -147,10 +147,10 @@ class EthereumManager(EthereumLikeManager):
         if transactions:
             socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
             users_online = await self.redis.get("users_online")
-            # try:
-            users = json.loads(users_online)
-            # except:
-            #     pass
+            try:
+                users = json.loads(users_online)
+            except:
+                pass
             for transaction in transactions:
                 txn_hash = transaction.hash
                 loop = asyncio.get_event_loop()
@@ -170,7 +170,9 @@ class EthereumManager(EthereumLikeManager):
                         "public_key": transaction["to"],
                         "current_balance": current_balance,
                     }
-                    await socket_manager.emit("transaction_alert", data=message, to=users.get(wallet_owner.user.id))
+                    await socket_manager.emit("transaction_alert",
+                                              data=message,
+                                              room=users.get(wallet_owner.user.id, "nowhere"))
 
                 elif transaction["from"] in addresses:
                     address = transaction["from"]
@@ -185,24 +187,9 @@ class EthereumManager(EthereumLikeManager):
                         "public_key": address,
                         "current_balance": current_balance,
                     }
-                    await socket_manager.emit("transaction_alert", data=message, to=users.get(wallet_owner.user.id))
-        message = {
-            "operation": "outcome",
-            "BLOCK": block_number
-        }
-        socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
-        users_online = await self.redis.get("users_online")
-        # try:
-        print(users_online)
-        users = json.loads(users_online)
-        print(users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c2"), "SID")
-        nonTrue = users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c2", "1")
-        TrueTrue = users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c3", "1")
-        print(users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c3"), "SID")
-        await socket_manager.emit("transaction_alert",
-                                  data=message,
-                                  room=TrueTrue)
-
+                    await socket_manager.emit("transaction_alert",
+                                              data=message,
+                                              room=users.get(wallet_owner.user.id, "nowhere"))
 
             # хочет ли фронтенд обновлять данные на следующую страницу по скроллу
             # если хочет получить оффсет и лимит , нам нужно это учесть.
@@ -211,11 +198,6 @@ class EthereumManager(EthereumLikeManager):
             # ЕСЛИ ТРАНЗАЦИЯ ЕСТЬ В ОЖИДАНИЯХ - ШЛЮ ЗАПРОС В БД на ИЗМЕНЕНИЯ ЕЕ СТАТУСА, и НА ФРОНТ ОПОВЕЩАНИЯ
             # ЕСЛИ НЕТ В ОЖИДАНИИ, СОЗДАЮ ТРАНЗАКЦИЮ В БД И ШЛЮ ЮЗЕРУ О ЗАХОДЕ ДЕНЕГ
 
-        # нужно получить статус этой транзакции с апи
-        #
-
-
-        print("CELERY CHECKER")
         return
 
 
