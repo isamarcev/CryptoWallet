@@ -89,19 +89,9 @@ class EthereumClient(BaseClient):
 
         transactions = self.provider.eth.get_block(block_number, True)["transactions"]
         if transactions:
-            return [transaction for transaction in transactions]
+            print(transactions[0], "TRANSACTION 0")
             # return [transaction for transaction in transactions]
-                    # if transaction['to'] in addresses or transaction["from"] in addresses]
+            return [transaction for transaction in transactions
+                    if transaction['to'] in addresses or transaction["from"] in addresses]
 
 
-    def create_result(self, transaction, status):
-        transaction_receipt = CreateTransactionReceipt(
-            number=transaction.get("hash"),
-            from_address=transaction.get("from"),
-            to_address=transaction.get("to"),
-            value=self.provider.fromWei(transaction.get("value")),
-            date=datetime.now(),
-            txn_fee=None,
-            status="Success" if status else "Failed"
-        )
-        return transaction_receipt

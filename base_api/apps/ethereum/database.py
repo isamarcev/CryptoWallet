@@ -38,7 +38,16 @@ class EthereumDatabase:
         await db.commit()
         return transaction_instance
 
-    async def get_wallets(self, engine) -> Union[List[Wallet], None]:
-        wallets = await engine.execute(select(wallet_table))
+    async def get_wallets(self, db: AsyncSession) -> Union[List[Wallet], None]:
+        wallets = await db.execute(select(wallet_table))
         result = wallets.all()
         return result if result else None
+
+    async def bulk_update(self, tuple_data, db):
+        bulk_update_query = """Update transaction set status = status * %s where  number = %s"""
+        try:
+            result = await db.executemany(bulk_update_query, tuple_data)
+            print(result, "RESULT BULK UPDATE")
+        except Exception as e:
+            print("Error while updating PostgreSQL table", e)
+

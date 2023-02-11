@@ -84,3 +84,7 @@ $(window).on('load', function() {
 })
 
 
+sio.on("transaction_alert", (data) => {
+    console.log(data)
+})
+

@@ -2,15 +2,18 @@ import asyncio
 import functools
 import json
 import secrets
+import socketio
+
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from aioredis import Redis
 from eth_keys import keys
 from eth_utils import decode_hex
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from eth_account import Account
 from web3 import Web3
+from aioredis import Redis
+
 
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
@@ -19,6 +22,7 @@ from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTra
     TransactionURL
 from base_api.apps.ethereum.web3_client import EthereumClient
 from base_api.apps.users.models import User
+from base_api.config.settings import settings
 
 
 class BaseManager(ABC):
@@ -134,28 +138,79 @@ class EthereumManager(EthereumLikeManager):
 
     async def check_transaction_in_block(self, block_number, db: AsyncSession):
         wallets = await self.database.get_wallets(db)
-        tracking_transaction = await self.redis.get('transaction')
-        print(tracking_transaction)
-        # БЕРУ ВСЕВ ТРАНЗАКЦИИ С ЬД КОТОРЫЕ В ОЖИДАНИИ или дупуСТИМ ИЗ РЕДИСА
         addresses = [wallet.public_key for wallet in wallets]
+        print(addresses, "ADDREDDSE")
         loop = asyncio.get_event_loop()
         transactions = await loop.run_in_executor(None, functools.partial(self.client.get_transaction_by_block,
                                                                         block_number=block_number,
                                                                         addresses=addresses))
-        for transaction in transactions:
-            txn_hash = transaction.hash
-            loop = asyncio.get_event_loop()
-            result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
-                                                               txn_hash=txn_hash,
-                                                               ))
-            if txn_hash not in tracking_transaction:
-                transaction_receipt = self.client.create_result(transaction, result.status)
-                new_transaction = await self.database.create_transaction(transaction_receipt, db)
+        if transactions:
+            socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
+            users_online = await self.redis.get("users_online")
+            # try:
+            users = json.loads(users_online)
+            # except:
+            #     pass
+            for transaction in transactions:
+                txn_hash = transaction.hash
+                loop = asyncio.get_event_loop()
+                result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
+                                                                            txn_hash=txn_hash,
+                                                                            ))
+
+                if transaction['to'] in addresses:
+                    wallet_owner = await self.database.get_wallet_by_public_key(transaction["to"], db)
+                    current_balance = await loop.run_in_executor(None, functools.partial(self.client.sync_get_balance,
+                                                                            address=transaction["to"],
+                                                                            ))
+                    print(current_balance, "CURRENT BALANCE")
+                    message = {
+                        "operation": "income",
+                        "result": True if result.get("status") else False,
+                        "public_key": transaction["to"],
+                        "current_balance": current_balance,
+                    }
+                    await socket_manager.emit("transaction_alert", data=message, to=users.get(wallet_owner.user.id))
+
+                elif transaction["from"] in addresses:
+                    address = transaction["from"]
+                    wallet_owner = await self.database.get_wallet_by_public_key(transaction["from"], db)
+                    current_balance = await loop.run_in_executor(None, functools.partial(self.client.sync_get_balance,
+                                                                                         address=address,
+                                                                                         ))
+                    print(current_balance, "CURRENT BALANCE")
+                    message = {
+                        "operation": "outcome",
+                        "result": True if result.get("status") else False,
+                        "public_key": address,
+                        "current_balance": current_balance,
+                    }
+                    await socket_manager.emit("transaction_alert", data=message, to=users.get(wallet_owner.user.id))
+        message = {
+            "operation": "outcome",
+            "BLOCK": block_number
+        }
+        socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
+        users_online = await self.redis.get("users_online")
+        # try:
+        print(users_online)
+        users = json.loads(users_online)
+        print(users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c2"), "SID")
+        nonTrue = users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c2", "1")
+        TrueTrue = users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c3", "1")
+        print(users.get("40bf9645-6847-4fcc-a04e-ef63a0feb9c3"), "SID")
+        await socket_manager.emit("transaction_alert",
+                                  data=message,
+                                  room=TrueTrue)
+
+
+            # хочет ли фронтенд обновлять данные на следующую страницу по скроллу
+            # если хочет получить оффсет и лимит , нам нужно это учесть.
+            # Короткое кеширование - на 5 секунд. в редисе.
 
             # ЕСЛИ ТРАНЗАЦИЯ ЕСТЬ В ОЖИДАНИЯХ - ШЛЮ ЗАПРОС В БД на ИЗМЕНЕНИЯ ЕЕ СТАТУСА, и НА ФРОНТ ОПОВЕЩАНИЯ
             # ЕСЛИ НЕТ В ОЖИДАНИИ, СОЗДАЮ ТРАНЗАКЦИЮ В БД И ШЛЮ ЮЗЕРУ О ЗАХОДЕ ДЕНЕГ
 
-            print(result, "RESULT RECEAP")
         # нужно получить статус этой транзакции с апи
         #
 
