@@ -5,6 +5,7 @@ import secrets
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+import aiohttp
 from aioredis import Redis
 from eth_keys import keys
 from eth_utils import decode_hex
@@ -15,10 +16,12 @@ from web3 import Web3
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
     WalletIsNotDefine
+from base_api.apps.ethereum.models import Transaction
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt, \
-    TransactionURL
+    TransactionURL, GetTransactions
 from base_api.apps.ethereum.web3_client import EthereumClient
 from base_api.apps.users.models import User
+from base_api.config.settings import settings
 
 
 class BaseManager(ABC):
@@ -57,7 +60,7 @@ class EthereumManager(EthereumLikeManager):
         try:
             account = Account.from_key(privet_key)
             public_key = account.address
-            wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key, balance=0)
+            wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key)
         except Exception:
             raise WalletCreatingError()
         return await self.database.add_wallet(wallet, db)
@@ -116,12 +119,13 @@ class EthereumManager(EthereumLikeManager):
                                                                       private_key=user_wallet.privet_key))
         transaction_receipt = CreateTransactionReceipt(
             number=txn_hash,
-            from_address=transaction.from_address,
-            to_address=transaction.to_address,
+            from_address=transaction.from_address.lower(),
+            to_address=transaction.to_address.lower(),
             value=transaction.amount,
             date=datetime.now(),
             txn_fee=None,
-            status='Pending'
+            status='Pending',
+            wallet=user_wallet.public_key.lower()
         )
         new_transaction_receipt = await self.database.create_transaction(transaction_receipt, db)
         tracking_transaction = await self.redis.get('transaction')
@@ -146,5 +150,45 @@ class EthereumManager(EthereumLikeManager):
         print("CELERY CHECKER")
         return
 
-
-
+    async def get_wallet_transactions(self, wallet: GetTransactions, db: AsyncSession):
+        wallet = wallet.wallet.lower()
+        first_pending_transaction = await self.database.get_first_pending_transaction(wallet, db)
+        if first_pending_transaction:
+            transaction = first_pending_transaction
+        else:
+            transaction = await self.database.get_last_transaction(wallet, db)
+        if transaction:
+            loop = asyncio.get_running_loop()
+            transaction_info = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
+                                                                                  txn_hash=transaction.number))
+            if not transaction_info:
+                return await self.database.get_wallet_transactions(wallet, db)
+            block_number = transaction_info.blockNumber
+            await self.database.delete_transactions(wallet, transaction.date, db)
+        else:
+            block_number = '0'
+        params = {'module': 'account', 'action': 'txlist', 'address': wallet,
+                  'startblock': block_number, 'endblock': '99999999',
+                  'sort': 'asc', 'apikey': settings.etherscan_key}
+        async with aiohttp.ClientSession() as session:
+            response = await session.get(url='https://api-sepolia.etherscan.io/api', params=params)
+            transactions = await response.json()
+        if response.status == 200:
+            results = transactions['result']
+            transactions_list = list()
+            for result in results:
+                transaction_receipt = Transaction(
+                    number=result['hash'],
+                    from_address=result['from'],
+                    to_address=result['to'],
+                    value=float(Web3.fromWei(int(result['value']), 'ether')),
+                    date=datetime.fromtimestamp(int(result['timeStamp'])),
+                    txn_fee=str(Web3.fromWei((int(result['gasPrice']) * int(result['gasUsed'])), 'ether')),
+                    status=('Success' if result['txreceipt_status'] == '1' else 'Failed'),
+                    wallet=wallet
+                )
+                transactions_list.append(transaction_receipt)
+            await self.database.add_transactions(transactions_list, db)
+        else:
+            return await self.database.get_wallet_transactions(wallet, db)
+        return await self.database.get_wallet_transactions(wallet, db)

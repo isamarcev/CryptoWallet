@@ -6,7 +6,7 @@ from base_api.apps.chat.dependencies import get_session
 from base_api.apps.ethereum.dependencies import get_ethereum_manager
 from base_api.apps.ethereum.manager import EthereumManager
 from base_api.apps.ethereum.schemas import WalletCreate, WalletDetail, WalletImport, WalletsInfo, CreateTransaction, \
-    WalletTransactions, TransactionURL
+    WalletTransactions, TransactionURL, GetTransactions
 from base_api.apps.users.dependencies import get_current_user
 from base_api.apps.users.models import User
 
@@ -77,4 +77,15 @@ async def send_transaction(
     manager: EthereumManager = Depends(get_ethereum_manager)
 ):
     response = await manager.send_transaction(transaction, user, db)
+    return response
+
+
+@ethereum_router.post('/get_wallet_transactions', response_model=List[WalletTransactions])
+async def get_wallet_transaction(
+    wallet: GetTransactions,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
+    manager: EthereumManager = Depends(get_ethereum_manager)
+):
+    response = await manager.get_wallet_transactions(wallet, db)
     return response

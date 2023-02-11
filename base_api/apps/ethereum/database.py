@@ -1,9 +1,12 @@
-from typing import Type
+import datetime
+from typing import Type, List
+
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from base_api.apps.ethereum.models import Wallet, wallet as wallet_table, Transaction
-from base_api.apps.ethereum.schemas import WalletCreate, CreateTransactionReceipt
+from base_api.apps.ethereum.models import Wallet, wallet as wallet_table, Transaction, transaction as transaction_table
+from base_api.apps.ethereum.schemas import WalletCreate, CreateTransactionReceipt, GetTransactions
 from base_api.apps.users.models import User
 
 
@@ -48,3 +51,42 @@ class EthereumDatabase:
         result_scalar = result.all()
         print(result_scalar, "RESULT SCALAR")
         return result_scalar
+
+    async def get_wallet_transactions(self, wallet: GetTransactions, db: AsyncSession):
+        result = await db.execute(
+            select(self.transaction_model).where(((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet))
+                                                 & (transaction_table.c.wallet == wallet))
+        )
+        results = result.scalars().all()
+        return results
+
+    async def get_first_pending_transaction(self, wallet: str, db: AsyncSession):
+        result = await db.execute(
+            select(self.transaction_model).where(
+                ((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet)) &
+                (transaction_table.c.status == "Pending") & (transaction_table.c.wallet == wallet))
+        )
+        results = result.scalars().first()
+        return results
+
+    async def get_last_transaction(self, wallet: str, db: AsyncSession):
+        result = await db.execute(
+            select(self.transaction_model).where(
+                (((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet)) & (transaction_table.c.wallet == wallet)
+                 )).order_by(transaction_table.c.date.desc())
+        )
+        results = result.scalars().first()
+        return results
+
+    async def delete_transactions(self, wallet: str, date: datetime, db: AsyncSession):
+        result = await db.execute(
+            delete(self.transaction_model).where(
+                (((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet)) &
+                 (transaction_table.c.date >= date) & (transaction_table.c.wallet == wallet)
+                 ))
+        )
+        await db.commit()
+
+    async def add_transactions(self, transactions: List[CreateTransactionReceipt], db: AsyncSession):
+        db.add_all(transactions)
+        await db.commit()
