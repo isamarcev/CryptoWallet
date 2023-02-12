@@ -212,11 +212,7 @@ class EthereumManager(EthereumLikeManager):
         if not Web3.isAddress(wallet):
             raise WalletAddressError()
         wallet = wallet.lower()
-        first_pending_transaction = await self.database.get_first_pending_transaction(wallet, db)
-        if first_pending_transaction:
-            transaction = first_pending_transaction
-        else:
-            transaction = await self.database.get_last_transaction(wallet, db)
+        transaction = await self.database.get_last_transaction(wallet, db)
         if transaction:
             loop = asyncio.get_running_loop()
             transaction_info = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
@@ -224,7 +220,8 @@ class EthereumManager(EthereumLikeManager):
             if not transaction_info:
                 return await self.database.get_wallet_transactions(wallet, db)
             block_number = transaction_info.blockNumber
-            await self.database.delete_transactions(wallet, transaction.date, db)
+            print('block_number = ', block_number)
+            # await self.database.delete_transactions(wallet, transaction.date, db)  # ???
         else:
             block_number = '0'
         params = {'module': 'account', 'action': 'txlist', 'address': wallet,
@@ -237,17 +234,25 @@ class EthereumManager(EthereumLikeManager):
             results = transactions['result']
             transactions_list = list()
             for result in results:
-                transaction_receipt = Transaction(
-                    number=result['hash'],
-                    from_address=result['from'],
-                    to_address=result['to'],
-                    value=float(Web3.fromWei(int(result['value']), 'ether')),
-                    date=datetime.fromtimestamp(int(result['timeStamp'])),
-                    txn_fee=str(Web3.fromWei((int(result['gasPrice']) * int(result['gasUsed'])), 'ether')),
-                    status=('Success' if result['txreceipt_status'] == '1' else 'Failed'),
-                    wallet=wallet
-                )
-                transactions_list.append(transaction_receipt)
+                if await self.database.get_transaction_by_hash(result['hash'], wallet, db):
+                    data = {
+                        'date': datetime.fromtimestamp(int(result['timeStamp'])),
+                        'txn_fee': str(Web3.fromWei((int(result['gasPrice']) * int(result['gasUsed'])), 'ether')),
+                        'status': ('Success' if result['txreceipt_status'] == '1' else 'Failed')
+                    }
+                    await self.database.update_transaction_by_hash(result['hash'], wallet, data, db)
+                else:
+                    transaction_receipt = Transaction(
+                        number=result['hash'],
+                        from_address=result['from'],
+                        to_address=result['to'],
+                        value=float(Web3.fromWei(int(result['value']), 'ether')),
+                        date=datetime.fromtimestamp(int(result['timeStamp'])),
+                        txn_fee=str(Web3.fromWei((int(result['gasPrice']) * int(result['gasUsed'])), 'ether')),
+                        status=('Success' if result['txreceipt_status'] == '1' else 'Failed'),
+                        wallet=wallet
+                    )
+                    transactions_list.append(transaction_receipt)
             await self.database.add_transactions(transactions_list, db)
         else:
             return await self.database.get_wallet_transactions(wallet, db)

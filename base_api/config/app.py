@@ -15,6 +15,7 @@ from starlette.staticfiles import StaticFiles
 
 from base_api.apps.frontend.auth import auth_router
 from base_api.apps.frontend.chat import chat_router
+from base_api.apps.frontend.ibay import front_ibay_router
 from base_api.apps.frontend.user_profile import profile_router
 from base_api.apps.frontend.wallets import wallets_router
 from base_api.config.celery_utils import create_celery
@@ -66,6 +67,7 @@ def get_application() -> FastAPI:
     app_.include_router(profile_router)
     app_.include_router(chat_router)
     app_.include_router(wallets_router)
+    app_.include_router(front_ibay_router)
     return app_
 
 
