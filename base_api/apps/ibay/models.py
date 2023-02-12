@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import EmailType, URLType
 
-from apps.ibay.enums import OrderStatus
+from base_api.apps.ibay.enums import OrderStatus
 
 Base = declarative_base()
 

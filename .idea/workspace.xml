@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="" />
+    <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/templates/ibay/ibay.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/ibay/ibay.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,8 +23,8 @@
         <option value="FastAPI test_main" />
         <option value="HTML File" />
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -44,29 +50,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/ihor/PycharmProjects/CryptoWalletProject/base_api/apps/ibay",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/base_api/apps/ibay" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/sockets" />
       <recent name="$PROJECT_DIR$/static/custom/image" />
       <recent name="$PROJECT_DIR$/templates/users" />
-      <recent name="$PROJECT_DIR$/static/custom/js" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/sockets" />
@@ -173,6 +179,7 @@
       <workItem from="1676101109051" duration="13074000" />
       <workItem from="1676150987249" duration="4496000" />
       <workItem from="1676196137439" duration="12596000" />
+      <workItem from="1676241755283" duration="2043000" />
     </task>
     <servers />
   </component>
