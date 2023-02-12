@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js.orig" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js.orig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/basic_template/basic.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/basic_template/basic.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/wallets/wallets.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/wallets/wallets.html" afterDir="false" />
-    </list>
+    <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
