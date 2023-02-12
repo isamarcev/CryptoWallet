@@ -12,6 +12,7 @@ $(document).ready(function() {
         cache: false,
         success: function (data) {
             console.log('success return data = ', data.length)
+            console.log('SUCEES DATA', data)
             if(data.length < 1) {
                 document.getElementById('no_wallets').style.display = 'block';
             }
@@ -45,6 +46,7 @@ $(document).ready(function() {
         },
         error: (error) => {
             console.log('error get')
+            console.log(error)
             if (error.status == 400){
                 let error_text = error.responseJSON.detail[0]
                 if (error_text.code == 'Web3 error'){

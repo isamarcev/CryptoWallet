@@ -21,7 +21,7 @@ from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletI
     WalletIsNotDefine, WalletAddressError
 from base_api.apps.ethereum.models import Transaction
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt, \
-    TransactionURL, GetTransactions
+    TransactionURL, GetTransactions, WalletsInfo
 from base_api.apps.ethereum.web3_client import EthereumClient
 from base_api.apps.users.models import User
 from base_api.config.settings import settings
@@ -93,6 +93,11 @@ class EthereumManager(EthereumLikeManager):
     #     return {}
 
     async def get_user_wallets(self, user: User, db: AsyncSession):
+        wallets = await self.redis.get(f'wallets-{user.id}')
+        if wallets:
+            wallets = json.loads(wallets)
+            result = [WalletsInfo(**wallet) for wallet in wallets]
+            return result
         wallets = await self.database.get_user_wallets(user, db)
         if wallets:
             loop = asyncio.get_running_loop()
@@ -101,6 +106,8 @@ class EthereumManager(EthereumLikeManager):
             balances = await asyncio.gather(*result, return_exceptions=False)
             for number, wallet in enumerate(wallets):
                 wallet.balance = balances[number]
+            wallets_data = [{"public_key": wallet.public_key, "balance": str(wallet.balance)} for wallet in wallets]
+            await self.redis.set(f'wallets-{user.id}', json.dumps(wallets_data), ex=5)
         return wallets
 
     async def get_wallet_balance(self, wallet: str):
@@ -199,17 +206,6 @@ class EthereumManager(EthereumLikeManager):
                             await socket_manager.emit("transaction_alert",
                                                       data=message,
                                                       room=device)
-                    # await socket_manager.emit("transaction_alert",
-                    #                           data=message,
-                    #                           room=users.get(user_id, "nowhere"))
-
-            # хочет ли фронтенд обновлять данные на следующую страницу по скроллу
-            # если хочет получить оффсет и лимит , нам нужно это учесть.
-            # Короткое кеширование - на 5 секунд. в редисе.
-
-            # ЕСЛИ ТРАНЗАЦИЯ ЕСТЬ В ОЖИДАНИЯХ - ШЛЮ ЗАПРОС В БД на ИЗМЕНЕНИЯ ЕЕ СТАТУСА, и НА ФРОНТ ОПОВЕЩАНИЯ
-            # ЕСЛИ НЕТ В ОЖИДАНИИ, СОЗДАЮ ТРАНЗАКЦИЮ В БД И ШЛЮ ЮЗЕРУ О ЗАХОДЕ ДЕНЕГ
-
         return
 
     async def get_wallet_transactions(self, wallet: str, db: AsyncSession):

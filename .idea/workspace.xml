@@ -7,7 +7,7 @@
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/basic.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/basic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sockets/apps/wallet/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/apps/wallet/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sockets/socketio_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/socketio_server.py" afterDir="false" />
@@ -179,7 +179,7 @@
       <workItem from="1676028998179" duration="10643000" />
       <workItem from="1676101109051" duration="13074000" />
       <workItem from="1676150987249" duration="4496000" />
-      <workItem from="1676196137439" duration="8445000" />
+      <workItem from="1676196137439" duration="12596000" />
     </task>
     <servers />
   </component>
