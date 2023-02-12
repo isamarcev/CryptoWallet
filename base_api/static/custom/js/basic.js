@@ -86,5 +86,27 @@ $(window).on('load', function() {
 
 sio.on("transaction_alert", (data) => {
     console.log(data)
+    console.log(data.status)
+    if (data.operation === "income") {
+        if (data.result === true) {
+            let message = "You've just gotten new ETH token to wallet " + data.public_key
+            toastr.success("Income transaction", message);
+        }
+    }
+    if (data.operation === "outcome") {
+        if (data.result === true) {
+            let message = "Your transaction has just sent successfully from wallet - " + data.public_key;
+            toastr.success("Outcome transaction", message);
+        }
+        else if (data.result === false) {
+            let message = "Your transaction from " + data.public_key + " was failed."
+            toastr.error("Failed", message);
+        }
+    }
+    // let balance_to_change = document.querySelector("[balance-value=" + data.public_key + "]");
+    let balance_to_change = $(`[balance-value=${data.public_key}]`)
+
+    balance_to_change.text(data.current_balance + "ETH");
+    console.log(balance_to_change)
 })
 

@@ -15,13 +15,20 @@ class WalletDatabase:
             users = json.loads(users)
         except:
             pass
-
         if users:
-            users[user_id] = sid
+            print(users, "USER DEVICES IN WALLET DB0")
+            print(users.get(user_id), "GET LIST USER ID")
+            if users.get(user_id):
+                print(users[user_id], "USERS[USERID] 1")
+                users[user_id].append(sid)
+                print(users[user_id], "USERS[USERID] 2")
+
+            else:
+                users[user_id] = [sid]
             users = json.dumps(users)
             await self.redis.set("users_online", users)
         else:
-            users = {user_id: sid}
+            users = {user_id: [sid]}
             users = json.dumps(users)
             await self.redis.set("users_online", users)
 
@@ -34,9 +41,14 @@ class WalletDatabase:
         else:
             return []
 
-    async def disconnect_user(self, user_id: str):
+    async def disconnect_user(self, user_id: str, sid: str):
         users = await self.redis.get("users_online")
         users = json.loads(users)
-        users.pop(user_id)
+        current_user_session = users.get(user_id)
+        if current_user_session:
+            current_user_session.remove(sid)
+        if not current_user_session:
+            users.pop(user_id)
+        # current_user_session.clear()
         users = json.dumps(users)
         await self.redis.set("users_online", users)

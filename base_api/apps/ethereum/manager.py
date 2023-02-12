@@ -173,9 +173,12 @@ class EthereumManager(EthereumLikeManager):
                         "public_key": transaction["to"],
                         "current_balance": str(current_balance)
                     }
-                    await socket_manager.emit("transaction_alert",
-                                              data=message,
-                                              room=users.get(user_id, "nowhere"))
+                    online_devices = users.get(user_id)
+                    if online_devices:
+                        for device in online_devices:
+                            await socket_manager.emit("transaction_alert",
+                                                      data=message,
+                                                      room=device)
 
                 if transaction["from"] in addresses:
                     address = transaction["from"]
@@ -190,9 +193,15 @@ class EthereumManager(EthereumLikeManager):
                         "public_key": address,
                         "current_balance": str(current_balance)
                     }
-                    await socket_manager.emit("transaction_alert",
-                                              data=message,
-                                              room=users.get(user_id, "nowhere"))
+                    online_devices = users.get(user_id)
+                    if online_devices:
+                        for device in online_devices:
+                            await socket_manager.emit("transaction_alert",
+                                                      data=message,
+                                                      room=device)
+                    # await socket_manager.emit("transaction_alert",
+                    #                           data=message,
+                    #                           room=users.get(user_id, "nowhere"))
 
             # хочет ли фронтенд обновлять данные на следующую страницу по скроллу
             # если хочет получить оффсет и лимит , нам нужно это учесть.

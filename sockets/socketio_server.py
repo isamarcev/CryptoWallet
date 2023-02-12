@@ -21,6 +21,7 @@ async def connect(sid, environ, auth):
     users_online_db = await get_users_online_db()
     session = await sio.get_session(sid)
     await users_online_db.connect_user(auth.get("user_id"), sid)
+    # sio.enter_room(sid, auth.get("user_id"))
     if auth.get("url") == "/chat":
         sio.enter_room(sid, "chat")
         db = await get_user_db()
@@ -43,8 +44,9 @@ async def disconnect(sid):
         await db.disconnect_user(session)
         users = await db.get_users()
         await sio.emit("get_online_users", users)
+    # sio.leave_room(sid)
     users_online_db = await get_users_online_db()
-    await users_online_db.disconnect_user(auth.get("user_id"))
+    await users_online_db.disconnect_user(auth.get("user_id"), sid)
 
 
 

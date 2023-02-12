@@ -23,7 +23,7 @@ $(document).ready(function() {
                     '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
                     wallet_data.public_key + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                     '<p>Balance:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                    '<p style="font-weight: bold;">' + wallet_data.balance + 'ETH</p></div></div>' +
+                    '<p balance-value="'+ wallet_data.public_key +'" style="font-weight: bold;">' + wallet_data.balance + 'ETH</p></div></div>' +
                     '<div class="demo-inline-spacing"><button type="button" ' +
                     'class="btn btn-primary waves-effect waves-float waves-light" style="font-size: small"' +
                     ' data-bs-toggle="modal" data-bs-target="#xlarge">Watch Transactions</button>' +
