@@ -1,7 +1,7 @@
 import datetime
-from typing import Type, List
+from typing import Type, List, Dict
 
-from sqlalchemy import delete
+from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -60,19 +60,27 @@ class EthereumDatabase:
         results = result.scalars().all()
         return results
 
-    async def get_first_pending_transaction(self, wallet: str, db: AsyncSession):
+    async def get_transaction_by_hash(self, hash: str, wallet: str, db: AsyncSession):
         result = await db.execute(
             select(self.transaction_model).where(
-                ((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet)) &
-                (transaction_table.c.status == "Pending") & (transaction_table.c.wallet == wallet))
-        )
+                ((transaction_table.c.number == hash) & (transaction_table.c.wallet == wallet))
+            ))
         results = result.scalars().first()
         return results
+
+    async def update_transaction_by_hash(self, hash: str, wallet: str, data: Dict, db: AsyncSession):
+        print('update)))')
+        result = await db.execute(
+            update(self.transaction_model).where(
+                ((transaction_table.c.number == hash) & (transaction_table.c.wallet == wallet))
+            ).values(data))
+        await db.commit()
 
     async def get_last_transaction(self, wallet: str, db: AsyncSession):
         result = await db.execute(
             select(self.transaction_model).where(
-                (((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet)) & (transaction_table.c.wallet == wallet)
+                (((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet)) &
+                 (transaction_table.c.wallet == wallet) & (transaction_table.c.status != "Pending")
                  )).order_by(transaction_table.c.date.desc())
         )
         results = result.scalars().first()
