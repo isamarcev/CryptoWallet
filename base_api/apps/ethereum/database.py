@@ -55,7 +55,7 @@ class EthereumDatabase:
     async def get_wallet_transactions(self, wallet: GetTransactions, db: AsyncSession):
         result = await db.execute(
             select(self.transaction_model).where(((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet))
-                                                 & (transaction_table.c.wallet == wallet))
+                                                 & (transaction_table.c.wallet == wallet)).order_by(transaction_table.c.date.desc())
         )
         results = result.scalars().all()
         return results
