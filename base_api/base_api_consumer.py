@@ -33,6 +33,7 @@ async def check_transaction_by_block(message: AbstractIncomingMessage):
     async with message.process():
         logger.info(f"Got new block: {message.body}")
         # await ethereum_manager.check_transaction_in_block(message.body.decode("utf-8"), db)
+        print('transaction new block')
         check_transactions_by_block.apply_async(args=[message.body.decode()])
         # check_transactions_by_block.apply_async(args=[f"{message.body.decode()}"])
         # await new_message(message.body)
