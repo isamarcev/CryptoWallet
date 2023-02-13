@@ -1,5 +1,5 @@
 const get_products_url = window.location.origin + '/api/ibay/products'
-
+const post_order_url = window.location.origin + '/api/ibay/create-order'
 
 $(document).ready(function() {
     $.ajax({
@@ -50,6 +50,33 @@ $(document).ready(function() {
             // if (error.status == 403 || error.status == 401) {
             //     document.location.reload();
             // }
+        }
+    })
+})
+
+
+$(document).ready(function() {
+    $.ajax({
+        url: post_order_url,
+        type: 'post',
+        dataType: "json",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // processData: false,
+        // contentType: false,
+        // cache: false,
+        data: JSON.stringify({
+            "product": "40bf9645-6847-4fcc-a04e-ef63a0feb9c3",
+            "from_wallet": "0x7d353a42B7fD1Bb8b2434535D9629f89813F887a"
+        }),
+        success: function (data) {
+            console.log('success return data = ', data.length)
+            console.log('SUCEES DATA', data)
+        },
+        error: (error) => {
+            console.log('error get')
+            console.log(error)
         }
     })
 })

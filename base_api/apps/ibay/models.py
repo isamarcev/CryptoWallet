@@ -22,7 +22,7 @@ class Product(Base):
     image = Column(URLType)
     date_created = Column(DateTime(timezone=True), server_default=func.now())
     order = relationship("Order", backref="product", uselist=False)
-
+    is_sold = Column(Boolean, default=False)
 
 
 class Order(Base):
@@ -33,7 +33,7 @@ class Order(Base):
     datetime = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(Enum(OrderStatus), default=OrderStatus.NEW)
     txn_hash_return = Column(String, nullable=True)
-    buyer_address = Column(String)
+    buyer_wallet = Column(String)
     product_id = Column(UUID(as_uuid=True), ForeignKey("product.id"))
 
 

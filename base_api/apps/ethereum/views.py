@@ -1,6 +1,6 @@
 import time
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from base_api.apps.chat.dependencies import get_session
 from base_api.apps.ethereum.dependencies import get_ethereum_manager
@@ -72,11 +72,13 @@ async def get_user_wallets(
 @ethereum_router.post('/send_transaction', response_model=TransactionURL)
 async def send_transaction(
     transaction: CreateTransaction,
-    user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
     manager: EthereumManager = Depends(get_ethereum_manager)
 ):
-    response = await manager.send_transaction(transaction, user, db)
+    if not current_user:
+        raise HTTPException(status_code=403, detail="You don't have permission")
+    response = await manager.send_transaction(transaction, current_user, db)
     return response
 
 
