@@ -10,8 +10,8 @@ class WalletIsUndefined(DefaultHTTPException):
 
 
 class ProductDoesNotExistsOrAlreadySold(DefaultHTTPException):
-    code = "product undefined"
-    type = "product invalid"
+    code = "Product undefined"
+    type = "Product invalid"
     message = "This product does not exist or sold already"
     status_code = status.HTTP_400_BAD_REQUEST
 

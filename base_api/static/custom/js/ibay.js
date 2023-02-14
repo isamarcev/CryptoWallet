@@ -3,8 +3,139 @@ const create_product_url = window.location.origin + '/api/ibay/create_product'
 const get_products_url = window.location.origin + '/api/ibay/products'
 let image = null
 const post_order_url = window.location.origin + '/api/ibay/create-order'
+let order_id = null
+const get_user_orders_url = window.location.origin + '/api/ibay/orders'
 
 $(document).ready(function() {
+    //get all products when page is loaded
+    $.ajax({
+        url: get_products_url,
+        type: 'GET',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            if(data.length < 1) {
+                document.getElementById('no_products').style.display = 'block';
+            }
+            for (let prop in data) {
+                let product = data[prop]
+                let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ product.image +'" height="100" style="margin-left: -8px"></div>'
+                let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
+                    '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
+                    '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><p>' +
+                    product.title + '</p></div>'+
+                    '<div class="col-lg-3 col-md-2 col-4"><p>Address:</p></div>' +
+                    '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
+                    product.wallet.publicKey + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Price:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold;">' + product.price + 'ETH</p></div></div></div>'+
+                    '<div class="demo-inline-spacing"><button type="button" ' +
+                    'class="btn btn-primary waves-effect waves-float waves-light" style="font-size: big; width: 150px"' +
+                    ' data-bs-toggle="modal" data-bs-target="#BuyProduct" onclick="set_order_id('+ "'" + product.id + "'" +')">Buy</button>' +
+                    '</div>'
+                let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
+                    '<div class="row">' + class_image + class_main + '</div></div></div></div>'
+                $('.products').append(class_block)
+            }
+        },
+        error: (error) => {
+            console.log('error get')
+            console.log(error)
+            // if (error.status == 400){
+            //     let error_text = error.responseJSON.detail[0]
+            //     if (error_text.code == 'Web3 error'){
+            //         toastr.error(error_text.message, 'Error')
+            //     }
+            // }
+            if (error.status == 403 || error.status == 401) {
+                document.location.reload();
+            }
+        }
+    })
+
+    //get user orders
+    $.ajax({
+        url: get_user_orders_url,
+        type: 'GET',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            if(data.length < 1) {
+                document.getElementById('no_orders').style.display = 'block';
+            }
+            for (let prop in data) {
+                let order = data[prop]
+                let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ order.product.image +'" height="100"></div>'
+                let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
+                    '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
+                    '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><p>' +
+                    order.product.title + '</p></div>'+
+                    '<div class="col-lg-3 col-md-2 col-4"><p>Transaction:</p></div>' +
+                    '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
+                    order.txn_hash + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Price:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold;">' + order.product.price + 'ETH</p></div></div>'+
+
+                    '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Time:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold;">' + order.datetime + '</p></div></div>'
+
+                if(order.status == 'NEW') {
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold; color: orange">' + order.status + '</p></div></div>'
+                }
+                else if(order.status == 'DELIVERY') {
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold; color: darkolivegreen">' + order.status + '</p></div></div>'
+                }
+                else if(order.status == 'COMPLETE') {
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold; color: green">' + order.status + '</p></div></div>'
+                }
+                else if(order.status == 'FAILED') {
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold; color: darkblue">' + order.status + '</p></div></div>'
+                }
+                else if(order.status == 'RETURN') {
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold; color: red">' + order.status + '</p></div></div>'
+                }
+                if(order.txn_hash_return){
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p style="font-weight: bold;">' + order.txn_hash_return + '</p></div></div></div>'
+                }
+                else {
+                    class_main += '</div>'
+                }
+                let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
+                    '<div class="row">' + class_image + class_main + '</div></div></div></div>'
+                $('.orders').append(class_block)
+            }
+        },
+        error: (error) => {
+            console.log('error get')
+            console.log(error)
+            // if (error.status == 400){
+            //     let error_text = error.responseJSON.detail[0]
+            //     if (error_text.code == 'Web3 error'){
+            //         toastr.error(error_text.message, 'Error')
+            //     }
+            // }
+            if (error.status == 403 || error.status == 401) {
+                document.location.reload();
+            }
+        }
+    })
+
+    //get user wallets for modal selectors
     $.ajax({
         url: get_user_wallets_url,
         type: 'GET',
@@ -19,6 +150,7 @@ $(document).ready(function() {
                 let wallet = data[prop]
                 let option_block = '<option value="'+ wallet.public_key +'">' + wallet.public_key + ' (' + wallet.balance + 'ETH)</option>'
                 $('#modal_wallet').append(option_block)
+                $('#modal_buy_wallet').append(option_block)
 
             }
         },
@@ -31,40 +163,15 @@ $(document).ready(function() {
             //         toastr.error(error_text.message, 'Error')
             //     }
             // }
-            // if (error.status == 403 || error.status == 401) {
-            //     document.location.reload();
-            // }
+            if (error.status == 403 || error.status == 401) {
+                document.location.reload();
+            }
         }
     })
 })
 
 
-$(document).ready(function() {
-    $.ajax({
-        url: post_order_url,
-        type: 'post',
-        dataType: "json",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // processData: false,
-        // contentType: false,
-        // cache: false,
-        data: JSON.stringify({
-            "product_id": "891521aa-1c7f-4c7e-8143-5800de599cb1",
-            "from_wallet": "0x7d353a42B7fD1Bb8b2434535D9629f89813F887a"
-        }),
-        success: function (data) {
-            console.log('success return data = ', data.length)
-            console.log('SUCEES DATA', data)
-        },
-        error: (error) => {
-            console.log('error get')
-            console.log(error)
-        }
-    })
-})
-
+//function for show image in modal
 $('#modal_image').on('change', function (event) {
     console.log('image')
     $('.preview_image')[0].innerHTML = '';
@@ -82,14 +189,17 @@ $('#modal_image').on('change', function (event) {
         }
 })
 
+
+//function for delete image in product create modal
 $(function() {
      $(document).on('click', '.delete_preview_image', function(){
-        console.log('click delete')
         $('.preview_image')[0].innerHTML = '';
         image = null
     })
 })
 
+
+//function for create_product request on the server
 function create_product(){
     let data_product = new FormData()
     data_product.append('title', $('#modal_title').val())
@@ -105,25 +215,23 @@ function create_product(){
         cache: false,
         data: data_product,
         success: function (data) {
-            console.log('success return data = ', data)
-            let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.image +'" height="100"></div>'
-                let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
-                    '<div class="col-lg-3 col-md-2 col-4"><p>Address:</p></div>' +
-                    '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
-                    data.address + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Price:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                    '<p style="font-weight: bold;">' + data.price + 'ETH</p></div></div></div>'
-
-                let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
-                    '<div class="row">' + class_image + class_main + '</div></div></div></div>'
-                $('.wallets').append(class_block)
         },
         error: (error) => {
-            console.log('error get')
-            console.log(error)
             if (error.status == 400) {
                 let error_text = error.responseJSON.detail[0]
-                if (error_text.code == 'Web3 error') {
+                if (error_text.code == 'image_format_error'){
+                    toastr.error(error_text.message, 'Error').css("width","500px")
+                }
+                if (error_text.code == 'remote_space_error'){
+                    toastr.error(error_text.message, 'Error').css("width","500px")
+                }
+                if (error_text.code == 'Wallet undefined') {
+                    toastr.error(error_text.message, 'Error')
+                }
+            }
+            if (error.status == 422) {
+                let error_text = error.responseJSON[0]
+                if (error_text.code == 'validation-error') {
                     toastr.error(error_text.message, 'Error')
                 }
             }
@@ -133,3 +241,133 @@ function create_product(){
         }
     })
 }
+
+//function for clear create product modal
+function open_modal(){
+    $('.preview_image')[0].innerHTML = '';
+    image = null
+    $('#modal_title').val('')
+    $('#modal_price').val('')
+}
+
+//function for set id of product what will be bought
+function set_order_id(id){
+    console.log(id)
+    order_id = id
+}
+
+//function for send buy request on the server
+function buy_product(){
+    let from_wallet = $('#modal_buy_wallet').find(":selected").val()
+    $.ajax({
+        url: post_order_url,
+        type: 'POST',
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({
+            "product_id": order_id,
+            "from_wallet": from_wallet
+        }),
+        success: function (data) {
+        },
+        error: (error) => {
+            if (error.status == 400) {
+                let error_text = error.responseJSON.detail[0]
+                if (error_text.code == 'Wallet is not defined') {
+                    toastr.error(error_text.message, 'Error')
+                }
+                if (error_text.code == 'Product undefined') {
+                    toastr.error(error_text.message, 'Error')
+                }
+            }
+             if (error.status == 422) {
+                let error_text = error.responseJSON[0]
+                if (error_text.code == 'validation-error') {
+                    toastr.error(error_text.message, 'Error')
+                }
+            }
+            if (error.status == 403 || error.status == 401) {
+                document.location.reload();
+            }
+        }
+    })
+}
+
+// socketio show new products
+sio.on("show_new_product", (data) => {
+    document.getElementById('no_products').style.display = 'none';
+    let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.image +'" height="100"></div>'
+    let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
+        '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
+        '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><p>' +
+        data.title + '</p></div>'+
+        '<div class="col-lg-3 col-md-2 col-4"><p>Address:</p></div>' +
+        '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
+        data.address + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+        '<p>Price:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+        '<p style="font-weight: bold;">' + data.price + 'ETH</p></div></div></div>'+
+        '<div class="demo-inline-spacing"><button type="button" ' +
+        'class="btn btn-primary waves-effect waves-float waves-light" style="font-size: small"' +
+        ' data-bs-toggle="modal" data-bs-target="#BuyProduct"  onclick="set_order_id('+ "'" + data.id + "'" +')">Buy</button>' +
+        '</div>'
+    let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
+        '<div class="row">' + class_image + class_main + '</div></div></div></div>'
+    $('.products').append(class_block)
+})
+
+//socketio show new order
+sio.on('new_order_show', (data) => {
+    document.getElementById('no_orders').style.display = 'none';
+    let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.product.image +'" height="100"></div>'
+    let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
+        '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
+        '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><p>' +
+        data.product.title + '</p></div>'+
+        '<div class="col-lg-3 col-md-2 col-4"><p>Transaction:</p></div>' +
+        '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
+        data.txn_hash + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+        '<p>Price:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+        '<p style="font-weight: bold;">' + data.product.price + 'ETH</p></div></div>'+
+
+        '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+        '<p>Time:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+        '<p style="font-weight: bold;">' + data.datetime + '</p></div></div>'
+        if(data.status == 'NEW') {
+            class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p style="font-weight: bold; color: orange">' + data.status + '</p></div></div>'
+        }
+        else if(data.status == 'DELIVERY') {
+            class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p style="font-weight: bold; color: darkolivegreen">' + data.status + '</p></div></div>'
+        }
+        else if(data.status == 'COMPLETE') {
+            class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p style="font-weight: bold; color: green">' + data.status + '</p></div></div>'
+        }
+        else if(data.status == 'FAILED') {
+            class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p style="font-weight: bold; color: darkblue">' + data.status + '</p></div></div>'
+        }
+        else if(data.status == 'RETURN') {
+            class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p style="font-weight: bold; color: red">' + data.status + '</p></div></div>'
+        }
+    if(data.txn_hash_return){
+        class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+            '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+            '<p style="font-weight: bold;">' + data.txn_hash_return + '</p></div></div></div>'
+    }
+    else {
+        class_main += '</div>'
+    }
+    let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
+        '<div class="row">' + class_image + class_main + '</div></div></div></div>'
+    $('.orders').append(class_block)
+})

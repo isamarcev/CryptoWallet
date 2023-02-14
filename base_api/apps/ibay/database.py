@@ -25,9 +25,9 @@ class IbayDatabase:
         await db.commit()
         await db.refresh(order_instance)
         order = await db.execute(
-            select(self.order_model).where(order_table.c.product_id == order_instance.product_id)
+            select(self.order_model).where(order_table.c.product_id == order_instance.product_id).options(selectinload(self.order_model.product))
         )
-        result = order.first()._asdict().get("Order")
+        result = order.scalars().first()
         return result
 
     async def update_order_for_delivery(self, tnx_hash: str, order_status: OrderStatus, db: AsyncSession):
@@ -43,9 +43,13 @@ class IbayDatabase:
             order = request.first()._asdict().get("Order")
             return order
 
-
-
-
+    async def get_user_orders(self, user: User, db: AsyncSession):
+        order = await db.execute(
+            select(self.order_model).where(order_table.c.user_id == user.id).options(selectinload(self.order_model.product))
+            .order_by(order_table.c.datetime.desc())
+        )
+        result = order.scalars().all()
+        return result
 
     async def create_product(self, product: CreateProduct, db: AsyncSession):
         product_instance = self.product_model(**product.dict(), date_created=datetime.datetime.now())

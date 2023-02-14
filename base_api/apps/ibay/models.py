@@ -9,6 +9,7 @@ from sqlalchemy_utils import EmailType, URLType
 
 from base_api.apps.ethereum.models import Wallet
 from base_api.apps.ibay.enums import OrderStatus
+from base_api.apps.users.models import User
 
 Base = declarative_base()
 
@@ -22,7 +23,7 @@ class Product(Base):
     address = Column('wallet_id', ForeignKey(Wallet.id))
     image = Column(URLType)
     date_created = Column(DateTime(timezone=True), server_default=func.now())
-    order = relationship("Order", backref="product", uselist=False)
+    order = relationship("Order", uselist=False)
     is_sold = Column(Boolean, default=False)
     wallet = relationship(Wallet, backref='product')
 
@@ -40,6 +41,9 @@ class Order(Base):
     txn_hash_return = Column(String, nullable=True)
     buyer_wallet = Column(String)
     product_id = Column(UUID(as_uuid=True), ForeignKey(Product.id))
+    user = Column('user_id',  ForeignKey(User.id))
+
+    product = relationship(Product)
 
 
 order = Order.__table__

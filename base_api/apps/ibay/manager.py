@@ -3,14 +3,15 @@ import asyncio
 import datetime
 import functools
 import json
+
+import socketio
 from sqlalchemy.ext.asyncio import AsyncSession
 from base_api.apps.ibay.database import IbayDatabase
-from base_api.apps.ibay.scheme import CreateOrder
 from .enums import OrderStatus
 from ..ethereum.web3_client import EthereumClient
 from ...base_api_producer import BaseApiProducer
 from .exeptions import WalletIsUndefined, ProductDoesNotExistsOrAlreadySold
-from .schemas import CreateProduct
+from .schemas import CreateProduct, Orders, CreateOrder
 from ..ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
     WalletIsNotDefine, WalletAddressError
@@ -27,17 +28,19 @@ class IbayManager:
                  eth_database: EthereumDatabase,
                  producer: BaseApiProducer,
                  client: EthereumClient,
-                 redis: Redis):
+                 redis: Redis,
+                 socket_manager: socketio.AsyncAioPikaManager):
         self.database = database
         self.storage = storage
         self.producer = producer
         self.eth_database = eth_database
         self.client = client
         self.redis = redis
+        self.socket_manager = socket_manager
 
     async def create_order(self, user: User, db: AsyncSession, order: CreateOrder):
         user_wallet = await self.eth_database.get_wallet_by_public_key(order.from_wallet, db)
-        if not user_wallet or (user_wallet.user) != (user.id):
+        if not user_wallet or user_wallet.user != user.id:
             raise WalletIsNotDefine()
         product = await self.database.get_product_by_id(str(order.product_id), db)
         if not product or product.is_sold:
@@ -57,20 +60,35 @@ class IbayManager:
             "datetime": datetime.datetime.now(),
             "buyer_wallet": user_wallet.public_key,
             "product_id": order.product_id,
+            'user': user.id
         }
         new_order = await self.database.create_order(order_data, db)
+        order_data = Orders(id=new_order.id,
+                            txn_hash=new_order.txn_hash,
+                            datetime=new_order.datetime,
+                            status=new_order.status,
+                            product=new_order.product).json()
+        order_data = json.loads(order_data)
+        try:
+            users_online = await self.redis.get("users_online")
+            users = json.loads(users_online)
+            online_devices = users.get(str(user.id))
+            if online_devices:
+                for device in online_devices:
+                    await self.socket_manager.emit("new_order_show",
+                                                   data=order_data,
+                                                   room=device)
+        except:
+            pass
 
         redis_orders = await self.redis.get("orders_transaction")
         if redis_orders:
             orders_transaction = json.loads(redis_orders)
             orders_transaction.append(txn_hash)
+            orders_transaction = json.dumps(orders_transaction)
         else:
             orders_transaction = json.dumps([txn_hash])
         await self.redis.set("orders_transaction", orders_transaction)
-
-
-
-        return {"Good": "FOOD"}
 
     async def create_product(self, product: CreateProduct, user: User, db: AsyncSession):
         wallet = await self.eth_database.get_wallet_by_public_key(product.address, db)
@@ -81,13 +99,21 @@ class IbayManager:
             product.address = wallet.id
             created_product = await self.database.create_product(product, db)
             created_product.address = wallet.public_key
-            return created_product
+            product = {
+                "title": created_product.title,
+                "address": created_product.address,
+                "price": created_product.price,
+                "image": created_product.image
+            }
+            await self.socket_manager.emit("show_new_product", data=product)
         else:
             raise WalletIsUndefined()
 
     async def get_products(self, user: User, db: AsyncSession):
         return await self.database.get_products(user, db)
 
+    async def get_user_orders(self, user: User, db: AsyncSession):
+        return await self.database.get_user_orders(user, db)
 
     async def send_order_to_delivery(self, tnx_hash: str, status: bool, db: AsyncSession):
         print(tnx_hash, type(tnx_hash), "TNX HASH IN IBAY DELIVERY MANAGER") #TEST
