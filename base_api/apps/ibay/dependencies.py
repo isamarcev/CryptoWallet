@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import socketio
 from async_lru import alru_cache
 from boto3 import Session
 from fastapi import Depends
@@ -54,6 +55,11 @@ async def get_client() -> EthereumClient:
     return EthereumClient()
 
 
+async def get_socket_manager() -> socketio.AsyncAioPikaManager:
+    socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
+    return socket_manager
+
+
 @alru_cache()
 async def get_ibay_manager() -> IbayManager:
     user_db = await get_ibay_db()
@@ -63,4 +69,5 @@ async def get_ibay_manager() -> IbayManager:
     ethereum_db = await get_eth_db()
     producer = await get_producer()
     redis = await get_redis()
-    return IbayManager(user_db, storage, ethereum_db, producer, eth_client, redis)
+    socket_manager = await get_socket_manager()
+    return IbayManager(user_db, storage, ethereum_db, producer, eth_client, redis, socket_manager)

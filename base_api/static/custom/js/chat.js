@@ -74,7 +74,7 @@ function create_message_post(message_text, image) {
         },
         error: (error) => {
             if (error.status == 400){
-                let error_text = error.responseJSON[0]
+                let error_text = error.responseJSON.detail[0]
                 if (error_text.code == 'image_format_error'){
                     toastr.error(error_text.message, 'Error').css("width","500px")
                 }

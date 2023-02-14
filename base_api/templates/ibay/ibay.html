@@ -37,17 +37,43 @@
                 </div>
             </div>
             <div class="content-body">
-                <div class="row wallets">
+                <div class="row products">
                     <div class="col-12">
-                        <div class="card" id="no_wallets" style="display: none">
+                        <div class="card" id="no_products" style="display: none">
                                 <div class="card-body text-center">
-                                    <h3 style="color: red; text-align: center">
-                                        You don't have any added wallet. Go to the <a href="/">"My Profile"</a> tab and create a new or import an existing wallet.</h3>
+                                    <h3 style="color: grey; text-align: center">
+                                        There are currently no products on iBay</h3>
                                 </div>
                         </div>
                     </div>
                 </div>
             </div>
+      </div>
+
+    <div class="content-wrapper container-xxl p-0">
+            <div class="content-header row">
+                <div class="content-header-left col-md-9 col-12 mb-2">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-6">
+                            <h2 class="content-header float-start mb-0">Orders</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="row orders">
+                    <div class="col-12">
+                        <div class="card" id="no_orders" style="display: none">
+                                <div class="card-body text-center">
+                                    <h3 style="color: gray; text-align: center">
+                                        You don't have any orders. Please buy something</h3>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+
             <div class="modal fade" id="addNewCard" tabindex="-1" aria-labelledby="addNewCardTitle" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -100,58 +126,40 @@
                         </div>
                     </div>
             </div>
-          <div class="modal fade text-start" id="xlarge" tabindex="-1" aria-labelledby="myModalLabel16" style="display: none;" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-xl">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h4 class="modal-title" id="myModalLabel16">???</h4>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                          <div class="row">
-                              <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header border-bottom">
-                                </div>
-                                <div class="card-datatable">
-                                    <div id="DataTables_Table_3_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                                            <table class="dt-multilingual table dataTable no-footer dtr-column" id="DataTables_Table_3" role="grid" aria-describedby="DataTables_Table_3_info">
-                                                <thead>
-                                                <tr role="row">
-                                                    <th>Txn Hash</th>
-                                                    <th>From</th>
-                                                    <th>To</th>
-                                                    <th>Value</th>
-                                                    <th>Age</th>
-                                                    <th>Txn Fee</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>Loading...1</td>
-                                                    <td>Loading...2</td>
-                                                    <td>Loading...3</td>
-                                                    <td>Loading...4</td>
-                                                    <td>Loading...5</td>
-                                                    <td>Loading...6</td>
-                                                    <td>Loading...7</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+
+          <div class="modal fade" id="BuyProduct" tabindex="-1" aria-labelledby="addNewCardTitle" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-transparent">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body px-sm-5 mx-50 pb-5">
+                                <h1 class="text-center mb-1" id="BuyProductTitle">Buy</h1>
+
+                                <!-- form -->
+                                <form id="BuyProductValidation" class="row gy-1 gx-2 mt-75" onsubmit="return false" novalidate="novalidate">
+                                    <div class="col-12">
+                                        <label class="form-label" for="modal_wallet">Wallet:</label>
+                                        <div class="input-group input-group-merge">
+                                            <select class="form-select" id="modal_buy_wallet">
+
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
-                                </div>
-                              </div>
-                          </div>
+                                    <div class="col-12 text-center">
+                                        <button type="buttton" class="btn btn-primary me-1 mt-1 waves-effect waves-float waves-light" onclick="buy_product()" data-bs-dismiss="modal" aria-label="Close">Buy</button>
+                                        <button type="reset" class="btn btn-outline-secondary mt-1 waves-effect" data-bs-dismiss="modal" aria-label="Close">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
             </div>
-        </div>
 
 
-      </div>
+
 
 </div>
 

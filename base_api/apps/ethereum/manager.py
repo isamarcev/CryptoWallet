@@ -175,14 +175,13 @@ class EthereumManager(EthereumLikeManager):
             except:
                 pass
             for transaction in transactions:
-                txn_hash = transaction.hash
+                txn_hash = transaction.hash.hex()
                 loop = asyncio.get_event_loop()
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
                                                                             txn_hash=txn_hash,
                                                                             ))
-                # if txn_hash in orders:
-                # TODO TNX HASH
-                await self.ibay_manager.send_order_to_delivery(txn_hash,
+                if txn_hash in orders:
+                    await self.ibay_manager.send_order_to_delivery(txn_hash,
                                                                    True if result.get("status") else False,
                                                                    db)
 

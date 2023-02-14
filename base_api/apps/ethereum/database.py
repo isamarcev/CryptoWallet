@@ -35,6 +35,13 @@ class EthereumDatabase:
         results = result.scalars().all()
         return results
 
+    async def get_wallet_by_id(self, wallet_id: str, db: AsyncSession):
+        result = await db.execute(
+            select(self.wallet_model).where(wallet_table.c.id == wallet_id)
+        )
+        response = result.scalars().first()
+        return response
+
     async def create_transaction(self, transaction: CreateTransactionReceipt, db: AsyncSession):
         transaction_instance = self.transaction_model(**transaction.dict())
         db.add(transaction_instance)

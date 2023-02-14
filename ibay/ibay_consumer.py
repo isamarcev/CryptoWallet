@@ -16,16 +16,25 @@ from ibay.apps.dependencies import get_order_manager
 
 logger = logging.getLogger(__name__)
 
+#DB SESSION
+DATABASE_URL = str(settings.postgres_url)
+engine = create_async_engine(DATABASE_URL, future=True)
+async_session = sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+)
 
 async def check_transaction_by_block(message: AbstractIncomingMessage):
 
     # db = session.connection()
     # ethereum_manager = await get_ethereum_manager()
+    db = async_session()
     order_manager = await get_order_manager()
     print(message.body)
     async with message.process():
         logger.info(f"Got new block: {message.body}")
-        await order_manager.send_requests()
+        await order_manager.start_delivery_process(message.body.decode(), db)
 
         # await ethereum_manager.check_transaction_in_block(message.body.decode("utf-8"), db)
         # check_transactions_by_block.apply_async(args=[message.body.decode()])

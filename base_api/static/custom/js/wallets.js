@@ -12,8 +12,6 @@ $(document).ready(function() {
         contentType: false,
         cache: false,
         success: function (data) {
-            console.log('success return data = ', data.length)
-            console.log('SUCEES DATA', data)
             if(data.length < 1) {
                 document.getElementById('no_wallets').style.display = 'block';
             }
@@ -95,7 +93,6 @@ function send_transaction(){
                 "amount": amount
             }),
             success: function (data) {
-                console.log(data.url)
                 toastr.success('Create new transaction <a href="' + data.url + '" target="_blank" style="color: darkblue">Transaction URL</a>' , 'Success').css("width", "300px")
                 // document.getElementById('no_wallets').style.display = 'none';
                 // let image = '<img src="' + eth_avatar + '" alt="ETH" width="70px" height="50px">'
