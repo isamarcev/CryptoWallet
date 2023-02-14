@@ -14,4 +14,4 @@ router = APIRouter(
 router.include_router(chat_router, prefix="/chat", tags=["Chat"])
 router.include_router(user_router, prefix="/user", tags=["User"])
 router.include_router(ethereum_router, prefix='/wallet', tags=['Wallet'])
-router.include_router(ibay_router, prefix='/ibay', tags=['Wallet'])
+router.include_router(ibay_router, prefix='/ibay', tags=['Ibay'])

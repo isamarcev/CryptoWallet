@@ -6,6 +6,10 @@ from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.manager import EthereumManager
 from base_api.apps.ethereum.models import Wallet, Transaction
 from base_api.apps.ethereum.web3_client import EthereumClient
+from base_api.apps.ibay.database import IbayDatabase
+from base_api.apps.ibay.dependencies import get_ibay_manager
+from base_api.apps.ibay.manager import IbayManager
+from base_api.apps.ibay.models import Product, Order
 from base_api.config.db import async_session
 
 
@@ -31,4 +35,5 @@ async def get_ethereum_manager() -> EthereumManager:
     ethereum_db = await get_db()
     eth_client = await get_client()
     redis = await get_redis()
-    return EthereumManager(ethereum_db, eth_client, redis)
+    ibay_manager = await get_ibay_manager()
+    return EthereumManager(ethereum_db, eth_client, redis, ibay_manager)

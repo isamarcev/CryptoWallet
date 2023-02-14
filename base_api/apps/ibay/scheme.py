@@ -4,7 +4,7 @@ from web3 import Web3
 
 
 class CreateOrder(BaseModel):
-    product: UUID
+    product_id: UUID
     from_wallet: str
 
     class Config:

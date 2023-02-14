@@ -38,6 +38,9 @@ class StatusEnum(str, Enum):
     pending = 'Pending'
     failed = 'Failed'
 
+def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
+    return dt.strftime('%Y-%m-%d %H:%M:%S')
+
 
 class WalletTransactions(BaseModel):
     number: str
@@ -49,6 +52,10 @@ class WalletTransactions(BaseModel):
     status: StatusEnum
 
     class Config:
+        json_encoders = {
+            # custom output conversion for datetime
+            datetime: convert_datetime_to_iso_8601_with_z_suffix
+        }
         orm_mode = True  # или использовать вместо BaseModel ApiSchema)
 
 

@@ -23,6 +23,8 @@ from base_api.apps.ethereum.models import Transaction
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt, \
     TransactionURL, GetTransactions, WalletsInfo
 from base_api.apps.ethereum.web3_client import EthereumClient
+from base_api.apps.ibay.database import IbayDatabase
+from base_api.apps.ibay.manager import IbayManager
 from base_api.apps.users.models import User
 from base_api.config.settings import settings
 
@@ -47,10 +49,15 @@ class EthereumLikeManager(BaseManager):
 
 
 class EthereumManager(EthereumLikeManager):
-    def __init__(self, database: EthereumDatabase, client: EthereumClient, redis: Redis):
+    def __init__(self,
+                 database: EthereumDatabase,
+                 client: EthereumClient,
+                 redis: Redis,
+                 ibay_manager: IbayManager):
         self.database = database
         self.client = client
         self.redis = redis
+        self.ibay_manager = ibay_manager
 
     @staticmethod
     async def create_privet_key():
@@ -161,12 +168,23 @@ class EthereumManager(EthereumLikeManager):
                 users = json.loads(users_online)
             except:
                 pass
+            orders_transaction = await self.redis.get("orders_transaction")
+            try:
+                orders = json.loads(orders_transaction)
+                print(orders, "ORDERS IN ETH MANAGER")
+            except:
+                pass
             for transaction in transactions:
                 txn_hash = transaction.hash
                 loop = asyncio.get_event_loop()
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
                                                                             txn_hash=txn_hash,
                                                                             ))
+                # if txn_hash in orders:
+                await self.ibay_manager.send_order_to_delivery(txn_hash,
+                                                                   True if result.get("status") else False,
+                                                                   db)
+
 
                 if transaction['to'] in addresses:
                     wallet_owner = await self.database.get_wallet_by_public_key(transaction["to"], db)
