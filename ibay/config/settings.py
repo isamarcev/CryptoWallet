@@ -9,11 +9,11 @@ BASE_DIR = Path(__file__).parent.parent
 
 class Settings(BaseSettings):
     # postgres_db
-    # postgres_pass: str
-    # postgres_host: str = "localhost"
-    # postgres_port: str = "5432"
-    # postgres_user: str
-    # postgres_name: str
+    postgres_pass: str
+    postgres_host: str = "localhost"
+    postgres_port: str = "5432"
+    postgres_user: str
+    postgres_name: str
 
     # jwt settings
 
@@ -35,22 +35,22 @@ class Settings(BaseSettings):
     #etherscan
 
 
-    # @property
-    # def postgres_url(self) -> URL:
-    #     """
-    #     Assemble database URL from settings.
-    #
-    #     :return: database URL.
-    #
-    #     """
-    #     return URL.build(
-    #         scheme="postgresql+asyncpg",
-    #         host=self.postgres_host,
-    #         port=self.postgres_port,
-    #         user=self.postgres_user,
-    #         password=self.postgres_pass,
-    #         path=f"/{self.postgres_name}",
-    #     )
+    @property
+    def postgres_url(self) -> URL:
+        """
+        Assemble database URL from settings.
+
+        :return: database URL.
+
+        """
+        return URL.build(
+            scheme="postgresql+asyncpg",
+            host=self.postgres_host,
+            port=self.postgres_port,
+            user=self.postgres_user,
+            password=self.postgres_pass,
+            path=f"/{self.postgres_name}",
+        )
 
     @property
     def rabbit_url(self) -> URL:

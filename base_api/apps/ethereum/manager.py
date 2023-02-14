@@ -181,6 +181,7 @@ class EthereumManager(EthereumLikeManager):
                                                                             txn_hash=txn_hash,
                                                                             ))
                 # if txn_hash in orders:
+                # TODO TNX HASH
                 await self.ibay_manager.send_order_to_delivery(txn_hash,
                                                                    True if result.get("status") else False,
                                                                    db)

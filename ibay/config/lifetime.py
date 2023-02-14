@@ -7,7 +7,7 @@ from aio_pika import connect_robust
 from fastapi import FastAPI
 
 from ibay.ibay_consumer import base_api_consumer_thread
-# from base_api.config.db import init_db
+from ibay.config.database import init_db
 from ibay.config.settings import settings
 from services.rabbit.lifetime import init_rabbit, shutdown_rabbit
 
@@ -28,7 +28,7 @@ def register_startup_event(
 
     @app.on_event("startup")
     async def _startup() -> None:  # noqa: WPS430
-        # await init_db()
+        await init_db()
         # await init_redis(app)
         await init_rabbit(app)
         try:

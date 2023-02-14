@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,6 +179,7 @@
       <workItem from="1676196137439" duration="12596000" />
       <workItem from="1676241755283" duration="2043000" />
       <workItem from="1676284704401" duration="1577000" />
+      <workItem from="1676362546601" duration="2432000" />
     </task>
     <servers />
   </component>

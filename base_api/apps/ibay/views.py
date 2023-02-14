@@ -28,7 +28,6 @@ async def create_product(
     return response
 
 
-
 @ibay_router.post("/create-order")
 async def create_order(
         product: CreateOrder,
@@ -36,10 +35,9 @@ async def create_order(
         session: AsyncSession = Depends(get_session),
         ibay_manager: IbayManager = Depends(get_ibay_manager),
 ):
-    if not user:
-        raise HTTPException(status_code=403, detail="You don't have permission")
     response = await ibay_manager.create_order(user, session, product)
     return response
+
 
 @ibay_router.get("/products", response_model=List[Products])
 async def create_product(

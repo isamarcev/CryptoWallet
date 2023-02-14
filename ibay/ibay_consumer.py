@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 # from base_api.apps.ethereum.tasks import check_transactions_by_block
 # from base_api.config.db import SessionLocal, get_session
 from ibay.config.settings import settings
+from ibay.apps.dependencies import get_order_manager
 # from base_api.apps.ethereum.dependencies import get_ethereum_manager
 
 
@@ -20,9 +21,11 @@ async def check_transaction_by_block(message: AbstractIncomingMessage):
 
     # db = session.connection()
     # ethereum_manager = await get_ethereum_manager()
+    order_manager = await get_order_manager()
     print(message.body)
     async with message.process():
         logger.info(f"Got new block: {message.body}")
+        await order_manager.send_requests()
 
         # await ethereum_manager.check_transaction_in_block(message.body.decode("utf-8"), db)
         # check_transactions_by_block.apply_async(args=[message.body.decode()])
