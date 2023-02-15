@@ -2,7 +2,7 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from .settings import settings
+from ibay.config.settings import settings
 
 DATABASE_URL = str(settings.postgres_url)
 

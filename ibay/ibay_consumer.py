@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 from threading import Thread
 
@@ -25,21 +26,15 @@ async_session = sessionmaker(
     expire_on_commit=False,
 )
 
-async def check_transaction_by_block(message: AbstractIncomingMessage):
 
-    # db = session.connection()
-    # ethereum_manager = await get_ethereum_manager()
+async def check_transaction_by_block(message: AbstractIncomingMessage):
     db = async_session()
     order_manager = await get_order_manager()
     print(message.body)
     async with message.process():
         logger.info(f"Got new block: {message.body}")
-        await order_manager.start_delivery_process(message.body.decode(), db)
+        await order_manager.start_delivery_process(json.loads(message.body.decode("utf-8")), db)
 
-        # await ethereum_manager.check_transaction_in_block(message.body.decode("utf-8"), db)
-        # check_transactions_by_block.apply_async(args=[message.body.decode()])
-        # check_transactions_by_block.apply_async(args=[f"{message.body.decode()}"])
-        # await new_message(message.body)
 
 async def main() -> None:
     # Perform connection

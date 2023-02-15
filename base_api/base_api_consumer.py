@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 from threading import Thread
 
@@ -32,6 +33,7 @@ async def check_transaction_by_block(message: AbstractIncomingMessage):
         logger.info(f"Got new block: {message.body}")
         check_transactions_by_block.apply_async(args=[message.body.decode()])
 
+
 async def change_to_delivery_status(message: AbstractIncomingMessage):
     db = async_session()
     ibay_manager = await get_ibay_manager()
@@ -39,6 +41,14 @@ async def change_to_delivery_status(message: AbstractIncomingMessage):
         logger.info(f"Got event to change status to DELIVERY")
         await ibay_manager.change_status(message.body.decode(), OrderStatus.DELIVERY, db)
 
+
+async def change_to_failed_status(message: AbstractIncomingMessage):
+    print("CHANGE TO FAILED MESSAGE")
+    db = async_session()
+    ibay_manager = await get_ibay_manager()
+    async with message.process():
+        logger.info(f"Got event to change status to DELIVERY")
+        await ibay_manager.change_status(json.loads(message.body.decode()), OrderStatus.FAILED, db)
 
 
 async def main() -> None:
@@ -61,17 +71,27 @@ async def main() -> None:
             ExchangeType.FANOUT
         )
 
+        change_to_failed = await channel.declare_exchange(
+            "change_to_failed",
+            ExchangeType.FANOUT
+        )
+
+
+
         # Declaring queue
         new_block_queue = await channel.declare_queue(exclusive=True)
         change_to_delivery_queue = await channel.declare_queue(exclusive=True)
+        change_to_failed_queue = await channel.declare_queue(exclusive=True)
 
         # Binding the queue to the exchange
         await new_block_queue.bind(new_block_exchange)
         await change_to_delivery_queue.bind(change_to_delivery)
+        await change_to_failed_queue.bind(change_to_failed)
 
         # Start listening the queue
         await new_block_queue.consume(check_transaction_by_block)
         await change_to_delivery_queue.consume(change_to_delivery_status)
+        await change_to_failed_queue.consume(change_to_failed_status)
 
         print(" [*] Waiting for logs. To exit press CTRL+C")
         await asyncio.Future()

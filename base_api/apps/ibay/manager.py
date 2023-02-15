@@ -127,7 +127,6 @@ class IbayManager:
         if order and status:
             message = {
                 "order_id": str(order.id),
-                "datetime": order.datetime.timestamp(),
             }
             print(message)
             await self.producer.publish_message(
@@ -138,6 +137,7 @@ class IbayManager:
     async def change_status(self, message: dict, status: OrderStatus, session: AsyncSession):
         order_id = message.get("order_id")
         order = await self.database.get_order_by_id(order_id, session)
+        print(order.txn_hash, "TNX HASH IN CHANGE STATUS")
         updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status, db=session)
         updated_message = {
             "order_id": order_id,
@@ -154,3 +154,5 @@ class IbayManager:
                                                    room=device)
         except:
             pass
+        if status.FAILED:
+            print("SHOULD RETURN BACK MONEY to BUYER")

@@ -31,6 +31,7 @@ class IbayDatabase:
         return result
 
     async def update_order_for_delivery(self, tnx_hash: str, order_status: OrderStatus, db: AsyncSession):
+
         query = (
             order_table.update().where(order_table.c.txn_hash == tnx_hash).values({"status": order_status})
         )

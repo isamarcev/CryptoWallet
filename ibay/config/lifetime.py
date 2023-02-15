@@ -6,6 +6,7 @@ import aio_pika
 from aio_pika import connect_robust
 from fastapi import FastAPI
 
+from ibay.apps.order_handlers import order_thread
 from ibay.ibay_consumer import base_api_consumer_thread
 from ibay.config.database import init_db
 from ibay.config.settings import settings
@@ -37,6 +38,7 @@ def register_startup_event(
         except Exception:
             await asyncio.sleep(10)
         base_api_consumer_thread.start()
+        order_thread.start()
     return _startup
 
 
