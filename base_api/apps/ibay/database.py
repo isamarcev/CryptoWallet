@@ -30,8 +30,9 @@ class IbayDatabase:
         result = order.scalars().first()
         return result
 
-    async def update_order_for_delivery(self, tnx_hash: str, order_status: OrderStatus, db: AsyncSession):
-
+    async def update_order_for_delivery(self, tnx_hash: str, order_status: str, db: AsyncSession):
+        if not order_status:
+            order_status = "NEW"
         query = (
             order_table.update().where(order_table.c.txn_hash == tnx_hash).values({"status": order_status})
         )
@@ -43,6 +44,15 @@ class IbayDatabase:
             )
             order = request.scalars().first()
             return order
+
+    async def update_order_for_returning(self, order_id, tnx_hash: str, order_status: str, db: AsyncSession):
+        query = (
+            order_table.update().where(order_table.c.id == order_id).values({"status": order_status,
+                                                                             "txn_hash_return": tnx_hash})
+        )
+        await db.execute(query)
+        await db.commit()
+        return True
 
     async def get_order_by_id(self, order_id: str, db:AsyncSession):
         order = await db.execute(

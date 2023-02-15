@@ -16,7 +16,6 @@ class OrderManager:
         self.producer = producer
 
     async def start_delivery_process(self, message, session):
-        print(message, type(message))
         instance = await self.database.create_order(message, session)
         order_id = message.get("order_id")
         requests = await self.send_requests()
@@ -53,7 +52,7 @@ class OrderManager:
         order = await self.database.get_first_order(db)
         return order
 
-    async def feedback(self, order_id, status: OrderStatus, db: AsyncSession):
+    async def feedback(self, order_id, status: str, db: AsyncSession):
         updated_order = await self.database.update_to_status(order_id, status, db)
         answer_message = {"order_id": order_id, "status": status}
         await self.producer.publish_message(

@@ -35,7 +35,7 @@ class OrderDatabase:
         print(query)
         await db.commit()
 
-    async def update_to_status(self, order_id: str, status: OrderStatus, db: AsyncSession):
+    async def update_to_status(self, order_id: str, status: str, db: AsyncSession):
         query = await db.execute(
             update(self.order_model).where(order_table.c.order_number == order_id)
             .values({"status": status})
@@ -51,5 +51,5 @@ class OrderDatabase:
                 order_table.c.status == "DELIVERY"
             ).order_by(order_table.c.datetime)
         )
-        result = query.scalars().first()
+        result = query.first()
         return result if result else None

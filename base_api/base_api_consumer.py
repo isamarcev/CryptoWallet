@@ -39,7 +39,7 @@ async def change_to_delivery_status(message: AbstractIncomingMessage):
     ibay_manager = await get_ibay_manager()
     async with message.process():
         logger.info(f"Got event to change status to DELIVERY")
-        await ibay_manager.change_status(message.body.decode(), OrderStatus.DELIVERY, db)
+        await ibay_manager.change_status(json.loads(message.body.decode()), "DELIVERY", db)
 
 
 async def change_to_failed_status(message: AbstractIncomingMessage):
@@ -48,7 +48,17 @@ async def change_to_failed_status(message: AbstractIncomingMessage):
     ibay_manager = await get_ibay_manager()
     async with message.process():
         logger.info(f"Got event to change status to DELIVERY")
-        await ibay_manager.change_status(json.loads(message.body.decode()), OrderStatus.FAILED, db)
+        await ibay_manager.change_status(json.loads(message.body.decode()), "FAILED", db)
+
+
+async def feedback_from_delivery(message: AbstractIncomingMessage):
+    print(message.body, "FEEDBACK FROM DELIVERY SERVICE")
+    ibay_manager = await get_ibay_manager()
+    db = async_session()
+    async with message.process():
+        logger.info("GOT Event to close lot")
+        await ibay_manager.finish_order(json.loads(message.body.decode("utf-8")), db)
+
 
 
 async def main() -> None:
@@ -65,14 +75,16 @@ async def main() -> None:
             "new_block",
             ExchangeType.FANOUT,
         )
-
-        change_to_delivery = await channel.declare_exchange(
+        exchange_to_delivery = await channel.declare_exchange(
             "change_to_delivery",
             ExchangeType.FANOUT
         )
-
-        change_to_failed = await channel.declare_exchange(
+        exchange_to_failed = await channel.declare_exchange(
             "change_to_failed",
+            ExchangeType.FANOUT
+        )
+        exchange_from_delivery = await channel.declare_exchange(
+            "feedback_from_delivery",
             ExchangeType.FANOUT
         )
 
@@ -82,16 +94,19 @@ async def main() -> None:
         new_block_queue = await channel.declare_queue(exclusive=True)
         change_to_delivery_queue = await channel.declare_queue(exclusive=True)
         change_to_failed_queue = await channel.declare_queue(exclusive=True)
+        exchange_from_delivery_queue = await channel.declare_queue(exclusive=True)
 
         # Binding the queue to the exchange
         await new_block_queue.bind(new_block_exchange)
-        await change_to_delivery_queue.bind(change_to_delivery)
-        await change_to_failed_queue.bind(change_to_failed)
+        await change_to_delivery_queue.bind(exchange_to_delivery)
+        await change_to_failed_queue.bind(exchange_to_failed)
+        await exchange_from_delivery_queue.bind(exchange_from_delivery)
 
         # Start listening the queue
         await new_block_queue.consume(check_transaction_by_block)
         await change_to_delivery_queue.consume(change_to_delivery_status)
         await change_to_failed_queue.consume(change_to_failed_status)
+        await exchange_from_delivery_queue.consume(feedback_from_delivery)
 
         print(" [*] Waiting for logs. To exit press CTRL+C")
         await asyncio.Future()

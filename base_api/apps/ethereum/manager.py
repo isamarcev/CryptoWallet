@@ -145,6 +145,7 @@ class EthereumManager(EthereumLikeManager):
             wallet=user_wallet.public_key.lower()
         )
         new_transaction_receipt = await self.database.create_transaction(transaction_receipt, db)
+        # TODO DO WE NEED NEXT BLOCK OF CODE?
         tracking_transaction = await self.redis.get('transaction')
         if tracking_transaction:
             tracking_transaction = json.loads(tracking_transaction)
@@ -174,7 +175,14 @@ class EthereumManager(EthereumLikeManager):
                 print(orders, "ORDERS IN ETH MANAGER")
             except:
                 pass
+            returning_transactions = await self.redis.get("returning_txn")
+            try:
+                returning_list = json.loads(returning_transactions)
+                print(returning_list, "returning_list IN ETH MANAGER")
+            except:
+                pass
             for transaction in transactions:
+                print(transaction.hash.hex(), "RETURNED OR SENDED")
                 txn_hash = transaction.hash.hex()
                 loop = asyncio.get_event_loop()
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
@@ -184,7 +192,7 @@ class EthereumManager(EthereumLikeManager):
                     await self.ibay_manager.send_order_to_delivery(txn_hash,
                                                                    True if result.get("status") else False,
                                                                    db)
-
+                    orders.remove(txn_hash)
 
                 if transaction['to'] in addresses:
                     wallet_owner = await self.database.get_wallet_by_public_key(transaction["to"], db)
