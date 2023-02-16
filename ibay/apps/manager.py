@@ -1,5 +1,6 @@
 import asyncio
 import time
+from random import choice
 
 import aiohttp
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -35,25 +36,15 @@ class OrderManager:
 
     @staticmethod
     async def send_requests():
-        start_timestamp = time.time()
-        async with aiohttp.ClientSession() as session:
-            tasks = [asyncio.create_task(session.get("https://www.google.com/")) for i in range(10)]
-            results = await asyncio.gather(*tasks, return_exceptions=True)
-        print([r for r in results])
-        response = {r.status for r in results}
-        print(response)
-        task_time = round(time.time() - start_timestamp, 2)
-        print(task_time)
-        if 200 in set(response) and len(response) == 1:
-            return True
-        return False
+        await asyncio.sleep(15)
+        return choice([True, True, True, True, True, True, True, True, True, False])
 
     async def get_last_order(self, db: AsyncSession):
         order = await self.database.get_first_order(db)
         return order
 
     async def feedback(self, order_id, status: str, db: AsyncSession):
-        updated_order = await self.database.update_to_status(order_id, status, db)
+        await self.database.update_to_status(order_id, status, db)
         answer_message = {"order_id": order_id, "status": status}
         await self.producer.publish_message(
             "feedback_from_delivery",

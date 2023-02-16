@@ -33,14 +33,13 @@ class OrderHandler:
         session = async_session()
         while True:
             orders = await self.order_manager.get_last_order(session)
-            print(orders, "ORDERS")
             if orders:
                 choices = choice([True, False])
                 status = "COMPLETE" if choices else "RETURN"
                 print(status, "STATUS")
                 await self.order_manager.feedback(str(orders.order_number), status, session)
             await asyncio.sleep(5)
-            print("DELIVERY")
+            print("DELIVERY CHECKER")
 
 
 order_handler = OrderHandler(OrderManager(OrderDatabase(Order), IbayProducer()))

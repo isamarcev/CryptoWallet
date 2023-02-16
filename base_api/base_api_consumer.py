@@ -60,7 +60,6 @@ async def feedback_from_delivery(message: AbstractIncomingMessage):
         await ibay_manager.finish_order(json.loads(message.body.decode("utf-8")), db)
 
 
-
 async def main() -> None:
     # Perform connection
     connection = await connect_robust(settings.rabbit_url)
@@ -72,23 +71,17 @@ async def main() -> None:
         # await channel.set_qos(prefetch_count=1)
 
         new_block_exchange = await channel.declare_exchange(
-            "new_block",
-            ExchangeType.FANOUT,
+            "new_block", ExchangeType.FANOUT,
         )
         exchange_to_delivery = await channel.declare_exchange(
-            "change_to_delivery",
-            ExchangeType.FANOUT
+            "change_to_delivery", ExchangeType.FANOUT
         )
         exchange_to_failed = await channel.declare_exchange(
-            "change_to_failed",
-            ExchangeType.FANOUT
+            "change_to_failed", ExchangeType.FANOUT
         )
         exchange_from_delivery = await channel.declare_exchange(
-            "feedback_from_delivery",
-            ExchangeType.FANOUT
+            "feedback_from_delivery", ExchangeType.FANOUT
         )
-
-
 
         # Declaring queue
         new_block_queue = await channel.declare_queue(exclusive=True)

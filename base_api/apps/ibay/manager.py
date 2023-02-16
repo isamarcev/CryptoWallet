@@ -65,6 +65,7 @@ class IbayManager:
             'user': user.id
         }
         new_order = await self.database.create_order(order_data, db)
+        print(new_order.id, "NEW ORDER ID AFTER CREATE ORDER")
         order_data = Orders(id=new_order.id,
                             txn_hash=new_order.txn_hash,
                             datetime=new_order.datetime,
@@ -82,15 +83,33 @@ class IbayManager:
                                                    room=device)
         except:
             pass
+        await self.put_order_to_redis("orders_transaction", txn_hash)
+        # redis_orders = await self.redis.get("orders_transaction")
+        # if redis_orders:
+        #     orders_transaction = json.loads(redis_orders)
+        #     # orders_transaction = []
+        #     orders_transaction.append(txn_hash)
+        #     orders_transaction = json.dumps(orders_transaction)
+        # else:
+        #     orders_transaction = json.dumps([txn_hash])
+        # await self.redis.set("orders_transaction", orders_transaction)
 
-        redis_orders = await self.redis.get("orders_transaction")
-        if redis_orders:
-            orders_transaction = json.loads(redis_orders)
-            orders_transaction.append(txn_hash)
-            orders_transaction = json.dumps(orders_transaction)
-        else:
-            orders_transaction = json.dumps([txn_hash])
-        await self.redis.set("orders_transaction", orders_transaction)
+
+    async def put_order_to_redis(self, queue, transaction_hash):
+        try:
+            redis_orders = await self.redis.get(queue)
+            if redis_orders:
+                orders_transaction = json.loads(redis_orders)
+                # orders_transaction = []
+                orders_transaction.append(transaction_hash)
+                orders_transaction = json.dumps(orders_transaction)
+            else:
+                orders_transaction = json.dumps([transaction_hash])
+            await self.redis.set("orders_transaction", orders_transaction)
+        except Exception as e:
+            print("ERROR IN REDIS ", e)
+            await self.put_order_to_redis(queue, transaction_hash)
+
 
     async def create_product(self, product: CreateProduct, user: User, db: AsyncSession):
         wallet = await self.eth_database.get_wallet_by_public_key(product.address, db)
@@ -119,13 +138,11 @@ class IbayManager:
 
     async def send_order_to_delivery(self, tnx_hash: str, status: bool, db: AsyncSession):
         order_status = "NEW" if status else "FAILED"
-        # tnx_hash = "0x95a30e1c955c53c6a6a95e872886e297a812fd04043cf1672e5ab775831d29e8"
         order = await self.database.update_order_for_delivery(tnx_hash, order_status, db)
         if order and status:
             message = {
                 "order_id": str(order.id),
             }
-            print(message)
             await self.producer.publish_message(
                 "new_order",
                 message=message,
@@ -134,34 +151,19 @@ class IbayManager:
     async def change_status(self, message: dict, status: str, session: AsyncSession):
         order_id = message.get("order_id")
         order = await self.database.get_order_by_id(order_id, session)
-        print(order.txn_hash, "TNX HASH IN CHANGE STATUS")
         updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status, db=session)
         await self.update_front_end_status(order_id, order, status)
 
-        # updated_message = {
-        #     "order_id": order_id,
-        #     "status": status
-        # }
-        # try:
-        #     users_online = await self.redis.get("users_online")
-        #     users = json.loads(users_online)
-        #     online_devices = users.get(str(order.user))
-        #     if online_devices:
-        #         for device in online_devices:
-        #             await self.socket_manager.emit("update_order_status",
-        #                                            data=updated_message,
-        #                                            room=device)
-        # except:
-        #     pass
-        if status == OrderStatus.FAILED:
+        if status == "FAILED":
+            await self.return_money_to_buyer(order, session)
             print("SHOULD RETURN BACK MONEY to BUYER")
 
     async def finish_order(self, message: dict, db: AsyncSession):
+
         order_id = message.get("order_id")
         status = message.get("status")
 
         order = await self.database.get_order_by_id(order_id, db)
-        print(order.txn_hash, "TNX HASH IN CHANGE STATUS")
         updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash,
                                                                       order_status=status,
                                                                       db=db)
@@ -170,10 +172,6 @@ class IbayManager:
 
         if status == "RETURN":
             await self.return_money_to_buyer(order, db)
-
-        print(message)
-        pass
-
 
     async def update_front_end_status(self, order_id, order, status, returning_txn = None):
         updated_message = {
@@ -195,30 +193,16 @@ class IbayManager:
             pass
 
     async def return_money_to_buyer(self, order: Order, db: AsyncSession):
-        type(order)
         wallet_buyer = await self.eth_database.get_wallet_by_public_key(order.buyer_wallet, db)
-        print(wallet_buyer)
         product_owner_wallet = order.product.address
-        print(product_owner_wallet)
         owner_wallet = await self.eth_database.get_wallet_by_id(str(product_owner_wallet), db)
-        print(owner_wallet)
         loop = asyncio.get_running_loop()
         txn_hash = await loop.run_in_executor(None, functools.partial(self.client.sync_send_transaction,
                                                                       from_address=owner_wallet.public_key,
                                                                       to_address=wallet_buyer.public_key,
                                                                       amount=order.product.price,
                                                                       private_key=owner_wallet.privet_key))
-        print(txn_hash)
-
         await self.database.update_order_for_returning(str(order.id), txn_hash, "RETURN", db)
         await self.update_front_end_status(str(order.id), order, "RETURN", txn_hash)
-        # returning_txn = await self.redis.get("returning_txn")
-        # await self.database.update_order_for_delivery()
-        # if returning_txn:
-        #     list_txn = json.loads(returning_txn)
-        #     list_txn.append(txn_hash.hex())
-        # else:
-        #     list_txn = [txn_hash.hex()]
-        # await self.redis.set("returning_txn", list_txn)
 
 
