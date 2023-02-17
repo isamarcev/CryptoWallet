@@ -25,7 +25,7 @@ class IbayDatabase:
         await db.commit()
         await db.refresh(order_instance)
         order = await db.execute(
-            select(self.order_model).where(order_table.c.product_id == order_instance.product_id).options(selectinload(self.order_model.product))
+            select(self.order_model).where(order_table.c.txn_hash == order_instance.txn_hash).options(selectinload(self.order_model.product))
         )
         result = order.scalars().first()
         await db.commit()

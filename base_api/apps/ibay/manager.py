@@ -242,14 +242,14 @@ class IbayManager:
     async def finish_order_with_redis(self, order: dict, db: AsyncSession, redis: Redis):
         status = order.get("status")
         order_id = order.get("order_id")
-        if status == "FAILED":
+        if status == "RETURN":
             await self.return_money_to_buyer_with_redis(order, db, redis)
         elif status == "COMPLETE":
             order = await self.database.get_order_by_id(order_id, db)
             updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status,
                                                                           db=db)
 
-            await self.update_front_end_status_with_redis(order_id, order, status, redis)
+        await self.update_front_end_status_with_redis(order_id, order, status, redis)
         print(order, status, "ORDER AND STATUS IN FINISH WITH ORDER")
 
     async def return_money_to_buyer_with_redis(self, order_income: dict, db: AsyncSession, redis: Redis):
