@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
-
 from base_api.apps.frontend.dependecies import check_user_token
 
 templates = Jinja2Templates(directory="base_api/templates")

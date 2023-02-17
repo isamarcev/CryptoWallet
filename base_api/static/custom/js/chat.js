@@ -22,7 +22,6 @@ $('#attach-doc').on('change', function (event) {
 //delete uploaded image
 $(function() {
      $(document).on('click', '.delete_preview_image', function(){
-        console.log('click delete')
         $('.preview_image')[0].innerHTML = '';
         image = null
     })
@@ -55,7 +54,6 @@ $(document).keydown(function(e) {
 
 // send ajax to create message
 function create_message_post(message_text, image) {
-    // console.log('message_crate image', image)
     let data_message = new FormData()
     data_message.append('text', message_text)
     if (image){
@@ -70,7 +68,6 @@ function create_message_post(message_text, image) {
         cache: false,
         data: data_message,
         success: function (data) {
-            console.log('success return data = ', data)
         },
         error: (error) => {
             if (error.status == 400){
@@ -93,7 +90,6 @@ function create_message_post(message_text, image) {
 
 //show modal window with user profile info
 function show_user_info(number){
-    console.log(number, 'num');
     $('.user-profile-sidebar').removeClass('show');
     $('#profile_'+number).addClass('show')
     overlay.addClass('show');
@@ -105,15 +101,19 @@ overlay.on('click', function () {
       overlay.removeClass('show');
     });
 
+//function for close user profile info
+function close_modal(){
+    $('.user-profile-sidebar').removeClass('show');
+      overlay.removeClass('show');
+}
+
 //get message history from server by socketio
 sio.on("get_history", (data) => {
-    console.log('get_history')
     let chat_list = $('.chats')
     $('.chat').remove()
     let prev_user_message = ''
     for (let prop in data) {
         message = data[prop]
-        console.log(message)
         if (prev_user_message !== message.user_id) {
             if (user_data.user_id == message.user_id) {
                 let chat_avatar = '<div class="chat-avatar"><span class="avatar box-shadow-1 cursor-pointer"><img src="' + message.user_photo +
@@ -167,15 +167,12 @@ sio.on("get_history", (data) => {
 
 //get online users from server by sockets
 sio.on('get_online_users', (data) => {
-    console.log('get_users')
     let user_list_block = $('.chat-users-list')
     let content_body = $('.content-body')
     $('.online_user').remove()
-    // console.log(user_list_block)
     let user_list = []
     let number = 0
     for (let prop in data) {
-        console.log(data[prop].auth)
         auth = data[prop].auth
 
         let avatar = '<span class="avatar"><img src="' + auth.user_photo + '" height="42" width="42" alt="Generic placeholder image">' +
@@ -188,7 +185,7 @@ sio.on('get_online_users', (data) => {
         }
 
 
-        let headers = '<header class="user-profile-header"><span class="close-icon">' +
+        let headers = '<header class="user-profile-header"><span class="close-icon" onclick="close_modal()">' +
             '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>' +
             '<div class="header-profile-sidebar"><div class="avatar box-shadow-1 avatar-border avatar-xl"><img src="' +
             auth.user_photo + '" alt="user_avatar" height="70" width="70"><span class="avatar-status-online avatar-status-lg"></span></div>' +

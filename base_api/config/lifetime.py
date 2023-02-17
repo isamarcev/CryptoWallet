@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import asyncio
 from typing import Awaitable, Callable
-
 import aio_pika
-from aio_pika import connect_robust
 from fastapi import FastAPI
+from fastapi_limiter import FastAPILimiter
 
 from base_api.base_api_consumer import base_api_consumer_thread
 from base_api.config.db import init_db
 from base_api.config.settings import settings
 from services.rabbit.lifetime import init_rabbit, shutdown_rabbit
+from services.redis.dependencies import get_redis
 
 
 def register_startup_event(
@@ -29,6 +29,8 @@ def register_startup_event(
     @app.on_event("startup")
     async def _startup() -> None:  # noqa: WPS430
         await init_db()
+        redis = await get_redis()
+        await FastAPILimiter.init(redis)
         # await init_redis(app)
         await init_rabbit(app)
         try:

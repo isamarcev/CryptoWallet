@@ -1,10 +1,8 @@
 
-
-
 const login_url = window.location.origin + "/api/user/login/"
 
-
-$( "#login_button" ).click(function() {
+//login function
+function login(){
   var email = $("#email");
   var password = $("#password");
   let error_email = $('#error_email');
@@ -12,7 +10,6 @@ $( "#login_button" ).click(function() {
   let error_empty = $('#error_empty')
 
   if (!email.val() || !password.val() ) {
-    console.log("EMPTY")
     error_empty.text("You should fill in all fields")
     error_empty.css("display", "block")
     return
@@ -29,12 +26,10 @@ $( "#login_button" ).click(function() {
       "email": email.val(),
       "password": password.val(),
     }),
-    success: function(data){   /* функция которая будет выполнена после успешного запроса.  */
-	     // alert("SUCCESS. TOKEN IN AUTH"); /* В переменной data содержится ответ от index.php. */
+    success: function(data){
         if (data.access_token) {
         location.reload()
       }
-      console.log(data)
     },
     error: function(data) {
       error_password.css('display', "none")
@@ -43,4 +38,17 @@ $( "#login_button" ).click(function() {
       error_empty.css("display", "block")
             }
   })
+}
+
+//function check press login
+$("#login_button").click(function() {
+  login()
 });
+
+
+//function check press enter
+$(document).keydown(function(e) {
+    if (e.keyCode === 13) {
+      login()
+    }
+})

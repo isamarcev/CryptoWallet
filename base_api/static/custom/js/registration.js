@@ -2,7 +2,8 @@
 
 const register_url = window.location.origin + "/api/user/register/"
 
-$( "#register_button" ).click(function() {
+//register function
+function registration(){
   var email = $("#email")
   var username = $("#username")
   var password = $("#password")
@@ -31,8 +32,7 @@ $( "#register_button" ).click(function() {
       "password": password.val(),
       "password2": password2.val()
     }),
-    success: function(data){   /* функция которая будет выполнена после успешного запроса.  */
-	     // alert("SUCCESS. TOKEN IN AUTH"); /* В переменной data содержится ответ от index.php. */
+    success: function(data){
       if (data.access_token) {
         location.reload()
       }
@@ -63,4 +63,18 @@ $( "#register_button" ).click(function() {
             error_password.css("display", "block")
             error_password2.css("display", "block")
         }
-}}})});
+    }}
+  })
+}
+
+//function check press register
+$("#register_button").click(function() {
+  registration()
+  });
+
+//function check press enter
+$(document).keydown(function(e) {
+    if (e.keyCode === 13) {
+      registration()
+    }
+})

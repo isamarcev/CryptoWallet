@@ -12,11 +12,11 @@ const sio = io(ws_url,
 var currentLocation = window.location;
 
 sio.on("connect", () => {
-    console.log('connect_basic')
+
 });
 
 sio.on("disconnect", () => {
-    console.log('disconnect')
+
 });
 
 
@@ -56,19 +56,15 @@ $(window).on('load', function() {
         url: current_user_url,
         type: 'GET',
         success: function (data) {
-
-            console.log('data = ', data)
             user_data['user_id'] = data.id
             user_data['user_photo'] = data.photo
             user_data['first_name'] = data.first_name
             user_data['last_name'] = data.last_name
             user_data['username'] = data.username
             user_data['email'] = data.email
-            // console.log('url = ', current_url)
             user_data['url'] = current_url
             document.querySelector('.user-name').textContent = user_data['username']
             if (data.photo) {
-                console.log('avatar')
                 document.querySelector("#avatar_basic").src =  data.photo;
             }
             if (data.permission.has_chat_access == false){
@@ -78,15 +74,20 @@ $(window).on('load', function() {
             sio.connect();
         },
         error: (error) => {
-            console.log('error');
+            if (error.status == 400){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
+            }
+            if (error.status == 403 || error.status == 401) {
+                document.location.reload();
+            }
         }
     })
 })
 
 
 sio.on("transaction_alert", (data) => {
-    console.log(data)
-    console.log(data.status)
     if (data.operation === "income") {
         if (data.result === true) {
             let message = "You've just gotten new ETH token to wallet " + data.public_key
@@ -103,11 +104,9 @@ sio.on("transaction_alert", (data) => {
             toastr.error("Failed", message);
         }
     }
-    // let balance_to_change = document.querySelector("[balance-value=" + data.public_key + "]");
     let balance_to_change = $(`[balance-value=${data.public_key}]`)
 
     balance_to_change.text(data.current_balance + "ETH");
-    console.log(balance_to_change)
 })
 
 sio.on('open_chat', (data) => {

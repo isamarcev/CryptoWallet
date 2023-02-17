@@ -63,7 +63,6 @@ function get_info() {
             },
             url: get_info_url,
             success: function (data) {
-                console.log(data)
                 email_input.val(data.email);
                 username_input.val(data.username);
                 username_basic.text(data.username);
@@ -86,68 +85,7 @@ function get_info() {
     )
 }
 
-// function create_wallet() {
-//     $.ajax(
-//         {
-//             method: "post",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             data: '',
-//             url: create_wallet_url,
-//             success: function (data) {
-//                 console.log(data)
-//                 // email_input.val(data.email)
-//                 // username_input.val(data.username)
-//                 // username_basic.text(data.username)
-//                 // if (data.avatar) {
-//                 //     avatar_profile.attr("src", data.avatar);
-//                 //     avatar_basic.attr("src", data.avatar);
-//                 // }
-//             },
-//             error: function (data) {
-//                 console.log(data)
-//             }
-//         },
-//     )
-//     $.ajax({
-//         url: get_wallets_url,
-//         type: 'GET',
-//         processData: false,
-//         contentType: false,
-//         cache: false,
-//         success: function (data) {
-//             console.log('success return data = ', data.length)
-//             if(data.length < 1) {
-//                 document.getElementById('no_wallets').style.display = 'block';
-//             }
-//             for (let prop in data) {
-//                 let wallet_data = data[prop]
-//                 let image = '<img src="' + eth_avatar + '" alt="ETH" width="70px" height="50px">'
-//                 let wallet = '<span class="wallet_number">' + wallet_data.public_key + '</span>'
-//                 let block = '<div class="col-12 ethereum-wallet">' + image + wallet + '</div>'
-//                 $('.wallets').append(block)
-//                 wallets_count.text((Number(wallets_count) + 1))
-//
-//             }
-//         },
-//         error: (error) => {
-//             console.log('error get')
-//             // if (error.status == 400){
-//             //     let error_text = error.responseJSON[0]
-//             //     if (error_text.code == 'image_format_error'){
-//             //         toastr.error(error_text.message, 'Error')
-//             //     }
-//             //     if (error_text.code == 'remote_space_error'){
-//             //         toastr.error(error_text.message, 'Error')
-//             //     }
-//             // }
-//             // if (error.status == 403 || error.status == 401) {
-//             //     document.location.reload();
-//             // }
-//         }
-//     })
-// }
+
 
 function updateProfile() {
     let form_data = new FormData()
@@ -191,15 +129,18 @@ function updateProfile() {
             error: function (data) {
                 console.log(data)
                 if (data.status === 400) {
-                    toastr.error("Check the data!");
-                    return
+                    let error_text = data.responseJSON.detail[0]
+                    if (error_text.code == 'image_format_error'){
+                        toastr.error(error_text.message, 'Error').css("width","300px")
+                    }
+                    else {
+                        toastr.error("Check the data!").css("width","300px")
+                    }
                 }
                 let detail = data.responseJSON.detail
                 for (let i of detail) {
                     $("#"+ i.field + "_error").text("*" + i.message)
                 }
-                console.log(data.responseJSON)
-                console.log("EROORS")
             }
         },
     )
@@ -223,7 +164,6 @@ function loadPreviewImage(element) {
 
 // delete image
 function deleteImage() {
-    // delete_image = true
     avatar_profile.attr("src",
         blank_avatar);
     profile_image = null;

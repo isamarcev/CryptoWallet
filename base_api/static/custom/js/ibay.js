@@ -284,6 +284,9 @@ function buy_product(){
                 if (error_text.code == 'Product undefined') {
                     toastr.error(error_text.message, 'Error')
                 }
+                else{
+                    toastr.error(error_text.message, 'Error')
+                }
             }
              if (error.status == 422) {
                 let error_text = error.responseJSON[0]
@@ -324,8 +327,10 @@ sio.on("show_new_product", (data) => {
 sio.on('new_order_show', (data) => {
     console.log(data)
     console.log("DATA IN NEW ORDER")
-    let parents = document.getElementById('no_orders').parentNode;
+    if(document.getElementById('no_orders')){
+        let parents = document.getElementById('no_orders').parentNode;
         parents.remove();
+    }
     // document.getElementById('no_orders').style.display = 'none';
     let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.product.image +'" height="100"></div>'
     let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +

@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Response, HTTPException
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
-from fastapi import APIRouter, Response, Depends
+from fastapi import APIRouter, Depends
 from base_api.apps.frontend.dependecies import check_user_token
 
 templates = Jinja2Templates(directory="base_api/templates")

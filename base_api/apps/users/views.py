@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
 from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi_helper.schemas.examples_generate import examples_generate
+from fastapi_limiter.depends import RateLimiter
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
-from starlette.requests import Request
 from starlette.responses import RedirectResponse
-
 from .tasks import set_chat_permission_after_60s
 from ...config.db import get_session
 from ..frontend.dependecies import check_user_token
-from . import database
-from .dependencies import get_current_user, get_db, get_user_manager
+from .dependencies import get_current_user, get_user_manager
 from .exeptions import UsernameAlreadyExists, UsernameInvalidException
 from .manager import UserManager
 from .models import User
 from .schemas import UserLogin, UserProfileUpdate, UserRegister
+from ...config.utils.fastapi_limiter import custom_callback
 
 user_router = APIRouter()
 
 
-@user_router.post(
-    "/register/",
-    status_code=status.HTTP_201_CREATED,
-)
+@user_router.post("/register/", status_code=status.HTTP_201_CREATED,
+                  dependencies=[Depends(RateLimiter(times=2, seconds=10, callback=custom_callback))])
 async def register(
     user: UserRegister,
     response: Response,
@@ -30,19 +27,16 @@ async def register(
     user_manager: UserManager = Depends(get_user_manager),
 ):
     result = await user_manager.create_user(user=user, session=session)
-    set_chat_permission_after_60s.apply_async(args=[result[1]], countdown=5)
+    set_chat_permission_after_60s.apply_async(args=[result[1]], countdown=60)
     response.set_cookie(
         key="Authorization",
         value=f"Bearer {result[0].get('access_token')}",
     )
-
     return result[0]
 
 
-@user_router.post(
-    "/login/",
-    status_code=status.HTTP_200_OK,
-)
+@user_router.post("/login/", status_code=status.HTTP_200_OK,
+                  dependencies=[Depends(RateLimiter(times=2, seconds=10, callback=custom_callback))])
 async def login(
     user: UserLogin,
     response: Response,
@@ -58,14 +52,15 @@ async def login(
     return result
 
 
-@user_router.get("/", status_code=status.HTTP_200_OK)
+@user_router.get("/", status_code=status.HTTP_200_OK,
+                 dependencies=[Depends(RateLimiter(times=6, seconds=10, callback=custom_callback))])
 async def get_current_user(
     user: User = Depends(get_current_user),
 ):
     return user
 
 
-@user_router.get("/profile/")
+@user_router.get("/profile/", dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))])
 async def get_profile(
     user_manager: UserManager = Depends(get_user_manager),
     session: AsyncSession = Depends(get_session),
@@ -84,6 +79,7 @@ async def get_profile(
         UsernameAlreadyExists,
         auth=True,
     ),
+    dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))]
 )
 async def update_profile(
     user: UserProfileUpdate = Depends(UserProfileUpdate.as_form),
@@ -102,7 +98,8 @@ async def update_profile(
     }
 
 
-@user_router.get("/logout", status_code=status.HTTP_200_OK)
+@user_router.get("/logout", status_code=status.HTTP_200_OK,
+                 dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))])
 async def logout(
     response: Response,
     user: User = Depends(get_current_user),

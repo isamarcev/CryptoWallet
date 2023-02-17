@@ -75,7 +75,6 @@ function open_modal(){
 function send_transaction(){
     let to_address = $('#modal_address').val()
     let amount = $('#modal_value').val()
-    console.log(to_address, amount)
     if (!to_address || !amount){
         toastr.error('Field "Send To" or "Value" is empty', "Empty field").css("width","300px")
     }
@@ -94,11 +93,6 @@ function send_transaction(){
             }),
             success: function (data) {
                 toastr.success('Create new transaction <a href="' + data.url + '" target="_blank" style="color: darkblue">Transaction URL</a>' , 'Success').css("width", "300px")
-                // document.getElementById('no_wallets').style.display = 'none';
-                // let image = '<img src="' + eth_avatar + '" alt="ETH" width="70px" height="50px">'
-                // let wallet = '<span class="wallet_number">' + data.public_key + '</span>'
-                // let block = '<div class="col-12 ethereum-wallet">' + image + wallet + '</div>'
-                // $('.wallets').append(block)
             },
             error: (error) => {
                 console.log('import wallet error  ', error)
@@ -129,15 +123,12 @@ function send_transaction(){
 function open_transactions(wallet_id) {
     $(function () {
         var dt_multilingual_table = $('.dt-multilingual')
-         console.log(get_wallet_transactions_history + wallet_id)
         var lang = 'English';
             var table_language = dt_multilingual_table.DataTable({
                 "bDestroy": true,
                 autoWidth: false,
                 responsive: true,
                 "order": [],
-                 // processing: true,
-                // serverSide: true,
                 ajax: {url: (get_wallet_transactions_history + wallet_id), dataSrc:""},
                 columns: [
                   {data: 'number'},

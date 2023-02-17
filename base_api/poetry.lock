@@ -1121,6 +1121,22 @@ dev = ["check-manifest"]
 test = ["coverage"]
 
 [[package]]
+name = "fastapi-limiter"
+version = "0.1.5"
+description = "A request rate limiter for fastapi"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "fastapi-limiter-0.1.5.tar.gz", hash = "sha256:546be0fef3b10c19ab3ed2b9c47c5a3ac1924e71210bc1254445a059430bf3b7"},
+    {file = "fastapi_limiter-0.1.5-py3-none-any.whl", hash = "sha256:f01681f3927b0750ff642e1d8dcde6c0f79d1b1dfd8164b909a74e7c75b8cce6"},
+]
+
+[package.dependencies]
+fastapi = "*"
+redis = ">=4.2.0rc1,<5.0.0"
+
+[[package]]
 name = "flake8"
 version = "6.0.0"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -2411,6 +2427,25 @@ files = [
 ]
 
 [[package]]
+name = "redis"
+version = "4.5.1"
+description = "Python client for Redis database and key-value store"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "redis-4.5.1-py3-none-any.whl", hash = "sha256:5deb072d26e67d2be1712603bfb7947ec3431fb0eec9c578994052e33035af6d"},
+    {file = "redis-4.5.1.tar.gz", hash = "sha256:1eec3741cda408d3a5f84b78d089c8b8d895f21b3b050988351e925faf202864"},
+]
+
+[package.dependencies]
+async-timeout = ">=4.0.2"
+
+[package.extras]
+hiredis = ["hiredis (>=1.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
+
+[[package]]
 name = "requests"
 version = "2.28.2"
 description = "Python HTTP for Humans."
@@ -2895,4 +2930,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "835f7e68dd7471b5419534866e270f8e2c90261ebe81ba4ea16f16169109b05f"
+content-hash = "4a289f8e6331f62f006498427f0c49a30d62af89d69a49ef3257e76a6a6afa40"
