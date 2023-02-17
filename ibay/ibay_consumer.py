@@ -27,7 +27,7 @@ async_session = sessionmaker(
 )
 
 
-async def check_transaction_by_block(message: AbstractIncomingMessage):
+async def start_delivery_process(message: AbstractIncomingMessage):
     db = async_session()
     order_manager = await get_order_manager()
     print(message.body)
@@ -58,7 +58,7 @@ async def main() -> None:
         await new_block_queue.bind(new_block_exchange)
 
         # Start listening the queue
-        await new_block_queue.consume(check_transaction_by_block)
+        await new_block_queue.consume(start_delivery_process)
 
         print(" [*] Waiting for logs. To exit press CTRL+C")
         await asyncio.Future()

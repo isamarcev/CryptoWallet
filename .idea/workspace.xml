@@ -6,17 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/base_api_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/base_api_consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/dataabase.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/dataabase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/order_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/order_handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/config/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/config/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/config/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/config/lifetime.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/ibay_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/ibay_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/ibay.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/ibay.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,6 +186,14 @@
       <workItem from="1676404128590" duration="9898000" />
       <workItem from="1676414764695" duration="4225000" />
       <workItem from="1676419181454" duration="3932000" />
+      <workItem from="1676446180334" duration="3518000" />
+      <workItem from="1676454532341" duration="11009000" />
+      <workItem from="1676473224698" duration="7511000" />
+      <workItem from="1676546119292" duration="14937000" />
+      <workItem from="1676575814774" duration="879000" />
+      <workItem from="1676576782759" duration="7760000" />
+      <workItem from="1676585901577" duration="1091000" />
+      <workItem from="1676587159237" duration="5972000" />
     </task>
     <servers />
   </component>

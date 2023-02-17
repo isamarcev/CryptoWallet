@@ -145,6 +145,7 @@ class EthereumManager(EthereumLikeManager):
             wallet=user_wallet.public_key.lower()
         )
         new_transaction_receipt = await self.database.create_transaction(transaction_receipt, db)
+        # TODO DO WE NEED NEXT BLOCK OF CODE?
         tracking_transaction = await self.redis.get('transaction')
         if tracking_transaction:
             tracking_transaction = json.loads(tracking_transaction)
@@ -153,6 +154,40 @@ class EthereumManager(EthereumLikeManager):
             tracking_transaction = [txn_hash]
         await self.redis.set("transaction", json.dumps(tracking_transaction))
         return TransactionURL(url='https://sepolia.etherscan.io/tx/' + txn_hash)
+
+    @staticmethod
+    async def get_list_redis_data(redis: Redis, queue: str):
+        """function for getting list-data from redis"""
+        data = await redis.get(queue)
+        try:
+            list_data = json.loads(data)
+        except Exception:
+            list_data = []
+            pass
+        return list_data
+
+    @staticmethod
+    async def put_list_to_redis_data(redis: Redis, queue: str, list_data):
+        """function for putting list-data to redis"""
+        json_data = json.dumps(list_data)
+        try:
+            await redis.set(queue, json_data)
+        except Exception as e:
+            print("exeption in putting data", e)
+            pass
+
+    async def send_socket_messages(self, event, message, online_devices, socket_manager):
+        """send message and event to device by event"""
+        for device in online_devices:
+            await socket_manager.emit(event,
+                                      data=message,
+                                      room=device)
+
+    async def send_transaction_for_delivery(self, tnx_hash: str, result: bool, db: AsyncSession):
+        """sending transaction hash to ibay service for delivery process"""
+        await self.ibay_manager.send_order_to_delivery(tnx_hash,
+                                                       True if result else False,
+                                                       db)
 
     async def check_transaction_in_block(self, block_number, db: AsyncSession):
         wallets = await self.database.get_wallets(db)
@@ -163,47 +198,35 @@ class EthereumManager(EthereumLikeManager):
                                                                         addresses=addresses))
         if transactions:
             socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
-            users_online = await self.redis.get("users_online")
-            try:
-                users = json.loads(users_online)
-            except:
-                pass
-            orders_transaction = await self.redis.get("orders_transaction")
-            try:
-                orders = json.loads(orders_transaction)
-                print(orders, "ORDERS IN ETH MANAGER")
-            except:
-                pass
+            users = await self.get_list_redis_data(self.redis, "users_online")
+            orders = await self.get_list_redis_data(self.redis, "orders_transaction")
+            returning_transactions = self.get_list_redis_data(self.redis, "returning_txn")
+
             for transaction in transactions:
                 txn_hash = transaction.hash.hex()
-                loop = asyncio.get_event_loop()
+                # loop = asyncio.get_event_loop()
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
                                                                             txn_hash=txn_hash,
                                                                             ))
                 if txn_hash in orders:
-                    await self.ibay_manager.send_order_to_delivery(txn_hash,
-                                                                   True if result.get("status") else False,
-                                                                   db)
-
+                    await self.send_transaction_for_delivery(txn_hash, result.get("status"), db)
+                    orders.remove(txn_hash)
+                    await self.put_list_to_redis_data(self.redis, "orders_transaction", orders)
 
                 if transaction['to'] in addresses:
                     wallet_owner = await self.database.get_wallet_by_public_key(transaction["to"], db)
                     current_balance = await loop.run_in_executor(None, functools.partial(self.client.sync_get_balance,
                                                                             address=transaction["to"],
                                                                             ))
-                    user_id = str(wallet_owner.user)
                     message = {
                         "operation": "income",
                         "result": True if result.get("status") else False,
                         "public_key": transaction["to"],
                         "current_balance": str(current_balance)
                     }
-                    online_devices = users.get(user_id)
+                    online_devices = users.get(str(wallet_owner.user))
                     if online_devices:
-                        for device in online_devices:
-                            await socket_manager.emit("transaction_alert",
-                                                      data=message,
-                                                      room=device)
+                        await self.send_socket_messages("transaction_alert", message, online_devices, socket_manager)
 
                 if transaction["from"] in addresses:
                     address = transaction["from"]
@@ -211,19 +234,17 @@ class EthereumManager(EthereumLikeManager):
                     current_balance = await loop.run_in_executor(None, functools.partial(self.client.sync_get_balance,
                                                                                          address=address,
                                                                                          ))
-                    user_id = str(wallet_owner.user)
                     message = {
                         "operation": "outcome",
                         "result": True if result.get("status") else False,
                         "public_key": address,
                         "current_balance": str(current_balance)
                     }
-                    online_devices = users.get(user_id)
+                    online_devices = users.get(str(wallet_owner.user))
                     if online_devices:
-                        for device in online_devices:
-                            await socket_manager.emit("transaction_alert",
-                                                      data=message,
-                                                      room=device)
+                        await self.send_socket_messages("transaction_alert", message, online_devices, socket_manager)
+
+        print("IN THE END OF PARSING BLOCK")
         return
 
     async def get_wallet_transactions(self, wallet: str, db: AsyncSession):

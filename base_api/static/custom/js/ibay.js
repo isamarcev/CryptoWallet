@@ -319,7 +319,11 @@ sio.on("show_new_product", (data) => {
 
 //socketio show new order
 sio.on('new_order_show', (data) => {
-    document.getElementById('no_orders').style.display = 'none';
+    console.log(data)
+    console.log("DATA IN NEW ORDER")
+    let parents = document.getElementById('no_orders').parentNode;
+        parents.remove();
+    // document.getElementById('no_orders').style.display = 'none';
     let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.product.image +'" height="100"></div>'
     let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
         '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
@@ -337,27 +341,27 @@ sio.on('new_order_show', (data) => {
         if(data.status == 'NEW') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                 '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p style="font-weight: bold; color: orange">' + data.status + '</p></div></div>'
+                '<p class="order-status" style="font-weight: bold; color: orange">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'DELIVERY') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                 '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p style="font-weight: bold; color: darkolivegreen">' + data.status + '</p></div></div>'
+                '<p class="order-status" style="font-weight: bold; color: darkolivegreen">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'COMPLETE') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                 '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p style="font-weight: bold; color: green">' + data.status + '</p></div></div>'
+                '<p class="order-status" style="font-weight: bold; color: green">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'FAILED') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                 '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p style="font-weight: bold; color: darkblue">' + data.status + '</p></div></div>'
+                '<p class="order-status" style="font-weight: bold; color: darkblue">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'RETURN') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                 '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p style="font-weight: bold; color: red">' + data.status + '</p></div></div>'
+                '<p class="order-status" style="font-weight: bold; color: red">' + data.status + '</p></div></div>'
         }
     if(data.txn_hash_return){
         class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
@@ -367,7 +371,18 @@ sio.on('new_order_show', (data) => {
     else {
         class_main += '</div>'
     }
-    let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
+    let class_block = '<div class="col-lg-6" order-id="'+ data.id + '"><div class="card"><div class="card-body text-center">' +
         '<div class="row">' + class_image + class_main + '</div></div></div></div>'
-    $('.orders').append(class_block)
+    $('.orders').prepend(class_block)
 })
+
+sio.on('update_order_status', (data) => {
+    console.log("DATRA IN EVENT UPDATE ORDER STATUS")
+    console.log(data)
+    let order_block = $("[order-id=" + data.order_id + "]")
+    console.log(order_block)
+    let status_order = order_block.children(".order-status")
+    status_order.text(data.status)
+
+})
+
