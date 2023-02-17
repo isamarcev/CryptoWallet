@@ -84,38 +84,41 @@ $(document).ready(function() {
 
                 if(order.status == 'NEW') {
                     class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                     '<p style="font-weight: bold; color: orange">' + order.status + '</p></div></div>'
                 }
                 else if(order.status == 'DELIVERY') {
                     class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                     '<p style="font-weight: bold; color: darkolivegreen">' + order.status + '</p></div></div>'
                 }
                 else if(order.status == 'COMPLETE') {
                     class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                     '<p style="font-weight: bold; color: green">' + order.status + '</p></div></div>'
                 }
                 else if(order.status == 'FAILED') {
                     class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                     '<p style="font-weight: bold; color: darkblue">' + order.status + '</p></div></div>'
                 }
                 else if(order.status == 'RETURN') {
                     class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                    '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                     '<p style="font-weight: bold; color: red">' + order.status + '</p></div></div>'
                 }
+
                 if(order.txn_hash_return){
                     class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                    '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                    '<p style="font-weight: bold;">' + order.txn_hash_return + '</p></div></div></div>'
+                    '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8 " style="text-align: left">' +
+                    '<p class="returning-tnx" style="font-weight: bold;">' + order.txn_hash_return + '</p></div></div></div>'
                 }
                 else {
-                    class_main += '</div>'
+                    class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+                    '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8 " style="text-align: left">' +
+                    '<p class="returning-tnx" style="font-weight: bold;">' + '' + '</p></div></div></div>'
                 }
-                let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
+                let class_block = '<div class="col-lg-6" id="'+ order.id +'"><div class="card"><div class="card-body text-center">' +
                     '<div class="row">' + class_image + class_main + '</div></div></div></div>'
                 $('.orders').append(class_block)
             }
@@ -340,49 +343,82 @@ sio.on('new_order_show', (data) => {
         '<p style="font-weight: bold;">' + data.datetime + '</p></div></div>'
         if(data.status == 'NEW') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p class="order-status" style="font-weight: bold; color: orange">' + data.status + '</p></div></div>'
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
+                '<p class="" style="font-weight: bold; color: orange">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'DELIVERY') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                '<p class="order-status" style="font-weight: bold; color: darkolivegreen">' + data.status + '</p></div></div>'
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
+                '<p class="" style="font-weight: bold; color: darkolivegreen">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'COMPLETE') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                 '<p class="order-status" style="font-weight: bold; color: green">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'FAILED') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                 '<p class="order-status" style="font-weight: bold; color: darkblue">' + data.status + '</p></div></div>'
         }
         else if(data.status == 'RETURN') {
             class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
-                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+                '<p>Status:</p></div><div class="col-lg-9 col-md-10 col-8 status-order" style="text-align: left">' +
                 '<p class="order-status" style="font-weight: bold; color: red">' + data.status + '</p></div></div>'
         }
     if(data.txn_hash_return){
         class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
             '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-            '<p style="font-weight: bold;">' + data.txn_hash_return + '</p></div></div></div>'
+            '<p class="returning-tnx" style="font-weight: bold;">' + data.txn_hash_return + '</p></div></div></div>'
     }
     else {
-        class_main += '</div>'
+        class_main += '<div class="row"><div class="col-lg-3 col-md-2 col-4">' +
+            '<p>Refund:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
+            '<p class="returning-tnx" style="font-weight: bold;">' + '' + '</p></div></div></div>'
     }
-    let class_block = '<div class="col-lg-6" order-id="'+ data.id + '"><div class="card"><div class="card-body text-center">' +
+    let class_block = '<div class="col-lg-6" id="'+ data.id + '"><div class="card"><div class="card-body text-center">' +
         '<div class="row">' + class_image + class_main + '</div></div></div></div>'
     $('.orders').prepend(class_block)
 })
 
+
+function change_status(status) {
+    var class_main = ""
+    if(status == 'NEW') {
+            class_main = '<p class="order-status" style="font-weight: bold; color: orange">' + status + '</p>'
+        }
+        else if(status == 'DELIVERY') {
+            class_main = '<p class="order-status" style="font-weight: bold; color: darkolivegreen">' + status + '</p>'
+        }
+        else if(status == 'COMPLETE') {
+            class_main += '<p class="order-status" style="font-weight: bold; color: green">' + status + '</p>'
+        }
+        else if(status == 'FAILED') {
+            class_main += '<p class="order-status" style="font-weight: bold; color: darkblue">' + status + '</p>'
+        }
+        else if(status == 'RETURN') {
+            class_main +=  '<p class="order-status" style="font-weight: bold; color: red">' + status + '</p>'
+        }
+        return class_main
+}
+
+
 sio.on('update_order_status', (data) => {
     console.log("DATRA IN EVENT UPDATE ORDER STATUS")
-    console.log(data)
-    let order_block = $("[order-id=" + data.order_id + "]")
+    console.log(data.order_id)
+    var ids = `#${data.order_id}`
+    var order_block = $(ids)
     console.log(order_block)
-    let status_order = order_block.children(".order-status")
-    status_order.text(data.status)
+    console.log("order_block")
+    var status_order = order_block.find(".status-order")
+    console.log(status_order)
+    let status_block = change_status(data.status)
 
+    console.log(status_block)
+    status_order.html(status_block)
+    if (data.returning_txn) {
+        var returning_tnx = order_block.find(".returning-tnx")
+        returning_tnx.text(data.returning_txn)
+    }
 })
 
