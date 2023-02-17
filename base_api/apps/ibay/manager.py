@@ -142,15 +142,15 @@ class IbayManager:
         if not status:
             await self.update_front_end_status(order.id, order, "FAILED")
 
-    async def change_status(self, message: dict, status: str, session: AsyncSession):
-        order_id = message.get("order_id")
-        order = await self.database.get_order_by_id(order_id, session)
-        updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status, db=session)
-        await self.update_front_end_status(order_id, order, status)
-
-        if status == "FAILED":
-            # await self.return_money_to_buyer(order, session)
-            print("SHOULD RETURN BACK MONEY to BUYER")
+    # async def change_status(self, message: dict, status: str, session: AsyncSession):
+    #     order_id = message.get("order_id")
+    #     order = await self.database.get_order_by_id(order_id, session)
+    #     updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status, db=session)
+    #     await self.update_front_end_status(order_id, order, status)
+    #
+    #     if status == "FAILED":
+    #         # await self.return_money_to_buyer(order, session)
+    #         print("SHOULD RETURN BACK MONEY to BUYER")
 
     async def change_status_with_redis(self, message: dict, status: str, session: AsyncSession, redis: Redis):
         order_id = message.get("order_id")
@@ -158,9 +158,10 @@ class IbayManager:
         updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status, db=session)
         await self.update_front_end_status_with_redis(order_id, order, status, redis)
 
-        if status == "FAILED":
-            # await self.return_money_to_buyer(order, session)
-            print("SHOULD RETURN BACK MONEY to BUYER")
+        # if status == "FAILED":
+        #     await self.update_front_end_status_with_redis(order_id, order, status, redis)
+        #     # await self.return_money_to_buyer(order, session)
+        #     print("SHOULD RETURN BACK MONEY to BUYER")
 
     async def update_front_end_status_with_redis(self, order_id, order, status, redis, returning_txn = None):
         updated_message = {
@@ -169,17 +170,13 @@ class IbayManager:
         }
         if returning_txn:
             updated_message["returning_txn"] = returning_txn
-        print(updated_message, "UPDATED MESSAGE")
         try:
             users_online = await redis.get("users_online")
-            print(1)
             users = json.loads(users_online)
-            print(2)
             online_devices = users.get(str(order.user))
             print(online_devices, "ONLINE USERS")
             if online_devices:
                 for device in online_devices:
-                    print(device, "DEVICE")
                     await self.socket_manager.emit("update_order_status",
                                                    data=updated_message,
                                                    room=device)
@@ -188,20 +185,20 @@ class IbayManager:
             pass
 
 
-    async def finish_order(self, message: dict, db: AsyncSession, redis=None):
-
-        order_id = message.get("order_id")
-        status = message.get("status")
-
-        order = await self.database.get_order_by_id(order_id, db)
-        updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash,
-                                                                      order_status=status,
-                                                                      db=db)
-        if status == "COMPLETE":
-            await self.update_front_end_status_with_redis(order_id, order, status, redis)
-
-        if status == "RETURN":
-            await self.return_money_to_buyer(order, db)
+    # async def finish_order(self, message: dict, db: AsyncSession, redis=None):
+    #
+    #     order_id = message.get("order_id")
+    #     status = message.get("status")
+    #
+    #     order = await self.database.get_order_by_id(order_id, db)
+    #     updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash,
+    #                                                                   order_status=status,
+    #                                                                   db=db)
+    #     if status == "COMPLETE":
+    #         await self.update_front_end_status_with_redis(order_id, order, status, redis)
+    #
+    #     if status == "RETURN":
+    #         await self.return_money_to_buyer(order, db)
 
     async def update_front_end_status(self, order_id, order, status, returning_txn = None):
         updated_message = {
@@ -210,7 +207,7 @@ class IbayManager:
         }
         if returning_txn:
             updated_message["returning_txn"] = returning_txn
-        print(updated_message, "UPDATED MESSAGE")
+        print(updated_message, "UPDATED MESSAGE SIMPLE FROMN END")
         try:
             users_online = await self.redis.get("users_online")
             print(1)
@@ -241,10 +238,22 @@ class IbayManager:
         await self.database.update_order_for_returning(str(order.id), txn_hash, "RETURN", db)
         await self.update_front_end_status(str(order.id), order, "RETURN", txn_hash)
 
-    async def return_money_to_buyer_with_redis(self, order: Order, db: AsyncSession, redis: Redis):
-        print(order)
-        print(type(order))
-        order = await self.database.get_order_by_id(order.get("order_id"), db)
+
+    async def finish_order_with_redis(self, order: dict, db: AsyncSession, redis: Redis):
+        status = order.get("status")
+        order_id = order.get("order_id")
+        if status == "FAILED":
+            await self.return_money_to_buyer_with_redis(order, db, redis)
+        elif status == "COMPLETE":
+            order = await self.database.get_order_by_id(order_id, db)
+            updated_order = await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status,
+                                                                          db=db)
+
+            await self.update_front_end_status_with_redis(order_id, order, status, redis)
+        print(order, status, "ORDER AND STATUS IN FINISH WITH ORDER")
+
+    async def return_money_to_buyer_with_redis(self, order_income: dict, db: AsyncSession, redis: Redis):
+        order = await self.database.get_order_by_id(order_income.get("order_id"), db)
         wallet_buyer = await self.eth_database.get_wallet_by_public_key(order.buyer_wallet, db)
         product_owner_wallet = order.product.address
         owner_wallet = await self.eth_database.get_wallet_by_id(str(product_owner_wallet), db)
@@ -254,7 +263,7 @@ class IbayManager:
                                                                       to_address=wallet_buyer.public_key,
                                                                       amount=order.product.price,
                                                                       private_key=owner_wallet.privet_key))
-        await self.database.update_order_for_returning(str(order.id), txn_hash, order.status, db)
+        await self.database.update_order_for_returning(str(order.id), txn_hash, order_income.get("status"), db)
         await self.update_front_end_status_with_redis(str(order.id), order, "RETURN", redis, txn_hash)
 
 

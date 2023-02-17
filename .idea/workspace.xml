@@ -7,10 +7,8 @@
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/base_api_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/base_api_consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/ibay.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/ibay.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,6 +192,7 @@
       <workItem from="1676576782759" duration="7760000" />
       <workItem from="1676585901577" duration="1091000" />
       <workItem from="1676587159237" duration="5972000" />
+      <workItem from="1676620972988" duration="4729000" />
     </task>
     <servers />
   </component>
