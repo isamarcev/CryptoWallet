@@ -39,6 +39,7 @@ async def get_redis() -> Redis:
     redis = aioredis.from_url(settings.redis_url)
     return redis
 
+
 async def change_to_delivery_status(message: AbstractIncomingMessage):
     db = async_session()
     redis = await get_redis()
@@ -67,7 +68,7 @@ async def feedback_from_delivery(message: AbstractIncomingMessage):
 
     async with message.process():
         logger.info("GOT Event to close lot")
-        await ibay_manager.return_money_to_buyer_with_redis(json.loads(message.body.decode("utf-8")), db, redis)
+        await ibay_manager.finish_order_with_redis(json.loads(message.body.decode("utf-8")), db, redis)
 
 
 async def main() -> None:
@@ -78,7 +79,6 @@ async def main() -> None:
         # Creating a channel
         print("CONNECTING")
         channel = await connection.channel()
-        # await channel.set_qos(prefetch_count=1)
 
         new_block_exchange = await channel.declare_exchange(
             "new_block", ExchangeType.FANOUT,
