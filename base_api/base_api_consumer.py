@@ -2,7 +2,8 @@ import asyncio
 import json
 import logging
 from threading import Thread
-
+import aioredis
+from aioredis import Redis
 from aio_pika import connect, ExchangeType, connect_robust
 from aio_pika.abc import AbstractIncomingMessage
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -34,30 +35,39 @@ async def check_transaction_by_block(message: AbstractIncomingMessage):
         check_transactions_by_block.apply_async(args=[message.body.decode()])
 
 
+async def get_redis() -> Redis:
+    redis = aioredis.from_url(settings.redis_url)
+    return redis
+
 async def change_to_delivery_status(message: AbstractIncomingMessage):
     db = async_session()
+    redis = await get_redis()
     ibay_manager = await get_ibay_manager()
     async with message.process():
         logger.info(f"Got event to change status to DELIVERY")
-        await ibay_manager.change_status(json.loads(message.body.decode()), "DELIVERY", db)
+        await ibay_manager.change_status_with_redis(json.loads(message.body.decode()), "DELIVERY", db, redis)
 
 
 async def change_to_failed_status(message: AbstractIncomingMessage):
     print("CHANGE TO FAILED MESSAGE")
     db = async_session()
     ibay_manager = await get_ibay_manager()
+    redis = await get_redis()
+
     async with message.process():
         logger.info(f"Got event to change status to DELIVERY")
-        await ibay_manager.change_status(json.loads(message.body.decode()), "FAILED", db)
+        await ibay_manager.change_status_with_redis(json.loads(message.body.decode()), "FAILED", db, redis)
 
 
 async def feedback_from_delivery(message: AbstractIncomingMessage):
     print(message.body, "FEEDBACK FROM DELIVERY SERVICE")
     ibay_manager = await get_ibay_manager()
     db = async_session()
+    redis = await get_redis()
+
     async with message.process():
         logger.info("GOT Event to close lot")
-        await ibay_manager.finish_order(json.loads(message.body.decode("utf-8")), db)
+        await ibay_manager.return_money_to_buyer_with_redis(json.loads(message.body.decode("utf-8")), db, redis)
 
 
 async def main() -> None:

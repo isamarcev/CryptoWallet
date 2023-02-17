@@ -32,22 +32,15 @@ class IbayDatabase:
         return result
 
     async def update_order_for_delivery(self, tnx_hash: str, order_status: str, db: AsyncSession):
-        print(tnx_hash, "TNX HASH in UPDATE ORDER FOR DELIVERY")
         if not order_status:
             order_status = "NEW"
-        # tnx_hash = "0xd1b119f53ce34f67144502b5d3bbada01a96d42c99ac3ffca38c3abf89d0d2a7"
-        # query = (
-        #     update(self.order_model).where(order_table.c.txn_hash == tnx_hash).values({"status": order_status})
-        # )
         await db.execute(update(self.order_model).where(order_table.c.txn_hash == tnx_hash).
                          values({"status": order_status}))
         await db.commit()
         if order_status != "FAILED":
-            print(select(self.order_model).where(order_table.c.txn_hash == tnx_hash), "QUERY")
             request = await db.execute(
                 select(self.order_model).where(order_table.c.txn_hash == tnx_hash)
             )
-            print(request, "REQUEST")
             orders = request.all()
             await db.commit()
             if orders:
@@ -67,9 +60,7 @@ class IbayDatabase:
             select(self.order_model).where(order_table.c.id == order_id).options(
                 selectinload(self.order_model.product))
         )
-        print(order.scalars(), type(order), "ORDER IN GET ORDER _BY ID")
         result = order.scalars().first()
-        print(result, "GET ORDER BY ID")
         await db.commit()
 
         return result

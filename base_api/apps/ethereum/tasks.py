@@ -24,6 +24,7 @@ Session = sessionmaker(
 
 async def wrap_db_ctx(func: Callable, *args, **kwargs) -> None:
     engine = create_async_engine(DATABASE_URL, future=True)
+    loop = asyncio.get_event_loop()
     async with engine.connect() as session:
         try:
             await func(*args, db=session)
@@ -51,10 +52,8 @@ def async_to_sync(func: Callable, *args, **kwargs) -> None:
 
 @celery_app.task(name="check_new_block")
 def check_transactions_by_block(block_hash: str):
-
     ethereum_manager = asyncio.run(get_ethereum_manager())
     async_to_sync(ethereum_manager.check_transaction_in_block, block_hash)
-
     # result = asyncio.run(ethereum_manager.check_transaction_in_block(block_hash, db))
     return
 
