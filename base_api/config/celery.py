@@ -11,4 +11,4 @@ celery_app = Celery(
 )
 
 celery_app.conf.update(task_track_started=True)
-celery_app.autodiscover_tasks(["base_api.apps.ethereum.tasks"])
+celery_app.autodiscover_tasks(["base_api.apps.ethereum.tasks", "base_api.apps.users.tasks"])

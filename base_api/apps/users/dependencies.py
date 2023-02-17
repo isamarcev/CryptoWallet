@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import aioredis
+from aioredis import Redis
 from async_lru import alru_cache
 from boto3 import Session
 from fastapi import Depends
@@ -42,6 +44,11 @@ async def get_jwt_backend() -> JWTBackend:
     return jwt_backend
 
 
+async def get_redis() -> Redis:
+    redis = aioredis.from_url(settings.redis_url)
+    return redis
+
+
 @alru_cache()
 async def get_s3_client():
     session = Session()
@@ -64,7 +71,8 @@ async def get_user_manager() -> UserManager:
     user_db = await get_user_db()
     s3_client = await get_s3_client()
     storage = await get_storage(s3_client)
-    return UserManager(user_db, jwt_backend, storage)
+    redis = await get_redis()
+    return UserManager(user_db, jwt_backend, storage, redis)
 
 
 async def get_current_user(

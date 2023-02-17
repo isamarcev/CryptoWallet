@@ -24,7 +24,7 @@ async def get_session() -> AsyncSession:
 
 
 async def get_redis() -> Redis:
-    redis = aioredis.from_url("redis://localhost", decode_responses=True)
+    redis = aioredis.from_url(settings.redis_url)
     return redis
 
 

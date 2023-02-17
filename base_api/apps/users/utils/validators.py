@@ -4,11 +4,8 @@ import concurrent
 import functools
 import re
 from typing import Dict
-
 from email_validator import EmailNotValidError, validate_email
-from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from base_api.apps.users.database import UserDatabase
 from base_api.apps.users.models import User
 from base_api.apps.users.schemas import UserProfileUpdate, UserRegister
@@ -61,8 +58,6 @@ async def validate_register(user: UserRegister, session: AsyncSession, user_db: 
         errors["errors"]["mismatch_password"] = "Password missmatch"
     if not await validate_username(user.username):
         errors["errors"]["username"] = "Invalid username"
-    if await user_db.get_user_by_username(user.username, session):
-        errors["errors"]["username"] = "Username is already registered"
     if errors.get("errors"):
         return errors
     return {"success_validation": True}

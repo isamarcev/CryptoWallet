@@ -21,9 +21,6 @@ sio.on("disconnect", () => {
 
 
 
-
-const current_user_url = window.location.origin + "/api/user/"
-const current_url = window.location.pathname
 const user_data = {};
 
 $(window).on('load', function() {
@@ -74,6 +71,9 @@ $(window).on('load', function() {
                 console.log('avatar')
                 document.querySelector("#avatar_basic").src =  data.photo;
             }
+            if (data.permission.has_chat_access == false){
+                $('#chat_li').attr('class', 'nav-item disabled')
+            }
             sio.auth = user_data;
             sio.connect();
         },
@@ -109,4 +109,12 @@ sio.on("transaction_alert", (data) => {
     balance_to_change.text(data.current_balance + "ETH");
     console.log(balance_to_change)
 })
+
+sio.on('open_chat', (data) => {
+    toastr.success(data, 'Success').css("width","300px")
+    $('#chat_li').attr('class', 'nav-item')
+})
+
+
+
 

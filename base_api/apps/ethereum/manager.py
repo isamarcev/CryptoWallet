@@ -238,8 +238,6 @@ class EthereumManager(EthereumLikeManager):
             if not transaction_info:
                 return await self.database.get_wallet_transactions(wallet, db)
             block_number = transaction_info.blockNumber
-            print('block_number = ', block_number)
-            # await self.database.delete_transactions(wallet, transaction.date, db)  # ???
         else:
             block_number = '0'
         params = {'module': 'account', 'action': 'txlist', 'address': wallet,

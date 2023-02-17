@@ -24,6 +24,7 @@ async def create_product(
     await manager.create_product(product, user, db)
     return status.HTTP_201_CREATED
 
+
 @ibay_router.post("/create-order")
 async def create_order(
         product: CreateOrder,
@@ -33,7 +34,6 @@ async def create_order(
 ):
     await ibay_manager.create_order(user, session, product)
     return status.HTTP_201_CREATED
-
 
 
 @ibay_router.get("/products", response_model=List[Products])

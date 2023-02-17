@@ -3,12 +3,13 @@ import uuid
 from typing import Dict, List, Type
 
 from databases import Database
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from base_api.apps.users.models import Permission, User
-from base_api.apps.users.models import user as user_table
+from base_api.apps.users.models import user as user_table, perm as permission_table
 
 from base_api.apps.ethereum.models import wallet as wallet_table
 from base_api.apps.chat.models import message as message_table
@@ -32,23 +33,17 @@ class UserDatabase:
         self.user_model = user_model
         self.permission_model = permission_model
 
-    # async def get_user(self, user_id: UUID, db: Session) -> User:
-    #     user = await db.query(self.user_model).filter(self.user_model.id == user_id).first()
-    #     return user
-    #
-    # async def get_user_by_email(self, user_email: str, db: Session) -> Dict:
-    #     user = await db.query(self.user_model).filter(self.user_model.email == user_email)
-    #     return user
-
     async def create_user(self, user: UserRegister, session: AsyncSession) -> User:
         user_instance = self.user_model(email=user.email, username=user.username, password=user.password)
         session.add(user_instance)
         await session.commit()
-        await session.refresh(user_instance)
         result_1 = await session.execute(
-            user_table.select().where(user_table.c.username == user_instance.username),
+            user_table.select().where(user_table.c.email == user_instance.email),
         )
         user_instance = self.user_model(**result_1.first()._asdict())
+        permission_instance = self.permission_model(user_id=user_instance.id)
+        session.add(permission_instance)
+        await session.commit()
         return user_instance
 
     async def get_user_by_email(self, user_email: str, session: AsyncSession):
@@ -56,7 +51,6 @@ class UserDatabase:
             user_table.select().where(user_table.c.email == user_email),
         )
         result_data = result.first()
-        print(result_data, "result data")
         return None if not result_data else self.user_model(**result_data._asdict())
 
     async def get_user_by_username(self, username: str, session: AsyncSession):
@@ -64,16 +58,15 @@ class UserDatabase:
             user_table.select().where(user_table.c.username == username),
         )
         result_data = result.first()
-        print(result_data, "result data username")
         return None if not result_data else self.user_model(**result_data._asdict())
 
     async def get_user_by_id(self, user_id: str, db: AsyncSession) -> User:
         result = await db.execute(
-            user_table.select().where(user_table.c.id == user_id),
+            select(self.user_model).where(user_table.c.id == user_id).options(selectinload(self.user_model.permission))
         )
-
-        result_data = result.first()
-        return None if not result_data else self.user_model(**result_data._asdict())
+        result_data = result.scalars().first()
+        return result_data
+        # return None if not result_data else self.user_model(**result_data._asdict())
 
     @staticmethod
     async def update_user(user_id: str, new_data: Dict, db: AsyncSession):
@@ -100,3 +93,13 @@ class UserDatabase:
             message_table.select().where(message_table.c.user_id == user.id)
         )
         return len(messages.all()) if messages else 0
+
+    @staticmethod
+    async def set_chat_permission_db(user_id: str, db: AsyncSession):
+        query = (
+            permission_table.update()
+            .where(permission_table.c.user_id == user_id)
+            .values({'has_chat_access': True})
+        )
+        await db.execute(query)
+        await db.commit()

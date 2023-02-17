@@ -11,6 +11,7 @@ from base_api.apps.ibay.dependencies import get_ibay_manager
 from base_api.apps.ibay.manager import IbayManager
 from base_api.apps.ibay.models import Product, Order
 from base_api.config.db import async_session
+from base_api.config.settings import settings
 
 
 async def get_session() -> AsyncSession:
@@ -27,9 +28,8 @@ async def get_client() -> EthereumClient:
 
 
 async def get_redis() -> Redis:
-    redis = aioredis.from_url("redis://localhost", decode_responses=True)
+    redis = aioredis.from_url(settings.redis_url)
     return redis
-
 
 async def get_ethereum_manager() -> EthereumManager:
     ethereum_db = await get_db()

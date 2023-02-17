@@ -4,7 +4,9 @@ from fastapi_helper.schemas.examples_generate import examples_generate
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
+from starlette.responses import RedirectResponse
 
+from .tasks import set_chat_permission_after_60s
 from ...config.db import get_session
 from ..frontend.dependecies import check_user_token
 from . import database
@@ -28,12 +30,13 @@ async def register(
     user_manager: UserManager = Depends(get_user_manager),
 ):
     result = await user_manager.create_user(user=user, session=session)
+    set_chat_permission_after_60s.apply_async(args=[result[1]], countdown=5)
     response.set_cookie(
         key="Authorization",
-        value=f"Bearer {result.get('access_token')}",
+        value=f"Bearer {result[0].get('access_token')}",
     )
 
-    return result
+    return result[0]
 
 
 @user_router.post(
@@ -97,3 +100,13 @@ async def update_profile(
             "avatar": result.photo,
         },
     }
+
+
+@user_router.get("/logout", status_code=status.HTTP_200_OK)
+async def logout(
+    response: Response,
+    user: User = Depends(get_current_user),
+):
+    response = RedirectResponse("/login")
+    response.delete_cookie("Authorization")
+    return response

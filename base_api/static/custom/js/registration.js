@@ -14,7 +14,6 @@ $( "#register_button" ).click(function() {
   let error_password = $('#error_password')
   let error_password2 = $('#error_password2')
   if (!email.val() || !username.val() || !password.val() || !password2.val() ) {
-    console.log("EMPTY")
     error_empty.text("You should fill in all fields")
     error_empty.css("display", "block")
     return
@@ -64,6 +63,4 @@ $( "#register_button" ).click(function() {
             error_password.css("display", "block")
             error_password2.css("display", "block")
         }
-            console.log("error", data.responseJSON.detail);
-            alert('error loading from database...');
 }}})});

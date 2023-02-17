@@ -77,8 +77,19 @@
                             <span id="username_basic" class="user-name fw-bolder"></span>
                         </div><span class="avatar"><img id="avatar_basic" class="round" src="{{ url_for('static', path='/custom/image/blank-avatar.png')}}" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user"><a class="dropdown-item" href="/"><i class="me-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="mail"></i> Inbox</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="check-square"></i> Task</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="message-square"></i> Chats</a>
-                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="me-50" data-feather="settings"></i> Settings</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="credit-card"></i> Pricing</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="help-circle"></i> FAQ</a><a class="dropdown-item" href="#"><i class="me-50" data-feather="power"></i> Logout</a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
+                        <a class="dropdown-item" href="/">
+                            <i class="me-50" data-feather="user"></i>
+                            Profile
+                        </a>
+                       <a class="dropdown-item" href="/chat">
+                           <i class="me-50" data-feather="message-square"></i>
+                           Chats
+                       </a>
+                        <a class="dropdown-item" href="/api/user/logout" >
+                            <i class="me-50" data-feather="power"></i>
+                            Logout
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -126,7 +137,7 @@
                 <li class=" nav-item"><a class="d-flex align-items-center" href="/"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="user">My Profile</span></a></li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="/my_wallets"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="credit-card">My Wallets</span></a></li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="/ibay"><i data-feather="shopping-cart"></i><span class="menu-title text-truncate" data-i18n="shopping-cart">iBay</span></a></li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="/chat"><i data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="message-square">Chat</span></a></li>
+                <li class=" nav-item" id="chat_li"><a class="d-flex align-items-center" href="/chat"><i data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="message-square">Chat</span></a></li>
             </ul>
         </div>
     </div>
@@ -181,11 +192,18 @@
     <script src="{{ url_for('static', path='/custom/js/basic.js')}}"></script>
 
     <script src="{{ url_for('static', path='/app-assets/js/scripts/extensions/ext-component-toastr.min.js')}}"></script>
-
+    <style>
+        .disabled {
+        pointer-events:none;
+        opacity:0.6;
+        }
+    </style>
 
     {% block script %}
 
     {% endblock %}
+
+
 
 </body>
 <!-- END: Body-->
