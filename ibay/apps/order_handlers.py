@@ -27,7 +27,6 @@ class OrderHandler:
 
     def __init__(self, manager: OrderManager):
         self.order_manager = manager
-        # self.produ
 
     async def delivery(self):
         session = async_session()

@@ -6,15 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/celery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/dataabase.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/dataabase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ibay/apps/order_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/order_handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/config/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +196,7 @@
       <workItem from="1676638562408" duration="592000" />
       <workItem from="1676712602282" duration="6478000" />
       <workItem from="1676733958337" duration="9296000" />
-      <workItem from="1676748408957" duration="4010000" />
+      <workItem from="1676748408957" duration="10540000" />
     </task>
     <servers />
   </component>
