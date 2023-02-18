@@ -82,6 +82,11 @@ function create_message_post(message_text, image) {
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
             }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
+            }
         }
     })
 }

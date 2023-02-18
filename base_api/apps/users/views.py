@@ -4,6 +4,7 @@ from fastapi_helper.schemas.examples_generate import examples_generate
 from fastapi_limiter.depends import RateLimiter
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
+from starlette.background import BackgroundTasks
 from starlette.responses import RedirectResponse
 from .tasks import set_chat_permission_after_60s
 from ...config.db import get_session
@@ -23,10 +24,11 @@ user_router = APIRouter()
 async def register(
     user: UserRegister,
     response: Response,
+    background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_session),
     user_manager: UserManager = Depends(get_user_manager),
 ):
-    result = await user_manager.create_user(user=user, session=session)
+    result = await user_manager.create_user(user=user, session=session, background_tasks=background_tasks)
     set_chat_permission_after_60s.apply_async(args=[result[1]], countdown=60)
     response.set_cookie(
         key="Authorization",

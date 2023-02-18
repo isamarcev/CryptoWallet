@@ -36,7 +36,12 @@ function login(){
       error_email.css('display', "none")
       error_empty.text(data.responseJSON.detail)
       error_empty.css("display", "block")
-            }
+      if (data.status == 429) {
+        let error_text = data.responseJSON.detail[0]
+        toastr.error(error_text.message, 'Error').css("width", "300px")
+      }
+    }
+
   })
 }
 

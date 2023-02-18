@@ -79,7 +79,6 @@ function get_info() {
                 }
             },
             error: function (data) {
-                console.log(data)
             }
         },
     )
@@ -127,7 +126,6 @@ function updateProfile() {
 
             },
             error: function (data) {
-                console.log(data)
                 if (data.status === 400) {
                     let error_text = data.responseJSON.detail[0]
                     if (error_text.code == 'image_format_error'){
@@ -136,6 +134,10 @@ function updateProfile() {
                     else {
                         toastr.error("Check the data!").css("width","300px")
                     }
+                }
+                if (data.status == 429){
+                let error_text = data.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
                 }
                 let detail = data.responseJSON.detail
                 for (let i of detail) {
@@ -197,6 +199,11 @@ function create_wallet(){
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
             }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
+            }
         }
     })
 }
@@ -239,6 +246,10 @@ function import_wallet(){
                 }
                 if (error.status == 403 || error.status == 401) {
                     document.location.reload();
+                }
+                if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
                 }
             }
         })

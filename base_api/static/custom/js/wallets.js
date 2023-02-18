@@ -44,8 +44,6 @@ $(document).ready(function() {
             }
         },
         error: (error) => {
-            console.log('error get')
-            console.log(error)
             if (error.status == 400){
                 let error_text = error.responseJSON.detail[0]
                 if (error_text.code == 'Web3 error'){
@@ -54,6 +52,11 @@ $(document).ready(function() {
             }
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
+            }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
             }
         }
     })
@@ -95,7 +98,6 @@ function send_transaction(){
                 toastr.success('Create new transaction <a href="' + data.url + '" target="_blank" style="color: darkblue">Transaction URL</a>' , 'Success').css("width", "300px")
             },
             error: (error) => {
-                console.log('import wallet error  ', error)
                 if (error.status == 400) {
                     let error_text = error.responseJSON.detail[0]
                     console.log(error_text)
@@ -114,6 +116,10 @@ function send_transaction(){
                 }
                 if (error.status == 403 || error.status == 401) {
                     document.location.reload();
+                }
+                if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
                 }
             }
         })

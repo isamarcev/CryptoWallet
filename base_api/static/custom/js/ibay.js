@@ -40,16 +40,17 @@ $(document).ready(function() {
             }
         },
         error: (error) => {
-            console.log('error get')
-            console.log(error)
-            // if (error.status == 400){
-            //     let error_text = error.responseJSON.detail[0]
-            //     if (error_text.code == 'Web3 error'){
-            //         toastr.error(error_text.message, 'Error')
-            //     }
-            // }
+            if (error.status == 400){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error')
+            }
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
+            }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
             }
         }
     })
@@ -124,16 +125,17 @@ $(document).ready(function() {
             }
         },
         error: (error) => {
-            console.log('error get')
-            console.log(error)
-            // if (error.status == 400){
-            //     let error_text = error.responseJSON.detail[0]
-            //     if (error_text.code == 'Web3 error'){
-            //         toastr.error(error_text.message, 'Error')
-            //     }
-            // }
+            if (error.status == 400){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error')
+            }
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
+            }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
             }
         }
     })
@@ -158,16 +160,17 @@ $(document).ready(function() {
             }
         },
         error: (error) => {
-            console.log('error get')
-            console.log(error)
-            // if (error.status == 400){
-            //     let error_text = error.responseJSON.detail[0]
-            //     if (error_text.code == 'Web3 error'){
-            //         toastr.error(error_text.message, 'Error')
-            //     }
-            // }
+            if (error.status == 400){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+            }
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
+            }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
             }
         }
     })
@@ -176,7 +179,6 @@ $(document).ready(function() {
 
 //function for show image in modal
 $('#modal_image').on('change', function (event) {
-    console.log('image')
     $('.preview_image')[0].innerHTML = '';
     image = $('#modal_image')[0].files[0];
         if (image) {
@@ -241,6 +243,11 @@ function create_product(){
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
             }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
+            }
         }
     })
 }
@@ -279,23 +286,28 @@ function buy_product(){
             if (error.status == 400) {
                 let error_text = error.responseJSON.detail[0]
                 if (error_text.code == 'Wallet is not defined') {
-                    toastr.error(error_text.message, 'Error')
+                    toastr.error(error_text.message, 'Error').css("width","300px")
                 }
                 if (error_text.code == 'Product undefined') {
-                    toastr.error(error_text.message, 'Error')
+                    toastr.error(error_text.message, 'Error').css("width","300px")
                 }
                 else{
-                    toastr.error(error_text.message, 'Error')
+                    toastr.error(error_text.message, 'Error').css("width","300px")
                 }
             }
              if (error.status == 422) {
                 let error_text = error.responseJSON[0]
                 if (error_text.code == 'validation-error') {
-                    toastr.error(error_text.message, 'Error')
+                    toastr.error(error_text.message, 'Error').css("width","300px")
                 }
             }
             if (error.status == 403 || error.status == 401) {
                 document.location.reload();
+            }
+            if (error.status == 429){
+                let error_text = error.responseJSON.detail[0]
+                toastr.error(error_text.message, 'Error').css("width","300px")
+
             }
         }
     })
@@ -325,13 +337,10 @@ sio.on("show_new_product", (data) => {
 
 //socketio show new order
 sio.on('new_order_show', (data) => {
-    console.log(data)
-    console.log("DATA IN NEW ORDER")
     if(document.getElementById('no_orders')){
         let parents = document.getElementById('no_orders').parentNode;
         parents.remove();
     }
-    // document.getElementById('no_orders').style.display = 'none';
     let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.product.image +'" height="100"></div>'
     let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
         '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
@@ -409,17 +418,10 @@ function change_status(status) {
 
 
 sio.on('update_order_status', (data) => {
-    console.log("DATRA IN EVENT UPDATE ORDER STATUS")
-    console.log(data.order_id)
     var ids = `#${data.order_id}`
     var order_block = $(ids)
-    console.log(order_block)
-    console.log("order_block")
     var status_order = order_block.find(".status-order")
-    console.log(status_order)
     let status_block = change_status(data.status)
-
-    console.log(status_block)
     status_order.html(status_block)
     if (data.returning_txn) {
         var returning_tnx = order_block.find(".returning-tnx")

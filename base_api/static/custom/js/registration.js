@@ -63,7 +63,12 @@ function registration(){
             error_password.css("display", "block")
             error_password2.css("display", "block")
         }
-    }}
+    }
+        if (data.status == 429){
+          let error_text = data.responseJSON.detail[0]
+          toastr.error(error_text.message, 'Error').css("width","300px")
+        }
+    }
   })
 }
 

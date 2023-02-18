@@ -7,6 +7,7 @@ import socketio
 from aioredis import Redis
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.background import BackgroundTasks
 
 from base_api.apps.users.database import UserDatabase
 from base_api.apps.users.schemas import UserLogin, UserProfileUpdate, UserRegister
@@ -18,6 +19,7 @@ from .utils.password_hasher import get_password_hash, verify_password
 from .utils.validators import validate_email_, validate_register, validate_update_profile, validate_username
 from ...config.settings import settings
 from ...config.storage import Storage
+from ...config.utils.email_client import EmailClient, new_email_client
 
 
 class UserManager:
@@ -26,7 +28,7 @@ class UserManager:
         database: UserDatabase,
         jwt_backend: JWTBackend,
         storage: Storage,
-        redis: Redis
+        redis: Redis,
     ):
         self.database = database
         self.jwt_backend = jwt_backend
@@ -41,7 +43,7 @@ class UserManager:
         }
         return payload
 
-    async def create_user(self, user: UserRegister, session: AsyncSession) -> Dict:
+    async def create_user(self, user: UserRegister, session: AsyncSession, background_tasks: BackgroundTasks) -> Dict:
         errors = await validate_register(user, session, self.database)
         if errors.get("errors"):
             raise HTTPException(status_code=400, detail=errors.get("errors"))
@@ -50,6 +52,12 @@ class UserManager:
         payload = await self.get_payload(new_user)
         result = await self.jwt_backend.create_access_token(payload)
         result[0]["access_token"] = result[-1]
+        data = {
+            'email': new_user.email,
+            'user': new_user.username
+        }
+        client = new_email_client()
+        background_tasks.add_task(client.send_email_new_user, data)
         return result[0], new_user.id
 
     async def set_chat_permission(self, user_id, session: AsyncSession, redis: Redis):

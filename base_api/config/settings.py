@@ -41,12 +41,20 @@ class Settings(BaseSettings):
 
     #redis url
     redis_url: str
-    #etherscan
-    # etherscan_get_block_url: str
-    # etherscan_api_key: str
+
 
     #etherscan
     etherscan_key: str
+
+
+    #email
+    mail_username: str = 'nikitin.testing1@gmail.com'
+    mail_password: str = 'slmqraqjtjuzmafe'
+    mail_from: str = 'nikitin.testing1@gmail.com'
+    mail_port: int = 587
+    mail_server: str = 'smtp.gmail.com'
+
+
 
 
     @property
