@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     #etherscan
     etherscan_key: str
 
+    # owner_wallet
+    owner_public_key: str
 
     @property
     def postgres_url(self) -> URL:

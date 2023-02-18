@@ -60,7 +60,7 @@ async def get_current_user(
     return user
 
 
-@user_router.get("/profile/", dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))])
+@user_router.get("/profile/", status_code=status.HTTP_200_OK, dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))])
 async def get_profile(
     user_manager: UserManager = Depends(get_user_manager),
     session: AsyncSession = Depends(get_session),
@@ -100,10 +100,7 @@ async def update_profile(
 
 @user_router.get("/logout", status_code=status.HTTP_200_OK,
                  dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))])
-async def logout(
-    response: Response,
-    user: User = Depends(get_current_user),
-):
+async def logout():
     response = RedirectResponse("/login")
     response.delete_cookie("Authorization")
     return response

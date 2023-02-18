@@ -5,9 +5,8 @@ from base_api.config.settings import settings
 celery_app = Celery(
     "worker",
     backend="rpc://",
-    # backend=settings.redis_url,
-    broker="amqp://guest:guest@localhost:5672//"
-    # broker=settings.redis_url
+    broker=f'{settings.rabbit_url}'
+    # broker="amqp://guest:guest@localhost:5672//"
 )
 
 celery_app.conf.update(task_track_started=True)

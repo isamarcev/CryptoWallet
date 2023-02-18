@@ -49,17 +49,9 @@ def get_application() -> FastAPI:
         # openapi_tags=metadata_tags
     )
     init_validation_handler(app=app_)
-    # app_.exception_handler(DefaultHTTPException)
     register_startup_event(app_)
     register_shutdown_event(app_)
 
-    # app_.mount("/static", StaticFiles(directory="base_api/static"), name="static")
-    # app_.include_router(router)
-    # app_.include_router(auth_router)
-    # app_.include_router(profile_router)
-    # app_.include_router(chat_router)
-    # app_.include_router(wallets_router)
-    # app_.include_router(front_ibay_router)
     return app_
 
 
