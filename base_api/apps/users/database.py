@@ -1,24 +1,16 @@
 # -*- coding: utf-8 -*-
-import uuid
-from typing import Dict, List, Type
-
-from databases import Database
+from typing import Dict, Type
 from sqlalchemy import select
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session, selectinload
-
+from sqlalchemy.orm import selectinload
 from base_api.apps.users.models import Permission, User
 from base_api.apps.users.models import user as user_table, perm as permission_table
-
 from base_api.apps.ethereum.models import wallet as wallet_table
 from base_api.apps.chat.models import message as message_table
-from base_api.apps.ethereum.models import Wallet
-from .schemas import UserProfileUpdate, UserRegister
+from .schemas import UserRegister
 
-# from ...config.db import database
 
-database = Database("postgresql+asyncpg://nikitin:admin@localhost/crypto_wallet_base")
+# database = Database("postgresql+asyncpg://nikitin:admin@localhost/crypto_wallet_base")
 
 
 class UserDatabase:

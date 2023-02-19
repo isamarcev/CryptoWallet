@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import pathlib
 from typing import List
-
 import toml
 from fastapi import FastAPI
 from fastapi_helper import DefaultHTTPException
@@ -12,7 +11,6 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
-
 from base_api.apps.frontend.auth import auth_router
 from base_api.apps.frontend.chat import chat_router
 from base_api.apps.frontend.ibay import front_ibay_router
@@ -57,7 +55,7 @@ def get_application() -> FastAPI:
     )
     app_.celery_app = create_celery()
     init_validation_handler(app=app_)
-    # app_.exception_handler(DefaultHTTPException)
+
     register_startup_event(app_)
     register_shutdown_event(app_)
 
@@ -74,6 +72,7 @@ def get_application() -> FastAPI:
 app = get_application()
 
 celery = app.celery_app
+
 
 @app.exception_handler(ValidationError)
 async def validation_exception_handler(request: Request, exc: ValidationError) -> JSONResponse:
@@ -92,7 +91,6 @@ async def validation_exception_handler(request: Request, exc: ValidationError) -
 
 @app.exception_handler(DefaultHTTPException)
 async def backend_validation_handler(request: Request, exc: DefaultHTTPException) -> JSONResponse:
-    print(exc)
     content = {
         "code": exc.code,
         "type": exc.type,
@@ -103,4 +101,3 @@ async def backend_validation_handler(request: Request, exc: DefaultHTTPException
         {"detail": [content]},
         status_code=exc.status_code,
     )
-# массимв объекто в котором будет мессадж

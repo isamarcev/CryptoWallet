@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import uuid
-import uuid as uuid_id
-
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, text
+from sqlalchemy import Boolean, Column, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy_utils import EmailType, URLType
+from sqlalchemy_utils import URLType
+
 
 Base = declarative_base()
 
@@ -35,7 +34,6 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     permission = relationship(Permission, backref="users", uselist=False)
-    # message = relationship("..chat.models.Message", backref="users")
 
 
 user = User.__table__
