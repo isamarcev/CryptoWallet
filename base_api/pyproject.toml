@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "base-api"
 version = "0.1.0"
-description = ""
+description = "This is Gateway service"
 authors = ["dima_nikitin <nikitindima1206@gmail.com>"]
 readme = "README.md"
 packages = [{include = "base_api"}]
@@ -41,6 +41,10 @@ web3 = "^5.31.3"
 celery = "^5.2.7"
 aiohttp = "^3.8.3"
 fastapi-limiter = "^0.1.5"
+pytest = "^7.2.1"
+httpx = "^0.23.3"
+pytest-asyncio = "^0.20.3"
+asgi-lifespan = "^2.0.0"
 
 
 [build-system]

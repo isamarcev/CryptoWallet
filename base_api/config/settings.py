@@ -8,6 +8,11 @@ BASE_DIR = Path(__file__).parent.parent
 
 
 class Settings(BaseSettings):
+
+    backend_url: str
+    asyncapi_docs_url: str
+
+    test_db_url: str
     # postgres_db
     postgres_pass: str
     postgres_host: str = "localhost"

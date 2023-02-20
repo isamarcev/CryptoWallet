@@ -39,6 +39,4 @@ async_session = sessionmaker(
 )
 
 
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 SessionLocal = sessionmaker(autoflush=False, bind=engine)

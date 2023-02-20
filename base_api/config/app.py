@@ -22,6 +22,8 @@ from base_api.config.celery_utils import create_celery
 from base_api.config.lifetime import register_shutdown_event, register_startup_event
 from base_api.config.router import router
 
+from base_api.config.openapi import metadata_tags
+
 
 def get_project_data() -> dict:
     pyproject_path = pathlib.Path("base_api/pyproject.toml")

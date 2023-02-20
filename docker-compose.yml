@@ -6,12 +6,11 @@ services:
       context: ./deploy/postgres
       dockerfile: Dockerfile
     volumes:
-      - ./deploy/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data
 
   base_api:
     build:
-      context: ./deploy/backend
+      context: deploy/app
       dockerfile: Dockerfile
     volumes:
       - static_volume:/usr/src/app/static
@@ -28,7 +27,7 @@ services:
       - base_api
       - redis
     build:
-      context: ./deploy/backend
+      context: deploy/app
       dockerfile: Dockerfile
     command:
       - make celery
@@ -50,7 +49,7 @@ services:
 
   eth_node:
     build:
-      context: ./deploy/backend
+      context: deploy/app
       dockerfile: Dockerfile
     command:
       - make run_parser
@@ -59,7 +58,7 @@ services:
 
   sockets:
     build:
-      context: ./deploy/backend
+      context: deploy/app
       dockerfile: Dockerfile
     ports:
       - "8001:8001"
@@ -70,7 +69,7 @@ services:
 
   ibay:
     build:
-      context: ./deploy/backend
+      context: deploy/app
       dockerfile: Dockerfile
     ports:
       - "8005:8005"
@@ -80,3 +79,11 @@ services:
       - base_api
     command:
       - make run_ibay
+
+volumes:
+  static_volume:
+  postgres_data:
+
+
+
+#      - ./deploy/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql

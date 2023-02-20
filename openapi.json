@@ -1,0 +1,226 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "Crypto Wallet",
+    "version": "1.0.0",
+    "description": "This service is in charge of processing user signups"
+  },
+  "channels": {
+    "get_history": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/HistoryChat"
+        }
+      }
+    },
+    "get_online_users": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/OnlineUsers"
+        }
+      }
+    },
+    "new_message": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/NewMessage"
+        }
+      }
+    },
+    "transaction_alert": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/TransactionAlert"
+        }
+      }
+    },
+    "show_new_product": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/ShowNewProduct"
+        }
+      }
+    },
+    "new_order_show": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/NewOrderShow"
+        }
+      }
+    },
+    "update_order_status": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/UpdateOrderStatus"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "HistoryChat": {
+        "payload": {
+          "type": "array",
+          "properties": {
+            "message": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string",
+                  "description": "UUID"
+                },
+                "username": {
+                  "type": "string",
+                  "format": "name"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "user_photo": {
+                  "type": "string",
+                  "format": "url"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "url"
+                }
+              }
+            }
+          }
+        }
+      },
+      "OnlineUsers": {
+        "payload": {
+          "type": "array",
+          "properties": {
+            "message": {
+              "type": "object",
+              "properties": {
+                "auth": {
+                  "type": "object",
+                  "properties": {
+                    "user_photo": {
+                      "type": "string",
+                      "format": "url",
+                      "example": "hello"
+                    },
+                    "username": {
+                      "type": "string",
+                      "format": "name"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "NewMessage": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "user_photo": {
+              "type": "string",
+              "format": "url",
+              "example": "https://google.com"
+            },
+            "username": {
+              "type": "string",
+              "format": "name",
+              "example": "djangomaster"
+            },
+            "user_id": {
+              "type": "string",
+              "example": "f699a8d8-bbd3-4089-bdcc-8a3642ffad52"
+            }
+          }
+        }
+      },
+      "TransactionAlert": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "type": "string",
+              "example": "income/outcome"
+            },
+            "result": {
+              "type": "boolean"
+            },
+            "public_key": {
+              "type": "string"
+            },
+            "current_balance": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ShowNewProduct": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string",
+              "format": "url"
+            },
+            "title": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "price": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "NewOrderShow": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string",
+              "format": "url"
+            },
+            "title": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "price": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "UpdateOrderStatus": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "returning_txn": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
