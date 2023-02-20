@@ -14,6 +14,7 @@ class Permission(Base):
     __tablename__ = "permissions"
     id: int = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     has_chat_access = Column(Boolean, default=False)
+    is_admin = Column(Boolean, default=False)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
 
 

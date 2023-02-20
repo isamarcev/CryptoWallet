@@ -1,6 +1,7 @@
 from sqladmin import ModelView
 from sqladmin.authentication import AuthenticationBackend
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from starlette.requests import Request
 from base_api.apps.users.models import user as user_table
 from base_api.apps.chat.models import Message
@@ -8,6 +9,7 @@ from base_api.apps.ethereum.models import Wallet, Transaction
 from base_api.apps.ibay.models import Product, Order
 from base_api.apps.users.models import User, Permission
 from base_api.base_api_consumer import async_session
+from base_api.config.settings import settings
 
 
 class UserAdmin(ModelView, model=User):
@@ -55,23 +57,20 @@ class MyBackend(AuthenticationBackend):
         async with async_session() as session:
             try:
                 result = await session.execute(
-                    select(User).where(user_table.c.email == username))
+                    select(User).where(user_table.c.email == username).options(selectinload(User.permission))
+                )
                 user = result.scalars().first()
+                if not user:
+                    return False
             finally:
                 await session.close()
 
+        if user.permission.is_admin:
+            request.session.update({"token": "..."})
 
-        print(user.email)
-
-
-        # Validate username/password credentials
-        # And update session
-        request.session.update({"token": "..."})
-
-        return True
+        return user.permission.is_admin
 
     async def logout(self, request: Request) -> bool:
-        # Usually you'd want to just clear the session
         request.session.clear()
         return True
 
@@ -81,8 +80,7 @@ class MyBackend(AuthenticationBackend):
         if not token:
             return False
 
-        # Check the token
         return True
 
 
-authentication_backend = MyBackend(secret_key="hudshuifw32434jfdbeqiu23djth344hef34uith")
+authentication_backend = MyBackend(secret_key=settings.sqlalchemy_secret_key)

@@ -133,3 +133,6 @@ dmypy.json
 
 alembic.ini
 migrations
+
+
+/.DS_Store

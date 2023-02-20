@@ -132,7 +132,7 @@ function updateProfile() {
                         toastr.error(error_text.message, 'Error').css("width","300px")
                     }
                     else {
-                        toastr.error("Check the data!").css("width","300px")
+                        toastr.error(error_text.message, 'Error').css("width","300px")
                     }
                 }
                 if (data.status == 429){

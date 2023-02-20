@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     postgres_name: str
 
     # jwt settings
-    jwt_secret_key: str = "09d25e094faa6ca25563f7099f6f0f4caa6cf63b88e8d3e7"
+    jwt_secret_key: str
     jwt_algorithm: str = "HS256"
     jwt_expire: int = 30
 
@@ -48,12 +48,15 @@ class Settings(BaseSettings):
 
 
     #email
-    mail_username: str = 'nikitin.testing1@gmail.com'
-    mail_password: str = 'slmqraqjtjuzmafe'
-    mail_from: str = 'nikitin.testing1@gmail.com'
+    mail_username: str
+    mail_password: str
+    mail_from: str
     mail_port: int = 587
-    mail_server: str = 'smtp.gmail.com'
+    mail_server: str
 
+
+    #sqlalchemy_admin
+    sqlalchemy_secret_key: str
 
 
 
