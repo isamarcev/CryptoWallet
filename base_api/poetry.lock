@@ -250,6 +250,21 @@ test = ["contextlib2", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=
 trio = ["trio (>=0.16,<0.22)"]
 
 [[package]]
+name = "asgi-lifespan"
+version = "2.0.0"
+description = "Programmatic startup/shutdown of ASGI apps."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "asgi-lifespan-2.0.0.tar.gz", hash = "sha256:d46a31ff681e9edf1f776c9f61cf8fa6274cc66fca8cb4f11e940b1183e18842"},
+    {file = "asgi_lifespan-2.0.0-py3-none-any.whl", hash = "sha256:420582b1786b238d035244415dc11536acdbcb24762cba1c5e9bddc565960277"},
+]
+
+[package.dependencies]
+sniffio = "*"
+
+[[package]]
 name = "async-lru"
 version = "1.0.3"
 description = "Simple lru_cache for asyncio"
@@ -3233,4 +3248,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "6a09b68e0258bcc43cb8c5943113d24a25dd77a3ccc2ce70c173261cc72e9c26"
+content-hash = "76200580bbab882330379554eda4feb03ddcf17e38a4fd5cbae54a57fc9f3974"
