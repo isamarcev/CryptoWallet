@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from typing import Dict, Optional
-
 import jwt
 
 from base_api.config.settings import settings

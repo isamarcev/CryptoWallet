@@ -10,9 +10,6 @@ from base_api.apps.chat.models import message as message_table
 from .schemas import UserRegister
 
 
-# database = Database("postgresql+asyncpg://nikitin:admin@localhost/crypto_wallet_base")
-
-
 class UserDatabase:
     """
 
@@ -58,7 +55,6 @@ class UserDatabase:
         )
         result_data = result.scalars().first()
         return result_data
-        # return None if not result_data else self.user_model(**result_data._asdict())
 
     @staticmethod
     async def update_user(user_id: str, new_data: Dict, db: AsyncSession):

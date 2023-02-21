@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import asyncio
+
 import json
 from typing import Dict
-
 import socketio
 from aioredis import Redis
 from fastapi import HTTPException
@@ -16,10 +15,10 @@ from .exeptions import UsernameAlreadyExists
 from .jwt_backend import JWTBackend
 from .models import User
 from .utils.password_hasher import get_password_hash, verify_password
-from .utils.validators import validate_email_, validate_register, validate_update_profile, validate_username
+from .utils.validators import validate_register
 from ...config.settings import settings
 from ...config.storage import Storage
-from ...config.utils.email_client import EmailClient, new_email_client
+from ...config.utils.email_client import new_email_client
 
 
 class UserManager:

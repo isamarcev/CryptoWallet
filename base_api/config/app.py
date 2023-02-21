@@ -11,13 +11,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
-from base_api.apps.frontend.auth import auth_router
-from base_api.apps.frontend.chat import chat_router
-from base_api.apps.frontend.ibay import front_ibay_router
-from base_api.apps.frontend.user_profile import profile_router
-from base_api.apps.frontend.wallets import wallets_router
+from base_api.apps.frontend.router import front_router
 from base_api.config.celery_utils import create_celery
 from base_api.config.lifetime import register_shutdown_event, register_startup_event
+from base_api.config.logger import CustomizeLogger
 from base_api.config.router import router
 
 
@@ -42,6 +39,11 @@ def make_middleware() -> List[Middleware]:
     return middleware
 
 
+def init_logging() -> None:
+    config_path = pathlib.Path(__file__).parent.parent.with_name("logger_config.json")
+    CustomizeLogger.make_logger(config_path)
+
+
 def get_application() -> FastAPI:
     poetry_data = get_project_data()
     app_ = FastAPI(
@@ -50,7 +52,7 @@ def get_application() -> FastAPI:
         version=poetry_data["version"],
         docs_url="/docs",
         redoc_url="/redoc",
-        # middleware=make_middleware(),
+        middleware=make_middleware(),
         # openapi_tags=metadata_tags
     )
     app_.celery_app = create_celery()
@@ -60,12 +62,12 @@ def get_application() -> FastAPI:
     register_shutdown_event(app_)
 
     app_.mount("/static", StaticFiles(directory="base_api/static"), name="static")
+
     app_.include_router(router)
-    app_.include_router(auth_router)
-    app_.include_router(profile_router)
-    app_.include_router(chat_router)
-    app_.include_router(wallets_router)
-    app_.include_router(front_ibay_router)
+    app_.include_router(front_router)
+
+    init_logging()
+
     return app_
 
 

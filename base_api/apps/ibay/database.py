@@ -5,8 +5,6 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from base_api.apps.ethereum.models import Wallet
-from base_api.apps.ibay.enums import OrderStatus
 from base_api.apps.ibay.models import Product, product as product_table
 from base_api.apps.ibay.models import Order, order as order_table
 from base_api.apps.ibay.schemas import CreateProduct

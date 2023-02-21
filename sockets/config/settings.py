@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 
-from pydantic import BaseSettings, DirectoryPath, SecretStr
+from pydantic import BaseSettings
 from yarl import URL
 
 BASE_DIR = Path(__file__).parent.parent
@@ -25,10 +25,8 @@ class Settings(BaseSettings):
     rabbit_pool_size: int = 2
     rabbit_channel_pool_size: int = 10
 
-    # mongodb
-    # mongo_host: str = "localhost"
-    # mongo_port: str
-    # mongo_name: str
+    # redis url
+    redis_url: str
 
     @property
     def postgres_url(self) -> URL:
@@ -63,20 +61,6 @@ class Settings(BaseSettings):
             password=self.rabbit_pass,
             path=self.rabbit_vhost,
         )
-
-    # @property
-    # def mongodb_url(self) -> URL:
-    #     """
-    #     Assemble MongoDB URL from settings.
-    #
-    #     :return: mongodb URL.
-    #
-    #     """
-    #     return URL.build(
-    #         scheme="mongodb",
-    #         host=self.mongo_host,
-    #         port=self.mongo_port,
-    #     )
 
     class Config:
         env_file = BASE_DIR / ".env"

@@ -9,7 +9,3 @@ make celery:
 	celery --app base_api.config.celery worker --loglevel=info
 make run_ibay:
 	uvicorn ibay.config.app:app --port 8005 --reload
-
-.PHONY: test
-test:
-	PYTHONPATH=. pytest

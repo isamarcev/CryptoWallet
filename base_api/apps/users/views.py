@@ -54,15 +54,14 @@ async def login(
     return result
 
 
-@user_router.get("/", status_code=status.HTTP_200_OK,
-                 dependencies=[Depends(RateLimiter(times=6, seconds=10, callback=custom_callback))])
+@user_router.get("/", status_code=status.HTTP_200_OK)
 async def get_current_user(
     user: User = Depends(get_current_user),
 ):
     return user
 
 
-@user_router.get("/profile/", status_code=status.HTTP_200_OK, dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))])
+@user_router.get("/profile/", status_code=status.HTTP_200_OK)
 async def get_profile(
     user_manager: UserManager = Depends(get_user_manager),
     session: AsyncSession = Depends(get_session),
@@ -80,8 +79,7 @@ async def get_profile(
         UsernameInvalidException,
         UsernameAlreadyExists,
         auth=True,
-    ),
-    dependencies=[Depends(RateLimiter(times=3, seconds=5, callback=custom_callback))]
+    )
 )
 async def update_profile(
     user: UserProfileUpdate = Depends(UserProfileUpdate.as_form),

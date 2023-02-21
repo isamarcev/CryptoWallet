@@ -7,7 +7,7 @@ from fastapi.security import OAuth2
 from fastapi.security.utils import get_authorization_scheme_param
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
-from starlette.responses import RedirectResponse, Response
+from starlette.responses import RedirectResponse
 
 from base_api.apps.users.dependencies import get_jwt_backend, get_session, get_user_manager
 from base_api.apps.users.jwt_backend import JWTBackend

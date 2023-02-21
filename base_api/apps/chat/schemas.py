@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime as date
-from typing import Optional, Union
+from typing import Union
 from uuid import UUID
-
 from fastapi import UploadFile
-from fastapi_helper.schemas.camel_schema import ApiSchema, as_form
+from fastapi_helper.schemas.camel_schema import as_form
 from pydantic import BaseModel
 
 

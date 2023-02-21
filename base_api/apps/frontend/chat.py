@@ -21,6 +21,7 @@ async def chat(
         return RedirectResponse("/")
     return templates.TemplateResponse("chat/chat.html", context={"request": request})
 
+
 @chat_router.get("/asyncapi_docs", response_class=HTMLResponse, include_in_schema=False)
 async def asyncapi_docs(
         request: Request,

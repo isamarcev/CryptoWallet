@@ -26,7 +26,6 @@ class WalletDatabase:
             users = json.dumps(users)
             await self.redis.set("users_online", users)
 
-
     async def get_users(self):
         users = await self.redis.get("users_online")
         if users:

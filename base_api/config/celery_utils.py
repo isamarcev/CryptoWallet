@@ -1,12 +1,10 @@
 from celery import current_app as current_celery_app
 from celery.result import AsyncResult
-from base_api.config.settings import settings
 
 
 def create_celery():
     class CelerySettings:
         CELERY_BROKER_URL: str
-        # CELERY_BROKER_URL: settings.redis_url
         CELERY_RESULT_BACKEND: str
 
     celery_settings = CelerySettings()

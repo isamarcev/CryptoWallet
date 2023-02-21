@@ -6,7 +6,6 @@ celery_app = Celery(
     "worker",
     backend="rpc://",
     broker=f'{settings.rabbit_url}'
-    # broker="amqp://guest:guest@localhost:5672//"
 )
 
 celery_app.conf.update(task_track_started=True)
