@@ -12,7 +12,14 @@ class Settings(BaseSettings):
     backend_url: str
     asyncapi_docs_url: str
 
-    test_db_url: str
+    test_postgres_host: str = "localhost"
+    test_postgres_port: int = 5432
+    test_postgres_user: str
+    test_postgres_password: str
+    test_postgres_db: str
+    test_postgres_echo: bool = False
+
+
     # postgres_db
     postgres_pass: str
     postgres_host: str = "localhost"
@@ -65,6 +72,25 @@ class Settings(BaseSettings):
     #sqlalchemy_admin
     sqlalchemy_secret_key: str
 
+    #user_data_for_testing
+    user_email: str
+    username: str
+    password: str
+
+    @property
+    def test_db_url(self) -> URL:
+        """
+        Assemble database URL from settings.
+        :return: database URL.
+        """
+        return URL.build(
+            scheme="postgresql+asyncpg",
+            host=self.test_postgres_host,
+            port=self.test_postgres_port,
+            user=self.test_postgres_user,
+            password=self.test_postgres_password,
+            path=f"/{self.test_postgres_db}",
+        )
 
 
     @property

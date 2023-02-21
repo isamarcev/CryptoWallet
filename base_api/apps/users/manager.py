@@ -84,7 +84,7 @@ class UserManager:
             result[0]["access_token"] = result[-1]
             return result[0]
         else:
-            raise HTTPException(status_code=404, detail="User with this email does not exist or password with mistakes")
+            raise HTTPException(status_code=401, detail="User with this email does not exist or password with mistakes")
 
     async def get_user(self, user_id: str, db: AsyncSession) -> User:
         return await self.database.get_user_by_id(user_id, db)
