@@ -185,6 +185,7 @@ class EthereumManager(EthereumLikeManager):
 
     async def send_transaction_for_delivery(self, tnx_hash: str, result: bool, db: AsyncSession):
         """sending transaction hash to ibay service for delivery process"""
+
         await self.ibay_manager.send_order_to_delivery(tnx_hash,
                                                        True if result else False,
                                                        db)
@@ -200,11 +201,15 @@ class EthereumManager(EthereumLikeManager):
             socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
             users = await self.get_list_redis_data(self.redis, "users_online")
             orders = await self.get_list_redis_data(self.redis, "orders_transaction")
-            returning_transactions = self.get_list_redis_data(self.redis, "returning_txn")
-
+            # returning_transactions = self.get_list_redis_data(self.redis, "returning_txn")
+            commission_list = await self.get_list_redis_data(self.redis, "commission_tnx")
             for transaction in transactions:
                 txn_hash = transaction.hash.hex()
-                # loop = asyncio.get_event_loop()
+                if commission_list:
+                    if txn_hash in commission_list:
+                        print("TNX HASH IN COMMISSION LIST")
+                        await self.put_list_to_redis_data(self.redis, "commission_tnx", commission_list.remove(txn_hash))
+                        return
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
                                                                             txn_hash=txn_hash,
                                                                             ))
@@ -243,8 +248,6 @@ class EthereumManager(EthereumLikeManager):
                     online_devices = users.get(str(wallet_owner.user))
                     if online_devices:
                         await self.send_socket_messages("transaction_alert", message, online_devices, socket_manager)
-
-        print("IN THE END OF PARSING BLOCK")
         return
 
     async def get_wallet_transactions(self, wallet: str, db: AsyncSession):

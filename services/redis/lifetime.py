@@ -27,7 +27,7 @@
 #     )
 #     # Init fastapi limiter
 #     await FastAPILimiter.init(app.state.redis)
-#     # Init redis backend for fastapi cache
+#     # Init redis app for fastapi cache
 #     app.state.redis_backend = RedisBackend(app.state.redis)
 #     # Init fastapi cache
 #     FastAPICache.init(app.state.redis_backend, prefix="hasher-main")

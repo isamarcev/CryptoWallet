@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: ./deploy/postgres
+      dockerfile: Dockerfile
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  base_api:
+    build:
+      context: deploy/app
+      dockerfile: Dockerfile
+    volumes:
+      - static_volume:/usr/src/app/static
+    depends_on:
+      - db
+
+  redis:
+    restart: always
+    image: "redis:alpine"
+
+  celery:
+    restart: always
+    depends_on:
+      - base_api
+      - redis
+    build:
+      context: deploy/app
+      dockerfile: Dockerfile
+    command:
+      - make celery
+
+  nginx:
+    build:
+      context: ./deploy/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - base_api
+    volumes:
+      - static_volume:/usr/src/app/static
+
+  rabbitmq:
+    image: rabbitmq:3.9.27-management-alpine
+#    run?
+
+  eth_node:
+    build:
+      context: deploy/app
+      dockerfile: Dockerfile
+    command:
+      - make run_parser
+    depends_on:
+      - rabbitmq
+
+  sockets:
+    build:
+      context: deploy/app
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - rabbitmq
+    command:
+      - make run_sockets
+
+  ibay:
+    build:
+      context: deploy/app
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8005"
+    depends_on:
+      - rabbitmq
+      - db
+      - base_api
+    command:
+      - make run_ibay
+
+volumes:
+  static_volume:
+  postgres_data:
+
+
+
+#      - ./deploy/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql

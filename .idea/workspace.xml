@@ -5,10 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/ibay.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/ibay.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/extensions/i18next.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/extensions/i18next.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/internationalization/i18n.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/internationalization/i18n.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/vendors.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/vendors.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/app/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/redis/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/redis/lifetime.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,29 +59,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject/base_api/apps/ibay&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/ihor/PycharmProjects/CryptoWalletProject/base_api/static/custom/js",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/base_api/apps/ibay" />
+      <recent name="$PROJECT_DIR$/base_api/static/custom/js" />
+      <recent name="$PROJECT_DIR$/base_api/static/custom/css" />
+      <recent name="$PROJECT_DIR$/base_api/templates/chat/asyncapi" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/sockets" />
-      <recent name="$PROJECT_DIR$/static/custom/image" />
-      <recent name="$PROJECT_DIR$/templates/users" />
+      <recent name="$PROJECT_DIR$/base_api/apps/ibay" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/sockets" />
@@ -196,6 +206,13 @@
       <workItem from="1676632532671" duration="4836000" />
       <workItem from="1676637666039" duration="743000" />
       <workItem from="1676638562408" duration="592000" />
+      <workItem from="1676712602282" duration="6478000" />
+      <workItem from="1676733958337" duration="9296000" />
+      <workItem from="1676748408957" duration="10892000" />
+      <workItem from="1676806120546" duration="9677000" />
+      <workItem from="1676885584714" duration="3644000" />
+      <workItem from="1676890999015" duration="1218000" />
+      <workItem from="1676894117056" duration="6465000" />
     </task>
     <servers />
   </component>

@@ -23,24 +23,21 @@ class OrderDatabase:
             update(self.order_model).where(order_table.c.order_number == order_id)
             .values({"status": OrderStatus.DELIVERY})
         )
-        print(query)
         await db.commit()
 
 
     async def update_to_failed(self, order_id: str, db: AsyncSession):
-        query = await db.execute(
+        await db.execute(
             update(self.order_model).where(order_table.c.order_number == order_id)
             .values({"status": OrderStatus.FAILED})
         )
-        print(query)
         await db.commit()
 
     async def update_to_status(self, order_id: str, status: str, db: AsyncSession):
-        query = await db.execute(
+        await db.execute(
             update(self.order_model).where(order_table.c.order_number == order_id)
             .values({"status": status})
         )
-        print(query)
         await db.commit()
 
 

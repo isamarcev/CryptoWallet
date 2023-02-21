@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import EmailType, URLType
-
+from sqlalchemy.types import TIMESTAMP
 from base_api.apps.ethereum.models import Wallet
 from base_api.apps.ibay.enums import OrderStatus
 from base_api.apps.users.models import User
@@ -36,7 +36,7 @@ class Order(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     txn_hash = Column(String)
-    datetime = Column(DateTime(timezone=True), server_default=func.now())
+    datetime = Column(TIMESTAMP(timezone=True), server_default=func.now())
     status = Column(Enum(OrderStatus), default=OrderStatus.NEW)
     txn_hash_return = Column(String, nullable=True)
     buyer_wallet = Column(String)
