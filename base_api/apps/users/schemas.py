@@ -20,6 +20,12 @@ class UserLogin(BaseModel):
     remember_me: bool = False
 
 
+class UserLoginResponse(BaseModel):
+    access_token: str
+    username: str
+
+
+
 @as_form
 class UserProfileUpdate(BaseModel):
     username: str

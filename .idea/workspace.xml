@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/config/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/factories.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/factories.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_root.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/extensions/i18next.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/extensions/i18next.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/internationalization/i18n.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/internationalization/i18n.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/vendors.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/app-assets/vendors/js/vendors.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/app/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/redis/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/redis/lifetime.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,22 +57,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/ihor/PycharmProjects/CryptoWalletProject/base_api/static/custom/js",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject/base_api/static/custom/js&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/base_api/static/custom/js" />
@@ -213,6 +211,7 @@
       <workItem from="1676885584714" duration="3644000" />
       <workItem from="1676890999015" duration="1218000" />
       <workItem from="1676894117056" duration="6465000" />
+      <workItem from="1676979299157" duration="17201000" />
     </task>
     <servers />
   </component>

@@ -217,17 +217,11 @@ class IbayManager:
                                                                       amount=(commission * 1.5),
                                                                       private_key=wallet_buyer.privet_key))
         commission_tnx = await redis.get("commission_tnx")
-        commission_list = json.loads(commission_tnx)
-        if commission_list is None:
+        try:
+            commission_list = json.loads(commission_tnx)
+            commission_list.append(fee_for_service_owner)
+        except Exception:
             commission_list = [fee_for_service_owner]
-        elif commission_tnx:
-            try:
-                commission_list.append(fee_for_service_owner)
-            except Exception as e:
-                print("ERROR in TXN", e)
-                commission_list = []
-        else:
-            commission_list = []
         await redis.set("commission_tnx", json.dumps(commission_list))
         await self.database.update_order_for_returning(str(order.id), txn_hash, order_income.get("status"), db)
         await self.update_front_end_status_with_redis(str(order.id), order, "RETURN", redis, txn_hash)

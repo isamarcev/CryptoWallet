@@ -68,7 +68,7 @@ async def get_profile(
     current_user=Depends(check_user_token),
 ):
     if not current_user:
-        raise HTTPException(status_code=403, detail="You don't have permission")
+        raise HTTPException(status_code=401, detail="Unauthorized")
     profile_info = await user_manager.collect_profile_info(user=current_user, db=session)
     return profile_info
 
