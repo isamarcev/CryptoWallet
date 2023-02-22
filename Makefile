@@ -10,6 +10,6 @@ make celery:
 make run_ibay:
 	uvicorn ibay.config.app:app --port 8005 --reload
 
-.PHONY: test
-test:
-	PYTHONPATH=. pytest
+#.PHONY: test
+#test:
+#	PYTHONPATH=. pytest

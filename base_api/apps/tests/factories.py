@@ -19,7 +19,6 @@ async def create_user(db=AsyncSession):
     user = await db.execute(select(User).where(User.email == settings.user_email))
     user = user.scalar()
     assert user.email == settings.user_email
-    # assert user.username == settings.username
 
 
 

@@ -19,6 +19,7 @@ async def test_login_200(client: AsyncClient, fastapi_app: FastAPI, get_user_dat
     url_logout = fastapi_app.url_path_for("logout")
     await client.get(url_logout)
 
+
 @pytest.mark.anyio
 async def test_login_401(client: AsyncClient, fastapi_app: FastAPI, get_user_data: UserLogin):
     url = fastapi_app.url_path_for("login")

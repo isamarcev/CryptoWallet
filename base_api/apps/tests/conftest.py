@@ -42,6 +42,7 @@ async def initialize_db(db_engine) -> AsyncGenerator[None, None]:
     finally:
         await db.close()
 
+
 @pytest.fixture(scope="session")
 def anyio_backend() -> str:
     """
@@ -52,9 +53,13 @@ def anyio_backend() -> str:
     """
     return "asyncio"
 
+
 @pytest.fixture(scope="session")
 async def fastapi_app() -> FastAPI:
-
+    """
+    Fixture for getting an object of app
+    :return: FastAPI object
+    """
     return app
 
 
@@ -102,7 +107,6 @@ async def get_token(
         url,
         json=data.dict()
     )
-    print(response.json())
     assert response.status_code == 200
     yield UserLoginResponse(
         **response.json()
