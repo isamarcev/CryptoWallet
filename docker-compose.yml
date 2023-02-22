@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: ./deploy/app/base/Dockerfile
-    command: poetry run uvicorn base_api.config.app:app --host 0.0.0.0 --reload
+    command: make run_prod
     ports:
       - "8000:8000"
     volumes:
@@ -18,22 +18,23 @@ services:
       image: redis:alpine
       ports:
         - 6379:6379
+      volumes:
+        - redis_data:/data
 
   rabbitmq:
     image: rabbitmq:3.9.13-management-alpine
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
 
-#  celery:
-#    restart: always
-#    depends_on:
-#      - base_api
-#      - redis
-#    build:
-#      context: deploy/app
-#      dockerfile: deploy/app/Dockerfile.base
-#    command:
-#      - make celery
+  celery:
+    restart: always
+    depends_on:
+      - base_api
+      - rabbitmq
+    build:
+      context: ./
+      dockerfile: ./deploy/app/base/Dockerfile
+    command: make celery_prod
 #
 #  nginx:
 #    build:
@@ -46,47 +47,39 @@ services:
 #    volumes:
 #      - static_volume:/usr/src/app/static
 #
-#  rabbitmq:
-#    image: rabbitmq:3.9.27-management-alpine
-##    run?
-#
-#  eth_node:
-#    build:
-#      context: deploy/app
-#      dockerfile: deploy/app/Dockerfile.base
-#    command:
-#      - make run_parser
-#    depends_on:
-#      - rabbitmq
-#
-#  sockets:
-#    build:
-#      context: deploy/app
-#      dockerfile: deploy/app/Dockerfile.base
-#    ports:
-#      - "8001:8001"
-#    depends_on:
-#      - rabbitmq
-#    command:
-#      - make run_sockets
-#
-#  ibay:
-#    build:
-#      context: deploy/app
-#      dockerfile: deploy/app/Dockerfile.base
-#    ports:
-#      - "8005:8005"
-#    depends_on:
-#      - rabbitmq
-#      - db
-#      - base_api
-#    command:
-#      - make run_ibay
-#
+
+  eth_node:
+    build:
+      context: ./
+      dockerfile: ./deploy/app/node/Dockerfile
+    command: make run_parser_prod
+    depends_on:
+      - rabbitmq
+
+  sockets:
+    build:
+      context: ./
+      dockerfile: ./deploy/app/sockets/Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - base_api
+    command: make run_sockets_prod
+
+  ibay:
+    build:
+      context: ./
+      dockerfile: ./deploy/app/ibay/Dockerfile
+    ports:
+      - "8005:8005"
+    depends_on:
+      - rabbitmq
+      - base_api
+    command: make run_ibay_prod
+
 volumes:
   static_volume:
-#  postgres_data:
-
+  redis_data:
 
 
 #      - ./deploy/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql

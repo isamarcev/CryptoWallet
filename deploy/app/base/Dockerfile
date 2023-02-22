@@ -45,3 +45,4 @@ RUN poetry install --no-root --only main --no-interaction --no-ansi
 COPY base_api /usr/src/base_api
 COPY services /usr/src/services
 COPY logger_config.json /usr/src/logger_config.json
+COPY Makefile /usr/src/Makefile

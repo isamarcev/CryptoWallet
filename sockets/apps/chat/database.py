@@ -36,6 +36,7 @@ class ChatUsers:
         history = await self.redis.get("message_list")
         if not history:
             history = []
+            return history
         history = json.loads(history)
         return history
 

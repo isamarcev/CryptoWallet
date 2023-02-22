@@ -8,13 +8,6 @@ BASE_DIR = Path(__file__).parent.parent
 
 
 class Settings(BaseSettings):
-    # postgres_db
-    postgres_pass: str
-    postgres_host: str = "localhost"
-    postgres_port: str = "5432"
-    postgres_user: str
-    postgres_name: str
-
     # rabbitmq
     rabbit_host: str = "rabbitmq"
     rabbit_port: int = 15672
@@ -28,22 +21,6 @@ class Settings(BaseSettings):
     # redis url
     redis_url: str
 
-    @property
-    def postgres_url(self) -> URL:
-        """
-        Assemble database URL from settings.
-
-        :return: database URL.
-
-        """
-        return URL.build(
-            scheme="postgresql",
-            host=self.postgres_host,
-            port=self.postgres_port,
-            user=self.postgres_user,
-            password=self.postgres_pass,
-            path=f"/{self.postgres_name}",
-        )
 
     @property
     def rabbit_url(self) -> URL:
@@ -63,7 +40,7 @@ class Settings(BaseSettings):
         )
 
     class Config:
-        env_file = BASE_DIR / ".env"
+        env_file = BASE_DIR / ".env.prod"
 
 
 settings = Settings()
