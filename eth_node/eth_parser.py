@@ -49,7 +49,7 @@ class Settings(BaseSettings):
         Configure the application.
         """
 
-        env_file = BASE_DIR / ".env.prod"
+        env_file = BASE_DIR / ".env"
         env_file_encoding = "utf-8"
 
 

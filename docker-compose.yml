@@ -81,5 +81,3 @@ volumes:
   static_volume:
   redis_data:
 
-
-#      - ./deploy/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql

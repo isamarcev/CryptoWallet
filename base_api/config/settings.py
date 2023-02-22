@@ -155,7 +155,7 @@ class Settings(BaseSettings):
         )
 
     class Config:
-        env_file = BASE_DIR / ".env.prod"
+        env_file = BASE_DIR / ".env"
 
 
 settings = Settings()
