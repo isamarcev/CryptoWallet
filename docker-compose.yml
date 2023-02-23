@@ -45,7 +45,7 @@ services:
     depends_on:
       - base_api
     volumes:
-      - static_volume:/usr/src/app/static
+      - static_volume:/usr/src/base_api/static
 
 
   eth_node:

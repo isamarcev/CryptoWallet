@@ -1,7 +1,8 @@
 from sqladmin import ModelView
 from sqladmin.authentication import AuthenticationBackend
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import selectinload, sessionmaker
 from starlette.requests import Request
 from base_api.apps.users.models import user as user_table
 from base_api.apps.chat.models import Message
@@ -9,7 +10,7 @@ from base_api.apps.ethereum.models import Wallet, Transaction
 from base_api.apps.ibay.models import Product, Order
 from base_api.apps.users.models import User, Permission
 from base_api.apps.users.utils.password_hasher import verify_password
-from base_api.base_api_consumer import async_session
+# from base_api.base_api_consumer import async_session
 from base_api.config.settings import settings
 
 
@@ -54,6 +55,14 @@ class MyBackend(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
         username, password = form["username"], form["password"]
+
+        DATABASE_URL = str(settings.postgres_url)
+        engine = create_async_engine(DATABASE_URL, future=True)
+        async_session = sessionmaker(
+            engine,
+            class_=AsyncSession,
+            expire_on_commit=False,
+        )
 
         async with async_session() as session:
             try:
