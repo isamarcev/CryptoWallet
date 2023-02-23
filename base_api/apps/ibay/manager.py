@@ -186,8 +186,10 @@ class IbayManager:
         status = order.get("status")
         order_id = order.get("order_id")
         if status == "RETURN":
+            print("FINISH OREDER WITH REDIS STATUS RETURN =", status)
             await self.return_money_to_buyer_with_redis(order, db, redis)
         elif status == "COMPLETE":
+            print("FINISH OREDER WITH REDIS STATUS COMPLETE= ", status)
             order = await self.database.get_order_by_id(order_id, db)
             await self.database.update_order_for_delivery(tnx_hash=order.txn_hash,
                                                           order_status=status,
@@ -200,8 +202,8 @@ class IbayManager:
         product_owner_wallet = order.product.address
         owner_wallet = await self.eth_database.get_wallet_by_id(str(product_owner_wallet), db)
         commission = await self.get_commission_of_returning(order.txn_hash)
-        amount_of_returning = order.product.price - commission
-        loop = asyncio.get_running_loop()
+        amount_of_returning = order.product.price - (commission * 0.015)
+        loop = asyncio.get_event_loop()
         txn_hash = await loop.run_in_executor(
             None, functools.partial(self.client.sync_send_transaction,
                                     from_address=owner_wallet.public_key,
