@@ -3,27 +3,22 @@ import functools
 import json
 import secrets
 import socketio
-
 from abc import ABC, abstractmethod
 from datetime import datetime
-
 import aiohttp
 from eth_keys import keys
 from eth_utils import decode_hex
-from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncSession
 from eth_account import Account
 from web3 import Web3
 from aioredis import Redis
-
-
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
     WalletIsNotDefine, WalletAddressError
 from base_api.apps.ethereum.models import Transaction
 from base_api.apps.ethereum.schemas import WalletCreate, WalletImport, CreateTransaction, CreateTransactionReceipt, \
-    TransactionURL, GetTransactions, WalletsInfo
+    TransactionURL, WalletsInfo
 from base_api.apps.ethereum.web3_client import EthereumClient
-from base_api.apps.ibay.database import IbayDatabase
 from base_api.apps.ibay.manager import IbayManager
 from base_api.apps.users.models import User
 from base_api.config.settings import settings
@@ -89,16 +84,6 @@ class EthereumManager(EthereumLikeManager):
         wallet = WalletCreate(user=user.id, privet_key=privet_key, public_key=public_key)
         return await self.database.add_wallet(wallet, db)
 
-    # async def get_balance(self, wallets: List[Wallet]):
-    #     if wallets:
-    #         client = EthereumClient()
-    #         loop = asyncio.get_running_loop()
-    #         result = [loop.run_in_executor(None, functools.partial(client.sync_get_balance, address=wallet.public_key)) for wallet in wallets]
-    #         balances = await asyncio.gather(*result, return_exceptions=True)
-    #         print('balances = ', balances)
-    #         return balances
-    #     return {}
-
     async def get_user_wallets(self, user: User, db: AsyncSession):
         wallets = await self.redis.get(f'wallets-{user.id}')
         if wallets:
@@ -145,7 +130,6 @@ class EthereumManager(EthereumLikeManager):
             wallet=user_wallet.public_key.lower()
         )
         new_transaction_receipt = await self.database.create_transaction(transaction_receipt, db)
-        # TODO DO WE NEED NEXT BLOCK OF CODE?
         tracking_transaction = await self.redis.get('transaction')
         if tracking_transaction:
             tracking_transaction = json.loads(tracking_transaction)
@@ -172,7 +156,6 @@ class EthereumManager(EthereumLikeManager):
         try:
             await redis.set(queue, json_data)
         except Exception as e:
-            print("exeption in putting data", e)
             pass
 
     async def send_socket_messages(self, event, message, online_devices, socket_manager):
@@ -206,7 +189,6 @@ class EthereumManager(EthereumLikeManager):
                 txn_hash = transaction.hash.hex()
                 if commission_list:
                     if txn_hash in commission_list:
-                        print("TNX HASH IN COMMISSION LIST")
                         await self.put_list_to_redis_data(self.redis, "commission_tnx", commission_list.remove(txn_hash))
                         return
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,

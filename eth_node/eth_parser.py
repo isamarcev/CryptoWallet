@@ -2,7 +2,6 @@
 import asyncio
 import datetime
 import json
-import logging
 from pathlib import Path
 
 from aio_pika import DeliveryMode, ExchangeType, Message, connect_robust
@@ -13,23 +12,20 @@ from yarl import URL
 
 BASE_DIR = Path(__file__).parent
 
+
 class Settings(BaseSettings):
 
-    # # Variables for RabbitMQ
+    # Variables for RabbitMQ
     rabbit_host: str = "localhost"
     rabbit_port: int = 5672
     rabbit_user: str = "guest"
     rabbit_pass: str = "guest"
     rabbit_vhost: str = "/"
-    #
-    # rabbit_pool_size: int = 2
-    # rabbit_channel_pool_size: int = 10
 
     # Ethereum settings
     infura_api_url: str
     infura_api_key: str
-    # etherscan_api_url: str
-    # etherscan_api_key: str
+
 
     @property
     def rabbit_url(self) -> URL:
@@ -98,7 +94,6 @@ async def start_parse():
                     # Sending the message
                     await new_blocks_exchange.publish(message, routing_key="info")
 
-
             except Exception:
                 pass
 
@@ -108,10 +103,3 @@ if __name__ == "__main__":
     # asyncio.set_event_loop(loop)
     # loop.run_until_complete(start_parse())
     asyncio.run(start_parse())
-
-
-# НАСКОЛЬКО ВЕРОЯТНО ЧТО 2 UUID 4 СЛУЧАЙНО СОВПАДУТ.
-
-
-
-

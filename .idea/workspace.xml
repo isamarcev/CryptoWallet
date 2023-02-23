@@ -5,12 +5,81 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/base_api/.env.prod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base_api/apps/frontend/router.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base_api/config/logger.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy/app/base/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy/app/ibay/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy/app/node/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy/app/sockets/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eth_node/.env.prod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ibay/.env.prod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logger_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sockets/.env.prod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/chat/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/dependencies.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/exeptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/exeptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/frontend/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/frontend/dependecies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/frontend/dependecies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/exeptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/exeptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/jwt_backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/jwt_backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/users/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/base_api_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/base_api_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/celery.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/celery_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/celery_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/commands/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/lifetime.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/config/utils/sqlalchemy_admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/config/utils/sqlalchemy_admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/basic.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/basic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/app/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/nginx/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/nginx/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eth_node/apps/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eth_node/config/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eth_node/config/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eth_node/eth_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/eth_node/eth_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eth_node/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/eth_node/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ibay/apps/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ibay/config/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ibay/config/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/config/lifetime.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/rabbit/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/redis/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/apps/chat/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/apps/chat/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/apps/chat/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/apps/chat/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/apps/wallet/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/apps/wallet/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/apps/wallet/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/apps/wallet/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/config/db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/config/lifetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/config/lifetime.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/socket_manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/socketio_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/sockets/socketio_server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/sockets_consumer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockets/sockets_producer.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +107,6 @@
     <setting file="file://$PROJECT_DIR$/base_api/apps/users/schemas.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/base_api/migrations/env.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/sockets/socketio_server.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/sockets/sockets_consumer.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -51,29 +119,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject/base_api/static/custom/js&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/ihor/PycharmProjects/CryptoWalletProject/base_api/templates/errors",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/base_api/templates/errors" />
       <recent name="$PROJECT_DIR$/base_api/static/custom/js" />
       <recent name="$PROJECT_DIR$/base_api/static/custom/css" />
       <recent name="$PROJECT_DIR$/base_api/templates/chat/asyncapi" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/base_api/apps/ibay" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/sockets" />
@@ -211,7 +279,7 @@
       <workItem from="1677086619406" duration="2650000" />
       <workItem from="1677098445734" duration="23000" />
       <workItem from="1677098683696" duration="1215000" />
-      <workItem from="1677140276186" duration="3263000" />
+      <workItem from="1677140276186" duration="8726000" />
     </task>
     <servers />
   </component>

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import uuid as uuid_id
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, MetaData, String
+from sqlalchemy import Column, DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from sqlalchemy_utils import EmailType, URLType
+from sqlalchemy_utils import URLType
 
 from base_api.apps.users.models import User
 

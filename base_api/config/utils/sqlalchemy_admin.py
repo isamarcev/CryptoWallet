@@ -8,6 +8,7 @@ from base_api.apps.chat.models import Message
 from base_api.apps.ethereum.models import Wallet, Transaction
 from base_api.apps.ibay.models import Product, Order
 from base_api.apps.users.models import User, Permission
+from base_api.apps.users.utils.password_hasher import verify_password
 from base_api.base_api_consumer import async_session
 from base_api.config.settings import settings
 
@@ -65,7 +66,7 @@ class MyBackend(AuthenticationBackend):
             finally:
                 await session.close()
 
-        if user.permission.is_admin:
+        if user.permission.is_admin and verify_password(password, user.password):
             request.session.update({"token": "..."})
 
         return user.permission.is_admin

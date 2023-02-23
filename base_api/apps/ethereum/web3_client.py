@@ -1,10 +1,8 @@
 from abc import ABC
-from datetime import datetime
 
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 from base_api.apps.ethereum.exeptions import Web3ConnectionError, TransactionError
-from base_api.apps.ethereum.schemas import CreateTransactionReceipt
 from base_api.config.settings import settings
 
 

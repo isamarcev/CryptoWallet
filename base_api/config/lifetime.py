@@ -33,6 +33,7 @@ def register_startup_event(
     async def _startup() -> None:  # noqa: WPS430
         await init_db()
         redis = await get_redis()
+        await redis.delete("users_online")
         await FastAPILimiter.init(redis)
         await init_rabbit(app)
         try:

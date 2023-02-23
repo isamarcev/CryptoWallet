@@ -4,7 +4,7 @@ from typing import Union
 
 from fastapi import UploadFile
 from fastapi_helper.schemas.camel_schema import as_form
-from pydantic import BaseModel, EmailStr, ValidationError, root_validator, validator
+from pydantic import BaseModel, validator
 
 
 class UserRegister(BaseModel):
@@ -59,12 +59,3 @@ class UserProfileUpdate(BaseModel):
             raise ValueError("Passwords mismatch")
         return password2
 
-
-# validation with
-# ЮСДТ, Decimal,
-# @root_validator
-# def check_passwords_match(cls, values):
-#     print(values)
-#     pw1, pw2 = values.get('password'), values.get('password2')
-#     print(pw1, pw2)
-#     return values

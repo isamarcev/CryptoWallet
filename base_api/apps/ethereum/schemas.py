@@ -1,11 +1,9 @@
 from enum import Enum
-from typing import List, Union, Literal
+from typing import Union
 
 from pydantic import BaseModel, validator
 from pydantic.types import UUID
 from datetime import datetime
-
-from sqlalchemy_utils.types import choice
 from web3 import Web3
 
 
@@ -37,6 +35,7 @@ class StatusEnum(str, Enum):
     success = 'Success'
     pending = 'Pending'
     failed = 'Failed'
+
 
 def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
     return dt.strftime('%Y-%m-%d %H:%M:%S')

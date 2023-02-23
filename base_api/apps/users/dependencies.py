@@ -15,7 +15,6 @@ from base_api.apps.users.models import Permission, User
 from base_api.config.db import SessionLocal, async_session
 from base_api.config.settings import settings
 from base_api.config.storage import Storage
-from base_api.config.utils.email_client import EmailClient, new_email_client
 
 
 def get_db():
@@ -48,7 +47,6 @@ async def get_jwt_backend() -> JWTBackend:
 async def get_redis() -> Redis:
     redis = aioredis.from_url(settings.redis_url)
     return redis
-
 
 
 @alru_cache()

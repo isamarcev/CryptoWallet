@@ -3,9 +3,7 @@ import uuid as uuid_id
 from sqlalchemy import Column, String, ForeignKey, Float, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 from sqlalchemy_utils import ChoiceType
-
 from base_api.apps.users.models import User
 
 Base = declarative_base()

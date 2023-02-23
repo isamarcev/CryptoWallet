@@ -12,7 +12,6 @@ DATABASE_URL = str(settings.postgres_url)
 async def wrap_db_ctx(func: Callable, *args, **kwargs) -> None:
     engine = create_async_engine(DATABASE_URL, future=True)
     redis = aioredis.from_url(settings.redis_url)
-    # loop = asyncio.get_event_loop()
     async with engine.connect() as session:
         try:
             await func(*args, session=session, redis=redis)

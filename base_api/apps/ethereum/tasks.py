@@ -1,12 +1,11 @@
 import asyncio
 from typing import Callable
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine
 from base_api.config.settings import settings
 
 from base_api.config.celery import celery_app
-from .dependencies import get_ethereum_manager, get_session
+from .dependencies import get_ethereum_manager
 
 
 DATABASE_URL = str(settings.postgres_url)
@@ -31,17 +30,3 @@ def check_transactions_by_block(block_hash: str):
     ethereum_manager = asyncio.run(get_ethereum_manager())
     async_to_sync(ethereum_manager.check_transaction_in_block, block_hash)
     return
-
-
-# async def wrap_db_ctx(func: Callable, *args, **kwargs) -> None:
-#     try:
-#         await Tortoise.init(
-#             config=TORTOISE_CONFIG,
-#         )
-#         await func(*args, **kwargs)
-#     finally:
-#         await Tortoise.close_connections()
-
-# @shared_task(acks_late=True)
-# def parse_base_conversions_task() -> None:
-#     async_to_sync(parse_base_conversions)

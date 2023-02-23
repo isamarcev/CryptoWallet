@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-
 from aioredis import Redis
-from sqlalchemy import asc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-
 from base_api.apps.chat.models import Message
 from base_api.apps.chat.models import message as message_table
 from base_api.apps.chat.schemas import MessageCreate, NewMessageDetail
 from base_api.apps.users.models import User
-from base_api.apps.users.models import user as user_table
 
 
 class ChatDatabase:
@@ -50,7 +46,6 @@ class ChatDatabase:
             new.append(json.loads(message.json()))
         new = list(reversed(new))
         result = json.dumps(new)
-        print(type(result))
         await self.redis.set("message_list", result)
 
         return message_instance

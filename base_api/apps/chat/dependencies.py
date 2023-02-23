@@ -2,18 +2,13 @@
 import aioredis
 from aioredis import Redis
 from async_lru import alru_cache
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette import status
-
 from base_api.apps.chat.database import ChatDatabase
 from base_api.apps.chat.manager import ChatManager
 from base_api.apps.chat.models import Message
 from base_api.base_api_producer import BaseApiProducer
 from base_api.config.db import async_session
 from boto3 import Session
-
 from base_api.config.settings import settings
 from base_api.config.storage import Storage
 

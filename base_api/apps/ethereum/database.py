@@ -2,9 +2,8 @@ import datetime
 from typing import Type, List, Dict, Union
 
 from sqlalchemy import delete, update
-from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
 from base_api.apps.ethereum.models import Wallet, wallet as wallet_table, Transaction, transaction as transaction_table
 from base_api.apps.ethereum.schemas import WalletCreate, CreateTransactionReceipt, GetTransactions
 from base_api.apps.users.models import User
@@ -53,7 +52,6 @@ class EthereumDatabase:
         result = wallets.all()
         return result if result else None
 
-
     async def get_wallet_transactions(self, wallet: GetTransactions, db: AsyncSession):
         result = await db.execute(
             select(self.transaction_model).where(((transaction_table.c.from_address == wallet) | (transaction_table.c.to_address == wallet))
@@ -71,7 +69,6 @@ class EthereumDatabase:
         return results
 
     async def update_transaction_by_hash(self, hash: str, wallet: str, data: Dict, db: AsyncSession):
-        print('update)))')
         result = await db.execute(
             update(self.transaction_model).where(
                 ((transaction_table.c.number == hash) & (transaction_table.c.wallet == wallet))

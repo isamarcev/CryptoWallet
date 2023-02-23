@@ -1,9 +1,9 @@
 import io
 import uuid
-from typing import Tuple, List, Union
+from typing import Tuple, Union
 
 from PIL import Image
-from fastapi import UploadFile, HTTPException
+from fastapi import UploadFile
 from fastapi_helper import DefaultHTTPException
 from starlette import status
 

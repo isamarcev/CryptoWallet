@@ -11,10 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 from base_api.apps.ethereum.tasks import check_transactions_by_block
 from base_api.apps.ibay.dependencies import get_ibay_manager
-from base_api.config.db import SessionLocal, get_session
 from base_api.config.settings import settings
-from base_api.apps.ethereum.dependencies import get_ethereum_manager
-from ibay.apps.enums import OrderStatus
 
 logger = logging.getLogger(__name__)
 

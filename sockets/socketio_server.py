@@ -5,7 +5,6 @@ import socketio
 from sockets.apps.chat.dependencies import get_user_db
 from sockets.apps.wallet.dependencies import get_users_online_db
 
-# socket_manager = socketio.AsyncRedisManager("redis://localhost")
 from sockets.config.settings import settings
 
 socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)

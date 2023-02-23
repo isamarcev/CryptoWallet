@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 
-from pydantic import BaseSettings, DirectoryPath, SecretStr
+from pydantic import BaseSettings
 from yarl import URL
 
 BASE_DIR = Path(__file__).parent.parent
