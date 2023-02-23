@@ -4,7 +4,8 @@ import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 
-from base_api.apps.users.schemas import UserLogin, UserRegister
+from base_api.apps.users.schemas import UserRegister
+
 
 @pytest.mark.anyio
 async def test_registration_201(client: AsyncClient, fastapi_app: FastAPI):
@@ -19,7 +20,6 @@ async def test_registration_201(client: AsyncClient, fastapi_app: FastAPI):
         url,
         json=data.dict()
     )
-    print(response.json(), "RESPONSE JSON REGISTRATION")
     assert response.status_code == 400
 
 
@@ -48,5 +48,3 @@ async def test_registration_422(client: AsyncClient, fastapi_app: FastAPI):
         json={}
     )
     assert response.status_code == 422
-
-

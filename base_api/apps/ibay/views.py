@@ -57,6 +57,4 @@ async def get_orders(
         ibay_manager: IbayManager = Depends(get_ibay_manager),
 ):
     response = await ibay_manager.get_user_orders(user, db)
-    for i in response:
-        print('order_data =', i.datetime)
     return response

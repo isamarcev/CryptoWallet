@@ -15,3 +15,9 @@ class ProductDoesNotExistsOrAlreadySold(DefaultHTTPException):
     message = "This product does not exist or sold already"
     status_code = status.HTTP_400_BAD_REQUEST
 
+
+class TheSameWalletError(DefaultHTTPException):
+    code = "Wallet error"
+    type = "Wallet invalid"
+    message = "You can buy your own product with the same wallet. Please choose another wallet"
+    status_code = status.HTTP_400_BAD_REQUEST

@@ -17,13 +17,14 @@ $(document).ready(function() {
             }
             for (let prop in data) {
                 let wallet_data = data[prop]
+                console.log(wallet_data)
                 let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ eth_avatar +'" height="100"></div>'
                 let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
                     '<div class="col-lg-3 col-md-2 col-4"><p>Address:</p></div>' +
                     '<div class="col-lg-9 col-md-10 col-8" style="text-align: left"><u style="color: darkblue">' +
                     wallet_data.public_key + '</u></div></div><div class="row"><div class="col-lg-3 col-md-2 col-4">' +
                     '<p>Balance:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
-                    '<p balance-value="'+ wallet_data.public_key +'" style="font-weight: bold;">' + wallet_data.balance + 'ETH</p></div></div>' +
+                    '<p balance-value="'+ wallet_data.public_key +'" style="font-weight: bold;">' + wallet_data.balance.toString() + 'ETH</p></div></div>' +
                     '<div class="demo-inline-spacing"><button type="button" ' +
                     'class="btn btn-primary waves-effect waves-float waves-light" style="font-size: small"' +
                     ' data-bs-toggle="modal" data-bs-target="#xlarge" onclick="open_transactions('+ "'" + wallet_data.public_key + "'" +')">Watch Transactions</button>' +

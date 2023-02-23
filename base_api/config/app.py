@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 from starlette.staticfiles import StaticFiles
 from base_api.apps.frontend.router import front_router
 from base_api.config.celery_utils import create_celery
@@ -103,3 +103,8 @@ async def backend_validation_handler(request: Request, exc: DefaultHTTPException
         {"detail": [content]},
         status_code=exc.status_code,
     )
+
+
+@app.exception_handler(404)
+async def custom_404_handler(_, __):
+    return RedirectResponse("/page-not-found")
