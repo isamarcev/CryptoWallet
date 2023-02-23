@@ -6,14 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/factories.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/factories.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_regisration.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/tests/users_tests/test_regisration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/chat/asyncapi/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/chat/asyncapi/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/exeptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/exeptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/pyproject.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,6 +209,9 @@
       <workItem from="1677058165498" duration="946000" />
       <workItem from="1677077335765" duration="2963000" />
       <workItem from="1677086619406" duration="2650000" />
+      <workItem from="1677098445734" duration="23000" />
+      <workItem from="1677098683696" duration="1215000" />
+      <workItem from="1677140276186" duration="3263000" />
     </task>
     <servers />
   </component>

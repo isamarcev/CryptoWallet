@@ -38,7 +38,6 @@ boto3 = "^1.26.58"
 pillow = "^9.4.0"
 flake8 = "^6.0.0"
 web3 = "^5.31.3"
-celery = "^5.2.7"
 aiohttp = "^3.8.3"
 fastapi-limiter = "^0.1.5"
 fastapi-mail = "^1.2.5"
@@ -48,6 +47,7 @@ asgi-lifespan = ">=2.0.0,<3.0.0"
 pytest = "^7.2.1"
 httpx = "^0.23.3"
 pytest-asyncio = "^0.20.3"
+celery = "^5.2.7"
 
 
 [build-system]

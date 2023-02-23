@@ -7,15 +7,12 @@ import json
 import socketio
 from sqlalchemy.ext.asyncio import AsyncSession
 from base_api.apps.ibay.database import IbayDatabase
-from .enums import OrderStatus
-from .models import Order
 from ..ethereum.web3_client import EthereumClient
 from ...base_api_producer import BaseApiProducer
-from .exeptions import WalletIsUndefined, ProductDoesNotExistsOrAlreadySold
+from .exeptions import WalletIsUndefined, ProductDoesNotExistsOrAlreadySold, TheSameWalletError
 from .schemas import CreateProduct, Orders, CreateOrder
 from ..ethereum.database import EthereumDatabase
-from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
-    WalletIsNotDefine, WalletAddressError
+from base_api.apps.ethereum.exeptions import WalletIsNotDefine
 from ..users.models import User
 from aioredis import Redis
 
@@ -46,6 +43,8 @@ class IbayManager:
         if not user_wallet or user_wallet.user != user.id:
             raise WalletIsNotDefine()
         product = await self.database.get_product_by_id(str(order.product_id), db)
+        if user_wallet.id == product.wallet_id:
+            raise TheSameWalletError()
         if not product or product.is_sold:
             raise ProductDoesNotExistsOrAlreadySold()
         product_wallet = await self.eth_database.get_wallet_by_id(str(product.wallet_id), db)
@@ -80,7 +79,7 @@ class IbayManager:
                     await self.socket_manager.emit("new_order_show",
                                                    data=order_data,
                                                    room=device)
-        except:
+        except Exception:
             pass
         await self.put_order_to_redis("orders_transaction", txn_hash)
 
@@ -90,7 +89,6 @@ class IbayManager:
             redis_orders = await self.redis.get(queue)
             if redis_orders:
                 orders_transaction = json.loads(redis_orders)
-                # orders_transaction = []
                 orders_transaction.append(transaction_hash)
                 orders_transaction = json.dumps(orders_transaction)
             else:
@@ -144,7 +142,7 @@ class IbayManager:
         await self.database.update_order_for_delivery(tnx_hash=order.txn_hash, order_status=status, db=session)
         await self.update_front_end_status_with_redis(order_id, order, status, redis)
 
-    async def update_front_end_status_with_redis(self, order_id, order, status, redis, returning_txn = None):
+    async def update_front_end_status_with_redis(self, order_id, order, status, redis, returning_txn=None):
         updated_message = {
             "order_id": order_id,
             "status": status
@@ -164,7 +162,7 @@ class IbayManager:
             print("ERROR in UPDATE FRONT END ", e)
             pass
 
-    async def update_front_end_status(self, order_id, order, status, returning_txn = None):
+    async def update_front_end_status(self, order_id, order, status, returning_txn=None):
         updated_message = {
             "order_id": order_id,
             "status": status
@@ -202,20 +200,21 @@ class IbayManager:
         product_owner_wallet = order.product.address
         owner_wallet = await self.eth_database.get_wallet_by_id(str(product_owner_wallet), db)
         commission = await self.get_commission_of_returning(order.txn_hash)
-
-        amount_of_returning = order.product.price - (commission)
+        amount_of_returning = order.product.price - commission
         loop = asyncio.get_running_loop()
-        txn_hash = await loop.run_in_executor(None, functools.partial(self.client.sync_send_transaction,
-                                                                      from_address=owner_wallet.public_key,
-                                                                      to_address=wallet_buyer.public_key,
-                                                                      amount=amount_of_returning,
-                                                                      private_key=owner_wallet.privet_key))
+        txn_hash = await loop.run_in_executor(
+            None, functools.partial(self.client.sync_send_transaction,
+                                    from_address=owner_wallet.public_key,
+                                    to_address=wallet_buyer.public_key,
+                                    amount=amount_of_returning,
+                                    private_key=owner_wallet.privet_key))
 
-        fee_for_service_owner = await loop.run_in_executor(None, functools.partial(self.client.sync_send_transaction,
-                                                                      from_address=wallet_buyer.public_key,
-                                                                      to_address=settings.owner_public_key,
-                                                                      amount=(commission * 1.5),
-                                                                      private_key=wallet_buyer.privet_key))
+        fee_for_service_owner = await loop.run_in_executor(
+            None, functools.partial(self.client.sync_send_transaction,
+                                    from_address=wallet_buyer.public_key,
+                                    to_address=settings.owner_public_key,
+                                    amount=(commission * 1.5),
+                                    private_key=wallet_buyer.privet_key))
         commission_tnx = await redis.get("commission_tnx")
         try:
             commission_list = json.loads(commission_tnx)
@@ -223,14 +222,19 @@ class IbayManager:
         except Exception:
             commission_list = [fee_for_service_owner]
         await redis.set("commission_tnx", json.dumps(commission_list))
-        await self.database.update_order_for_returning(str(order.id), txn_hash, order_income.get("status"), db)
-        await self.update_front_end_status_with_redis(str(order.id), order, "RETURN", redis, txn_hash)
+
+        await self.database.update_order_for_returning(
+            str(order.id), txn_hash, order_income.get("status"), db)
+
+        await self.update_front_end_status_with_redis(
+            str(order.id), order, "RETURN", redis, txn_hash)
 
     async def get_commission_of_returning(self, tnx_hash: str):
         loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
-                                                                    txn_hash=tnx_hash,
-                                                                    ))
+        result = await loop.run_in_executor(
+            None, functools.partial(self.client.sync_get_transaction_receipt,
+                                    txn_hash=tnx_hash,
+                                    ))
         gas_price = result.get("effectiveGasPrice")
         gas_used = result.get("gasUsed")
         commission = gas_price * gas_used * (0.000000001 ** 2)

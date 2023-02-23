@@ -162,8 +162,7 @@ class EthereumManager(EthereumLikeManager):
         try:
             list_data = json.loads(data)
         except Exception:
-            list_data = []
-            pass
+            list_data = {}
         return list_data
 
     @staticmethod
