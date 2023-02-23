@@ -40,7 +40,7 @@ class Settings(BaseSettings):
         )
 
     class Config:
-        env_file = BASE_DIR / ".env"
+        env_file = BASE_DIR / ".env.prod"
 
 
 settings = Settings()

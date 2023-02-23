@@ -35,18 +35,18 @@ services:
       context: ./
       dockerfile: ./deploy/app/base/Dockerfile
     command: make celery_prod
-#
-#  nginx:
-#    build:
-#      context: ./deploy/nginx
-#      dockerfile: Dockerfile
-#    ports:
-#      - "80:80"
-#    depends_on:
-#      - base_api
-#    volumes:
-#      - static_volume:/usr/src/app/static
-#
+
+  nginx:
+    build:
+      context: ./deploy/nginx/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - base_api
+    volumes:
+      - static_volume:/usr/src/app/static
+
 
   eth_node:
     build:
