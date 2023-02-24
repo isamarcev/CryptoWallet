@@ -1,5 +1,5 @@
-let ws_url = "ws://127.0.0.1:8001"
-// let ws_url = "ws://172.21.0.1:8001"
+// let ws_url = "ws://127.0.0.1:8001"
+let ws_url = "ws://164.90.163.166:8001"
 
 
 const sio = io(ws_url,
