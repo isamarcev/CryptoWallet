@@ -11,7 +11,7 @@ make run_ibay:
 
 
 run_prod:
-	poetry run uvicorn base_api.config.app:app --host 0.0.0.0 --reload
+	poetry run uvicorn base_api.config.app:app --host 0.0.0.0 --reload --workers 3
 run_sockets_prod:
 	poetry run uvicorn sockets.config.app:app --host 0.0.0.0 --reload --port 8001
 run_parser_prod:
