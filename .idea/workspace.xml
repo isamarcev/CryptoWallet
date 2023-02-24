@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/static/custom/js/wallets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/templates/users/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/templates/users/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/nginx/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/nginx/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ibay/apps/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,6 +211,9 @@
       <workItem from="1677098683696" duration="1215000" />
       <workItem from="1677140276186" duration="8726000" />
       <workItem from="1677160540038" duration="3535000" />
+      <workItem from="1677196203045" duration="968000" />
+      <workItem from="1677197610604" duration="316000" />
+      <workItem from="1677198117585" duration="744000" />
     </task>
     <servers />
   </component>

@@ -1,5 +1,7 @@
 from abc import ABC
+from time import sleep
 
+from web3.exceptions import BlockNotFound
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 from base_api.apps.ethereum.exeptions import Web3ConnectionError, TransactionError
@@ -69,11 +71,19 @@ class EthereumClient(BaseClient):
         except Exception:
             return None
 
-    def get_transaction_by_block(self, block_number, addresses: list):
+    def get_transaction_by_block(self, block_number, addresses: list, counter=None):
+        try:
+            transactions = self.provider.eth.get_block(block_number, True)["transactions"]
+            if transactions:
+                return [transaction for transaction in transactions
+                        if transaction['to'] in addresses or transaction["from"] in addresses]
+        except BlockNotFound:
+            if counter and len(counter) < 5:
+                counter.append(1)
+                self.get_transaction_by_block(block_number, addresses, counter)
+                sleep(5)
+            else:
+                return []
 
-        transactions = self.provider.eth.get_block(block_number, True)["transactions"]
-        if transactions:
-            return [transaction for transaction in transactions
-                    if transaction['to'] in addresses or transaction["from"] in addresses]
 
 

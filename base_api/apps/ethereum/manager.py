@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from eth_account import Account
 from web3 import Web3
 from aioredis import Redis
+from aioredis.exceptions import ResponseError
 from base_api.apps.ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletCreatingError, InvalidWalletImport, WalletAlreadyExists, \
     WalletIsNotDefine, WalletAddressError
@@ -140,7 +141,7 @@ class EthereumManager(EthereumLikeManager):
         return TransactionURL(url='https://sepolia.etherscan.io/tx/' + txn_hash)
 
     @staticmethod
-    async def get_list_redis_data(redis: Redis, queue: str):
+    async def get_dict_redis_data(redis: Redis, queue: str):
         """function for getting list-data from redis"""
         data = await redis.get(queue)
         try:
@@ -148,15 +149,6 @@ class EthereumManager(EthereumLikeManager):
         except Exception:
             list_data = {}
         return list_data
-
-    @staticmethod
-    async def put_list_to_redis_data(redis: Redis, queue: str, list_data):
-        """function for putting list-data to redis"""
-        json_data = json.dumps(list_data)
-        try:
-            await redis.set(queue, json_data)
-        except Exception as e:
-            pass
 
     async def send_socket_messages(self, event, message, online_devices, socket_manager):
         """send message and event to device by event"""
@@ -181,23 +173,19 @@ class EthereumManager(EthereumLikeManager):
                                                                         addresses=addresses))
         if transactions:
             socket_manager = socketio.AsyncAioPikaManager(settings.rabbit_url)
-            users = await self.get_list_redis_data(self.redis, "users_online")
-            orders = await self.get_list_redis_data(self.redis, "orders_transaction")
-            # returning_transactions = self.get_list_redis_data(self.redis, "returning_txn")
-            commission_list = await self.get_list_redis_data(self.redis, "commission_tnx")
+            users = await self.get_dict_redis_data(self.redis, "users_online")
             for transaction in transactions:
                 txn_hash = transaction.hash.hex()
-                if commission_list:
-                    if txn_hash in commission_list:
-                        await self.put_list_to_redis_data(self.redis, "commission_tnx", commission_list.remove(txn_hash))
-                        return
+                try:
+                    if await self.redis.lrem("commission_tnx", 0, str(txn_hash)):
+                        continue
+                except ResponseError:
+                    pass
                 result = await loop.run_in_executor(None, functools.partial(self.client.sync_get_transaction_receipt,
                                                                             txn_hash=txn_hash,
                                                                             ))
-                if txn_hash in orders:
+                if await self.redis.get(txn_hash):
                     await self.send_transaction_for_delivery(txn_hash, result.get("status"), db)
-                    orders.remove(txn_hash)
-                    await self.put_list_to_redis_data(self.redis, "orders_transaction", orders)
 
                 if transaction['to'] in addresses:
                     wallet_owner = await self.database.get_wallet_by_public_key(transaction["to"], db)

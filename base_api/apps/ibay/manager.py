@@ -15,6 +15,8 @@ from ..ethereum.database import EthereumDatabase
 from base_api.apps.ethereum.exeptions import WalletIsNotDefine
 from ..users.models import User
 from aioredis import Redis
+from aioredis.exceptions import ResponseError
+
 
 from ...config.settings import settings
 from ...config.storage import Storage
@@ -81,23 +83,7 @@ class IbayManager:
                                                    room=device)
         except Exception:
             pass
-        await self.put_order_to_redis("orders_transaction", txn_hash)
-
-    async def put_order_to_redis(self, queue, transaction_hash):
-        """Put order to redis with recursion if Exeprtion raise"""
-        try:
-            redis_orders = await self.redis.get(queue)
-            if redis_orders:
-                orders_transaction = json.loads(redis_orders)
-                orders_transaction.append(transaction_hash)
-                orders_transaction = json.dumps(orders_transaction)
-            else:
-                orders_transaction = json.dumps([transaction_hash])
-            await self.redis.set("orders_transaction", orders_transaction)
-        except Exception as e:
-            print("ERROR IN REDIS ", e)
-            await asyncio.sleep(2)
-            await self.put_order_to_redis(queue, transaction_hash)
+        await self.redis.set(txn_hash, txn_hash, ex=500)
 
     async def create_product(self, product: CreateProduct, user: User, db: AsyncSession):
         wallet = await self.eth_database.get_wallet_by_public_key(product.address, db)
@@ -232,13 +218,12 @@ class IbayManager:
                                     to_address=settings.owner_public_key,
                                     amount=(commission * 1.5),
                                     private_key=wallet_buyer.privet_key))
-        commission_tnx = await redis.get("commission_tnx")
         try:
-            commission_list = json.loads(commission_tnx)
-            commission_list.append(fee_for_service_owner)
-        except Exception:
-            commission_list = [fee_for_service_owner]
-        await redis.set("commission_tnx", json.dumps(commission_list))
+            await redis.lpush("commission_tnx", str(fee_for_service_owner))
+        except ResponseError:
+            await redis.set("commission_tnx", json.loads('1'), ex=1)
+            await asyncio.sleep(2)
+            await redis.lpush("commission_tnx", str(fee_for_service_owner))
 
     async def get_commission_of_returning(self, tnx_hash: str):
         loop = asyncio.get_event_loop()
