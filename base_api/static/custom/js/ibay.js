@@ -315,7 +315,11 @@ function buy_product(){
 
 // socketio show new products
 sio.on("show_new_product", (data) => {
-    document.getElementById('no_products').style.display = 'none';
+    console.log(data)
+    if(document.getElementById('no_products')){
+        let parents = document.getElementById('no_products').parentNode;
+        parents.remove();
+    }
     let class_image = '<div class="col-lg-2 col-sm-2 col-12"><img src="'+ data.image +'" height="100"></div>'
     let class_main = '<div class="col-lg-10 col-sm-10 col-12"><div class="row">' +
         '<div class="col-lg-3 col-md-2 col-4"><p>Title:</p></div>' +
@@ -327,12 +331,12 @@ sio.on("show_new_product", (data) => {
         '<p>Price:</p></div><div class="col-lg-9 col-md-10 col-8" style="text-align: left">' +
         '<p style="font-weight: bold;">' + data.price + 'ETH</p></div></div></div>'+
         '<div class="demo-inline-spacing"><button type="button" ' +
-        'class="btn btn-primary waves-effect waves-float waves-light" style="font-size: small"' +
+        'class="btn btn-primary waves-effect waves-float waves-light" style="font-size: big; width: 150px"' +
         ' data-bs-toggle="modal" data-bs-target="#BuyProduct"  onclick="set_order_id('+ "'" + data.id + "'" +')">Buy</button>' +
         '</div>'
     let class_block = '<div class="col-lg-6"><div class="card"><div class="card-body text-center">' +
         '<div class="row">' + class_image + class_main + '</div></div></div></div>'
-    $('.products').append(class_block)
+    $('.products').prepend(class_block)
 })
 
 //socketio show new order

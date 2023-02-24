@@ -95,6 +95,7 @@ class IbayManager:
             created_product = await self.database.create_product(product, db)
             created_product.address = wallet.public_key
             product = {
+                "id": str(created_product.id),
                 "title": created_product.title,
                 "address": created_product.address,
                 "price": created_product.price,
