@@ -6,8 +6,6 @@ services:
       context: ./
       dockerfile: ./deploy/app/base/Dockerfile
     command: make run_prod
-    ports:
-      - "8000:8000"
     volumes:
       - static_volume:/usr/src/app/static
     depends_on:
@@ -17,8 +15,6 @@ services:
   redis:
       image: redis:alpine
       restart: always
-      ports:
-        - 6379:6379
       volumes:
         - redis_data:/data
 
@@ -62,8 +58,6 @@ services:
     build:
       context: ./
       dockerfile: ./deploy/app/sockets/Dockerfile
-    ports:
-      - "8001:8001"
     depends_on:
       - base_api
     command: make run_sockets_prod
@@ -72,8 +66,6 @@ services:
     build:
       context: ./
       dockerfile: ./deploy/app/ibay/Dockerfile
-    ports:
-      - "8005:8005"
     depends_on:
       - rabbitmq
       - base_api
