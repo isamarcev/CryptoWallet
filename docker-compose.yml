@@ -7,7 +7,7 @@ services:
       dockerfile: ./deploy/app/base/Dockerfile
     command: make run_prod
     volumes:
-      - static_volume:/usr/src/app/static
+      - static_volume:/usr/src/base_api/static/
     depends_on:
       - redis
       - rabbitmq
@@ -43,7 +43,7 @@ services:
     depends_on:
       - base_api
     volumes:
-      - static_volume:/usr/src/base_api/static
+      - static_volume:/usr/src/base_api/static/
 
 
   eth_node:
