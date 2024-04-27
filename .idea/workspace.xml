@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="97e0c17a-256e-4bca-bc17-cd7e7094417b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ethereum/web3_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/base_api/apps/ibay/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ibay/apps/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/ibay/apps/manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +37,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2K6WFExXPHaMRjBWK87cftSCEtY" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -55,7 +54,8 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ihor/PycharmProjects/CryptoWalletProject/base_api/templates/errors&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/creator/Documents/KauriOne/CryptoWallet&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -214,6 +214,9 @@
       <workItem from="1677196203045" duration="968000" />
       <workItem from="1677197610604" duration="316000" />
       <workItem from="1677198117585" duration="744000" />
+      <workItem from="1708085099290" duration="818000" />
+      <workItem from="1708086371849" duration="407000" />
+      <workItem from="1708086792872" duration="1794000" />
     </task>
     <servers />
   </component>
